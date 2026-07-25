@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexacro Study Note</title>
+<meta name="description" content="넥사크로(Nexacro) 툴 학습 내용을 정리하는 개인 공부 기록">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Pretendard', 'system-ui', 'sans-serif'],
+        },
+        colors: {
+          ink: '#1c1c1e',
+        },
+      },
+    },
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Pretendard', system-ui, sans-serif; word-break: keep-all; }
+  .kr { word-break: keep-all; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeInUp .5s cubic-bezier(.16,1,.3,1); }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stagger { animation: fadeInUp .5s cubic-bezier(.16,1,.3,1) both; }
+
+  .navpill-btn {
+    transition: all .35s cubic-bezier(.16,1,.3,1);
+  }
+
+  .code-block {
+    font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+
+  .accordion-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .4s cubic-bezier(.16,1,.3,1);
+  }
+  .accordion-body > div { overflow: hidden; }
+  .accordion.open .accordion-body { grid-template-rows: 1fr; }
+  .accordion-chevron { transition: transform .35s cubic-bezier(.16,1,.3,1); }
+  .accordion.open .accordion-chevron { transform: rotate(180deg); }
+
+  ::selection { background: #d1fae5; color: #064e3b; }
+
+  .roadmap-line::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 2.5rem;
+    bottom: -2.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, #10b981, transparent);
+  }
+  .roadmap-item:last-child .roadmap-line::before { display: none; }
+
+  /* 서브탭 (컴포넌트 정리 / 자세한 사용법) */
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; animation: fadeInUp .45s cubic-bezier(.16,1,.3,1); }
+
+  .subtab-btn {
+    border-bottom: 2px solid transparent;
+    color: #a1a1aa;
+    transition: color .25s, border-color .25s;
+  }
+  .subtab-btn.active {
+    color: #18181b;
+    border-color: #18181b;
+  }
+
+  /* 마인드맵 트리 다이어그램 (순수 CSS 조직도 패턴) */
+  .tree, .tree ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tree ul { padding-top: 28px; }
+  .tree li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 28px 10px 0 10px;
+  }
+  .tree li::before, .tree li::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 50%;
+    border-top: 2px solid #d4d4d8;
+    width: 50%; height: 28px;
+  }
+  .tree li::after { right: auto; left: 50%; border-left: 2px solid #d4d4d8; }
+  .tree li:only-child::after, .tree li:only-child::before { display: none; }
+  .tree li:only-child { padding-top: 0; }
+  .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+  .tree li:last-child::before { border-right: 2px solid #d4d4d8; border-radius: 0 6px 0 0; }
+  .tree li:first-child::after { border-radius: 6px 0 0 0; }
+  .tree ul ul::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    border-left: 2px solid #d4d4d8;
+    width: 0; height: 28px;
+  }
+  .tree-node {
+    display: inline-block;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.3;
+    transition: transform .2s cubic-bezier(.16,1,.3,1);
+  }
+  .tree-node:hover { transform: translateY(-2px); }
+
+  mark.hl {
+    background: #fde047;
+    color: #1c1917;
+    padding: 0 1px;
+    border-radius: 2px;
+  }
+
+  /* 스크린샷 주석(annotation) */
+  .annot-frame {
+    position: relative;
+    display: block;
+    border-radius: 1rem;
+    overflow: visible;
+    border: 1px solid #e4e4e7;
+    line-height: 0;
+  }
+  .annot-frame img { display: block; width: 100%; height: auto; border-radius: 1rem; }
+
+  /* 클릭/호버로 여는 작은 포인터 + 말풍선 팝업 */
+  .hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+  .hotspot-hover:hover { z-index: 40; }
+  .hotspot-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 9999px;
+    background: #f43f5e;
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 1;
+    padding: 0;
+    border: 2px solid rgba(255,255,255,.92);
+    box-shadow: 0 0 0 4px rgba(244,63,94,.25), 0 2px 6px rgba(0,0,0,.35);
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .hotspot-dot:hover {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 5px rgba(244,63,94,.32), 0 2px 8px rgba(0,0,0,.4);
+  }
+  button.hotspot-dot { appearance: none; -webkit-appearance: none; }
+
+  .hotspot-pop {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 118px;
+    max-width: 180px;
+    background: #fff;
+    color: #27272a;
+    font-size: 0.74rem;
+    font-weight: 600;
+    line-height: 1.4;
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.65rem;
+    border: 1px solid #fecdd3;
+    box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s ease;
+    text-align: left;
+    white-space: normal;
+  }
+  .hotspot.pop-above .hotspot-pop { top: auto; bottom: calc(100% + 10px); }
+  .hotspot.pop-left .hotspot-pop { left: auto; right: 0; transform: none; }
+  .hotspot.pop-right .hotspot-pop { left: 0; transform: none; }
+
+  .annot-circle {
+    position: absolute;
+    border: 3px solid #ef4444;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+    pointer-events: none;
+  }
+
+  .hotspot-hover:hover .hotspot-pop {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .legend-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 9999px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body class="bg-stone-50 text-zinc-800 antialiased">
+
+<!-- ============ FIXED FLOATING NAV ============ -->
+<header class="fixed top-4 sm:top-5 inset-x-0 z-50 flex justify-center px-4">
+  <nav id="mainNav" class="flex items-center gap-1 sm:gap-2 rounded-full bg-zinc-900/95 backdrop-blur-md border border-white/5 shadow-lg shadow-zinc-900/20 pl-4 pr-1.5 py-1.5 sm:pl-5 sm:pr-2 sm:py-2 max-w-full">
+    <div class="flex flex-col leading-tight mr-3 sm:mr-6 shrink-0">
+      <span class="font-bold text-[13px] sm:text-[15px] tracking-tight text-white whitespace-nowrap">Nexacro Study Note</span>
+      <span class="hidden sm:block text-[10px] text-zinc-400 whitespace-nowrap">넥사크로 학습 내용을 정리하는 개인 공부 기록</span>
+    </div>
+    <div class="flex items-center gap-1 bg-zinc-800/80 rounded-full p-1">
+      <button data-tab="intro" class="tab-btn navpill-btn text-xs sm:text-sm font-semibold px-3.5 sm:px-5 py-2 rounded-full whitespace-nowrap">
+        넥사크로 소개
+      </button>
+      <button data-tab="tool" class="tab-btn navpill-btn text-xs sm:text-sm font-semibold px-3.5 sm:px-5 py-2 rounded-full whitespace-nowrap">
+        넥사크로 툴
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-24">
+
+  <!-- ============ TAB 1: 넥사크로 소개 ============ -->
+  <section id="panel-intro" class="tab-panel active">
+
+    <div class="stagger" style="animation-delay:0ms">
+      <span class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1 text-xs font-semibold">
+        <iconify-icon icon="solar:notebook-bookmark-linear"></iconify-icon>
+        개인 학습 노트 · Intro
+      </span>
+      <h1 class="kr mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-tight text-zinc-900">
+        넥사크로(Nexacro)가<br class="hidden sm:block"> 무엇인지부터 정리한다
+      </h1>
+      <p class="kr mt-5 text-base md:text-lg text-zinc-600 leading-relaxed max-w-[65ch]">
+        넥사크로는 (주)투비소프트가 만든 국산 RIA(Rich Internet Application) 개발 플랫폼입니다.
+        공공기관, 금융권, 대기업 SI 프로젝트의 화면 개발 표준으로 널리 쓰이고 있어서,
+        전문가 양성 과정을 준비하며 배운 내용을 이 페이지에 순서대로 정리해두려고 합니다.
+      </p>
+    </div>
+
+    <!-- 왜 배우는가 -->
+    <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="stagger bg-white border border-zinc-100 rounded-2xl p-6 shadow-sm shadow-zinc-900/5" style="animation-delay:60ms">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+          <iconify-icon icon="solar:case-round-linear"></iconify-icon>
+        </div>
+        <h3 class="kr mt-4 font-semibold text-zinc-900">실무 SI 표준</h3>
+        <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">공공/금융 SI 프로젝트에서 화면 개발 표준 툴로 채택되는 경우가 많아 취업 실무와 바로 연결됩니다.</p>
+      </div>
+      <div class="stagger bg-white border border-zinc-100 rounded-2xl p-6 shadow-sm shadow-zinc-900/5" style="animation-delay:120ms">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+          <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
+        </div>
+        <h3 class="kr mt-4 font-semibold text-zinc-900">컴포넌트 기반 개발</h3>
+        <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">Grid, Div, Dataset 등 컴포넌트 단위 개발 방식을 익히면 다른 RIA/UI 프레임워크 이해에도 도움이 됩니다.</p>
+      </div>
+      <div class="stagger bg-white border border-zinc-100 rounded-2xl p-6 shadow-sm shadow-zinc-900/5" style="animation-delay:180ms">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+          <iconify-icon icon="solar:server-square-linear"></iconify-icon>
+        </div>
+        <h3 class="kr mt-4 font-semibold text-zinc-900">데이터셋 중심 구조</h3>
+        <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">화면과 서버 통신을 Dataset이 매개하는 구조라, 데이터 바인딩 개념을 확실히 잡아둘 필요가 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- 특징 벤토 그리드 -->
+    <div class="mt-16">
+      <h2 class="kr text-xl font-bold text-zinc-900 tracking-tight">넥사크로의 특징</h2>
+      <div class="mt-5 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="md:col-span-2 md:row-span-2 bg-zinc-900 text-white rounded-2xl p-7 flex flex-col justify-between min-h-[220px]">
+          <div>
+            <iconify-icon icon="solar:code-square-linear" class="text-2xl text-emerald-400"></iconify-icon>
+            <h3 class="kr mt-4 text-lg font-semibold">스크립트 + 컴포넌트 결합 구조</h3>
+            <p class="kr mt-2 text-sm text-zinc-400 leading-relaxed max-w-[46ch]">
+              화면(Form)에 컴포넌트를 배치하고, 각 컴포넌트의 이벤트에 JavaScript 유사 문법의
+              스크립트를 붙이는 방식으로 동작을 구현합니다. Nexacro Studio의 스크립트 에디터에서
+              직접 로직을 작성합니다.
+            </p>
+          </div>
+          <span class="kr text-xs text-zinc-500 mt-6">Nexacro17 / Nexacro N 기준</span>
+        </div>
+        <div class="bg-white border border-zinc-100 rounded-2xl p-6">
+          <iconify-icon icon="solar:layers-minimalistic-linear" class="text-xl text-emerald-600"></iconify-icon>
+          <h3 class="kr mt-3 font-semibold text-zinc-900 text-sm">크로스 플랫폼 배포</h3>
+          <p class="kr mt-1.5 text-xs text-zinc-500 leading-relaxed">하나의 소스로 Web, Mobile Web, 하이브리드 앱까지 대응합니다.</p>
+        </div>
+        <div class="bg-white border border-zinc-100 rounded-2xl p-6">
+          <iconify-icon icon="solar:layers-minimalistic-linear" class="text-xl text-emerald-600"></iconify-icon>
+          <h3 class="kr mt-3 font-semibold text-zinc-900 text-sm">서브모듈 화면 분리</h3>
+          <p class="kr mt-1.5 text-xs text-zinc-500 leading-relaxed">화면을 Form 단위로 쪼개고 Submodule로 조합해 재사용성을 높입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 학습 로드맵 -->
+    <div class="mt-16">
+      <h2 class="kr text-xl font-bold text-zinc-900 tracking-tight">학습 로드맵</h2>
+      <p class="kr mt-2 text-sm text-zinc-500">전문가 양성 과정을 따라가며 잡은 개인 학습 순서입니다.</p>
+
+      <div class="mt-6 space-y-8">
+        <div class="roadmap-item roadmap-line relative pl-11">
+          <span class="absolute left-0 top-0 w-8 h-8 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">1</span>
+          <h3 class="kr font-semibold text-zinc-900">개발환경 설치 및 프로젝트 생성</h3>
+          <p class="kr mt-1 text-sm text-zinc-500">Nexacro Studio 설치, XADL 프로젝트 생성, 실행 환경(Server) 설정.</p>
+        </div>
+        <div class="roadmap-item roadmap-line relative pl-11">
+          <span class="absolute left-0 top-0 w-8 h-8 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">2</span>
+          <h3 class="kr font-semibold text-zinc-900">기본 컴포넌트 배치</h3>
+          <p class="kr mt-1 text-sm text-zinc-500">Div, Static, Edit, Button, Grid 등 기본 컴포넌트와 레이아웃(Fit/Border/Absolute) 이해.</p>
+        </div>
+        <div class="roadmap-item roadmap-line relative pl-11">
+          <span class="absolute left-0 top-0 w-8 h-8 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">3</span>
+          <h3 class="kr font-semibold text-zinc-900">Dataset과 데이터 바인딩</h3>
+          <p class="kr mt-1 text-sm text-zinc-500">Dataset의 Row/Column 구조, Grid와 바인딩하는 방법 학습.</p>
+        </div>
+        <div class="roadmap-item roadmap-line relative pl-11">
+          <span class="absolute left-0 top-0 w-8 h-8 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">4</span>
+          <h3 class="kr font-semibold text-zinc-900">이벤트 처리와 스크립트</h3>
+          <p class="kr mt-1 text-sm text-zinc-500">onload, onclick, oncellclick 등 주요 이벤트에 스크립트 작성.</p>
+        </div>
+        <div class="roadmap-item roadmap-line relative pl-11">
+          <span class="absolute left-0 top-0 w-8 h-8 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">5</span>
+          <h3 class="kr font-semibold text-zinc-900">트랜잭션과 서버 통신</h3>
+          <p class="kr mt-1 text-sm text-zinc-500">transaction() 호출, 서비스 URL 매핑, 콜백 함수 처리.</p>
+        </div>
+        <div class="roadmap-item relative pl-11">
+          <span class="absolute left-0 top-0 w-8 h-8 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">6</span>
+          <h3 class="kr font-semibold text-zinc-900">서브모듈 구성과 배포</h3>
+          <p class="kr mt-1 text-sm text-zinc-500">화면 분리 설계, 빌드 및 배포 방식 정리.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 bg-emerald-50/60 border border-emerald-100 rounded-2xl p-6 flex items-start gap-3">
+      <iconify-icon icon="solar:info-circle-linear" class="text-emerald-600 text-xl mt-0.5 shrink-0"></iconify-icon>
+      <p class="kr text-sm text-emerald-900 leading-relaxed">
+        이 페이지는 강의와 실습을 통해 배운 내용을 개인적으로 복습하기 위해 정리한 학습 노트입니다.
+        내용은 학습이 진행되는 대로 계속 업데이트할 예정입니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ TAB 2: 넥사크로 툴 ============ -->
+  <section id="panel-tool" class="tab-panel">
+
+    <div class="stagger" style="animation-delay:0ms">
+      <span class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1 text-xs font-semibold">
+        <iconify-icon icon="solar:programming-linear"></iconify-icon>
+        개인 학습 노트 · Tool
+      </span>
+      <h1 class="kr mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-tight text-zinc-900">
+        Nexacro Studio 실습 정리
+      </h1>
+      <p class="kr mt-5 text-base md:text-lg text-zinc-600 leading-relaxed max-w-[65ch]">
+        컴포넌트, 데이터셋, 이벤트, 트랜잭션 등 실습하면서 익힌 항목들을 정리했습니다.
+        전체 구조는 마인드맵으로, 세부 사용법은 아코디언으로 나눠서 확인할 수 있습니다.
+      </p>
+    </div>
+
+    <!-- 서브탭 -->
+    <div class="mt-10 border-b border-zinc-200">
+      <nav class="flex items-center gap-8">
+        <button data-subtab="mindmap" class="subtab-btn text-sm font-medium pb-3 -mb-px">컴포넌트 정리</button>
+        <button data-subtab="usage" class="subtab-btn text-sm font-medium pb-3 -mb-px">자세한 사용법</button>
+      </nav>
+    </div>
+
+    <!-- 서브탭 패널 1: 컴포넌트 정리 (아코디언 3종) -->
+    <div id="subpanel-mindmap" class="sub-panel mt-10 space-y-3">
+
+      <!-- 아코디언 1: 넥사크로 툴 정리 (마인드맵) -->
+      <div class="accordion open bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:sitemap-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">넥사크로 툴 정리</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1">
+              <p class="kr text-sm text-zinc-500 leading-relaxed mb-4">
+                넥사크로 컴포넌트 전체를 기본 UI / 데이터 / 레이아웃&구조 / 통신&이벤트 네 갈래로 묶어 한눈에 보이도록 정리한 지도입니다.
+              </p>
+              <div class="overflow-x-auto pb-4">
+                <ul class="tree min-w-full justify-center px-4 pt-2">
+                  <li>
+                    <a class="tree-node bg-zinc-900 text-white font-bold text-sm rounded-2xl px-5 py-3.5 shadow-sm">넥사크로<br>컴포넌트</a>
+                    <ul>
+                      <li>
+                        <a class="tree-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">기본 UI<br>컴포넌트</a>
+                        <ul>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Static</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Edit</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Button</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">ComboBox</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Grid</a></li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a class="tree-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">데이터<br>컴포넌트</a>
+                        <ul>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Dataset</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Column / Row</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">데이터 바인딩</a></li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a class="tree-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">레이아웃<br>& 구조</a>
+                        <ul>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Form</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Div</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Submodule</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Layout Type</a></li>
+                        </ul>
+                      </li>
+                      <li>
+                        <a class="tree-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">통신 &<br>이벤트</a>
+                        <ul>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Transaction</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Event Handler</a></li>
+                          <li><a class="tree-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">Callback</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <p class="kr mt-2 text-center text-xs text-zinc-400">각 항목의 자세한 사용법은 "자세한 사용법" 탭에서 확인하세요.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 아코디언 2: 서버 연동 방식 -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:server-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">서버 연동 방식</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1">
+              <p class="kr text-sm text-zinc-500 leading-relaxed">
+                클라이언트는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.transaction()</span>으로
+                서비스 URL을 호출하고, 서버는 그 요청을 받아 Dataset 형태의 응답을 만들어 돌려준다.
+                요청/응답 데이터는 PDF(Platform Data Format) 또는 XML 형식으로 주고받는다.
+              </p>
+              <div class="mt-4 code-block text-[13px] leading-relaxed bg-zinc-900 text-zinc-100 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-500">// 클라이언트: 서비스 호출</span>
+<span class="text-sky-400">this</span>.transaction(
+  <span class="text-emerald-300">"svcMemberList=member.list"</span>,
+  <span class="text-emerald-300">"ds_search=input"</span>, <span class="text-emerald-300">"ds_member=output"</span>, <span class="text-emerald-300">""</span>,
+  <span class="text-sky-400">this</span>.cb_search, <span class="text-emerald-300">""</span>
+);</pre>
+              </div>
+              <div class="mt-3 code-block text-[13px] leading-relaxed bg-zinc-900 text-zinc-100 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-500">// 서버: 요청 Dataset을 받아 조회 결과를 응답 Dataset에 채움</span>
+<span class="text-amber-300">public</span> <span class="text-sky-400">void</span> memberList(PlatformData reqPd, PlatformData resPd) {
+  DataSet dsSearch = reqPd.getDataSet(<span class="text-emerald-300">"ds_search"</span>);
+  DataSet dsMember = resPd.newDataSet(<span class="text-emerald-300">"ds_member"</span>);
+  <span class="text-zinc-500">// dsSearch 조건으로 SQL 실행 후 dsMember에 결과 매핑</span>
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 아코디언 3: SQL 작성 방식 -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:code-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">SQL 작성 방식</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1">
+              <p class="kr text-sm text-zinc-500 leading-relaxed">
+                서버 서비스단에서는 MyBatis 매퍼 XML에 SQL을 작성한다.
+                <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">#{ }</span>로 파라미터를 바인딩하고,
+                조회 결과 컬럼은 Dataset에서 쓸 이름으로 별칭(alias)을 맞춰준다.
+              </p>
+              <div class="mt-4 code-block text-[13px] leading-relaxed bg-zinc-900 text-zinc-100 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-500">&lt;select</span> <span class="text-amber-300">id</span>=<span class="text-emerald-300">"selectMemberList"</span> <span class="text-amber-300">resultType</span>=<span class="text-emerald-300">"hashmap"</span><span class="text-sky-500">&gt;</span>
+  SELECT
+    member_id   <span class="text-amber-300">AS</span> id,
+    member_name <span class="text-amber-300">AS</span> name,
+    age
+  FROM member
+  WHERE dept_cd = <span class="text-emerald-300">#{deptCd}</span>
+  ORDER BY member_id
+<span class="text-sky-500">&lt;/select&gt;</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 서브탭 패널 2: 자세한 사용법 -->
+    <div id="subpanel-usage" class="sub-panel mt-10">
+
+    <!-- 검색 -->
+    <div class="relative max-w-md">
+      <iconify-icon icon="solar:magnifer-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-lg"></iconify-icon>
+      <input id="toolSearch" type="text" placeholder="예: dataset, 이벤트, transaction..."
+        class="kr w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 bg-white text-sm text-zinc-700 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 transition">
+    </div>
+
+    <!-- 항목 리스트 (아코디언) -->
+    <div id="toolList" class="mt-8 space-y-3">
+
+      <!-- 1. 화면/스크립트 기초 -->
+      <div class="accordion open bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="form 화면 생성 이벤트 핸들러 스크립트 문법 generate wre nre 실행">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:code-square-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">화면/스크립트 기초</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-8">
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-3">① Nexacro Studio 시작 화면</p>
+                <div class="annot-frame">
+                  <img src="images/main-screen.png" alt="넥사크로 스튜디오 시작 화면(Start Page)">
+                  <div class="hotspot hotspot-hover pop-right" style="left:14.3%; top:43.7%;">
+                    <span class="hotspot-dot">1</span>
+                    <div class="hotspot-pop">새 프로젝트 만들기</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-left" style="left:35.9%; top:43.7%;">
+                    <span class="hotspot-dot">2</span>
+                    <div class="hotspot-pop">기존 프로젝트 열기</div>
+                  </div>
+                </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed">Nexacro Studio를 처음 열면 나오는 화면이다. <span class="font-semibold text-zinc-700">New</span> 버튼을 누르면 새 프로젝트 만들기 마법사가 시작되고, <span class="font-semibold text-zinc-700">Open</span>은 이미 있는 프로젝트를 불러온다. 아래 Recent Project 목록에는 최근에 작업한 프로젝트가 표시된다.</p>
+              </div>
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-3">② 실제 작업(디자인) 화면 - 전체 구성</p>
+                <div class="annot-frame">
+                  <img src="images/work-screen.png" alt="넥사크로 스튜디오 작업 화면(디자인 뷰)">
+                  <div class="hotspot hotspot-hover pop-right" style="left:6.5%; top:4.6%;">
+                    <span class="hotspot-dot">1</span>
+                    <div class="hotspot-pop">메뉴바 - 상단 메뉴</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-right" style="left:8.5%; top:8.0%;">
+                    <span class="hotspot-dot">2</span>
+                    <div class="hotspot-pop">툴바 - 저장/실행 아이콘</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-right" style="left:15%; top:15.4%;">
+                    <span class="hotspot-dot">3</span>
+                    <div class="hotspot-pop">컴포넌트 팔레트</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-right" style="left:26.3%; top:17.8%;">
+                    <span class="hotspot-dot">4</span>
+                    <div class="hotspot-pop">Form 탭 (Work_emp.xfdl)</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-left" style="left:72.5%; top:27.9%;">
+                    <span class="hotspot-dot">5</span>
+                    <div class="hotspot-pop">디자인 캔버스 = Form</div>
+                  </div>
+                  <div class="hotspot hotspot-hover" style="left:32.6%; top:34.5%;">
+                    <span class="hotspot-dot">6</span>
+                    <div class="hotspot-pop">컴포넌트 예시: Button</div>
+                  </div>
+                  <div class="hotspot hotspot-hover" style="left:42.5%; top:39.8%;">
+                    <span class="hotspot-dot">7</span>
+                    <div class="hotspot-pop">컴포넌트 예시: Grid</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-right" style="left:7.5%; top:29.6%;">
+                    <span class="hotspot-dot">8</span>
+                    <div class="hotspot-pop">Project Explorer</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-left" style="left:89.5%; top:29.6%;">
+                    <span class="hotspot-dot">9</span>
+                    <div class="hotspot-pop">Properties 패널</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-right pop-above" style="left:22.5%; top:76.9%;">
+                    <span class="hotspot-dot">10</span>
+                    <div class="hotspot-pop">Invisible Object</div>
+                  </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">메뉴바</span> - File·Edit·Debug·Generate 같은 상단 메뉴</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">툴바</span> - 저장·실행·배포 같은 기능 아이콘</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">컴포넌트 팔레트</span> - 버튼·에디트·그리드 등을 눌러 캔버스에 배치하는 아이콘 모음</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Form 탭</span> - 지금 열려 있는 화면 파일(Work_emp.xfdl) 하나가 곧 Form 하나</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">디자인 캔버스</span> - 이 하얀 영역 전체가 Form 화면 그 자체</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">6</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">컴포넌트 예시(Button)</span> - "조회" 버튼처럼 캔버스에 올려놓은 요소 하나하나가 컴포넌트</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">7</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">컴포넌트 예시(Grid)</span> - 표 형태로 데이터를 보여주는 것도 컴포넌트</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">8</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Project Explorer</span> - 프로젝트에 속한 파일·설정 목록</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">9</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Properties 패널</span> - 지금 선택한 컴포넌트의 속성을 편집하는 곳</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">10</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Invisible Object</span> - Dataset처럼 화면엔 안 보이지만 존재하는 객체 목록</p></div>
+                </div>
+              </div>
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Form 생성과 컴포넌트 배치</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">화면 한 장을 Form이라 부르고, 툴바에서 컴포넌트를 끌어다 놓으면 배치된다. Properties 패널은 Property·Event·Bindable·Initialize·StringResource 5개 탭이 있는데 실무에서는 앞의 세 개(속성·이벤트·바인딩)를 주로 쓴다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">이벤트 핸들러 & 함수 문법</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">이벤트를 더블클릭하면 핸들러 함수가 자동 생성된다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.함수명 = function(obj, e) {}</span> 형태(함수 표현식)를 압도적으로 많이 쓰며, this는 그 스크립트가 속한 Form 자신을 가리킨다. obj는 이벤트가 발생한 컴포넌트, e는 부가 정보다. 주의: 자동 생성된 함수 이름을 바꿨다면 반드시 바뀐 이름으로 계속 작성해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Generate와 실행 방식(WRE/NRE)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">화면 소스는 xfdl(XML)이라 브라우저가 바로 못 읽는다. Generate 과정을 거쳐 js로 변환해야 실행되며, 브라우저 위에서 도는 WRE와 별도 런타임으로 디바이스 API까지 쓸 수 있는 NRE 두 방식이 있다. 주의: js → xfdl로 역변환은 불가능하고, 변환된 js는 공통 프레임워크 파일 없이는 단독 실행되지 않는다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. UI 컴포넌트 카탈로그 -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="컴포넌트 component static button edit maskedit calendar combo radio listbox checkbox textfield 카탈로그">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">UI 컴포넌트 카탈로그</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-1">컴포넌트 아이콘 참고표</p>
+                <p class="kr text-xs text-zinc-400 leading-relaxed mb-3">컴포넌트 팔레트에 있는 아이콘과 이름을 정리했습니다. <span class="italic text-zinc-400">흐린 기울임체</span>는 아직 확인 못한 추정 이름이에요.</p>
+
+                <div class="space-y-3">
+                  <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <img src="images/icon-row-1.png" alt="컴포넌트 아이콘 1" class="w-full block">
+                    <div class="grid grid-cols-6 border-t border-zinc-100 divide-x divide-zinc-100">
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Div</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Combo</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Edit</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">MaskEdit</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">TextArea</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Static</p></div>
+                    </div>
+                  </div>
+
+                  <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <img src="images/icon-row-2.png" alt="컴포넌트 아이콘 2" class="w-full block">
+                    <div class="grid grid-cols-6 border-t border-zinc-100 divide-x divide-zinc-100">
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">PopupDiv</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Radio</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">CheckBox</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">ListBox</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Grid</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Spin</p></div>
+                    </div>
+                  </div>
+
+                  <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <img src="images/icon-row-3.png" alt="컴포넌트 아이콘 3" class="w-full block">
+                    <div class="grid grid-cols-6 border-t border-zinc-100 divide-x divide-zinc-100">
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Menu</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">PopupMenu</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Tab</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">GroupBox</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Calendar</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">ImageViewer</p></div>
+                    </div>
+                  </div>
+
+                  <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <img src="images/icon-row-4.jpg" alt="컴포넌트 아이콘 4" class="w-full block">
+                    <div class="grid grid-cols-6 border-t border-zinc-100 divide-x divide-zinc-100">
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">ProgressBar</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Plugin</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Dataset</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">ListView</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">DataObject</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">CheckBoxSet</p></div>
+                    </div>
+                  </div>
+
+                  <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <img src="images/icon-row-5.png" alt="컴포넌트 아이콘 5" class="w-full block">
+                    <div class="grid grid-cols-6 border-t border-zinc-100 divide-x divide-zinc-100">
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">MultiCombo</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">Panel</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">TextField</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">MultiLine<br>TextField</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">DateField</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">DateRange<br>Picker</p></div>
+                    </div>
+                  </div>
+
+                  <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                    <img src="images/icon-row-6.png" alt="컴포넌트 아이콘 6" class="w-full block">
+                    <div class="grid grid-cols-6 border-t border-zinc-100 divide-x divide-zinc-100">
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">PopupDate<br>RangePicker</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">FileUpload</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">FileDownload</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">FileUp<br>Transfer</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">FileDown<br>Transfer</p></div>
+                      <div class="px-1 py-2 text-center"><p class="text-[11px] font-semibold text-zinc-700 leading-tight">FileDialog</p></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">컴포넌트 한 줄 설명</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Div</span> : 여러 컴포넌트를 묶는 컨테이너</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Combo</span> : 목록에서 하나를 고르는 드롭다운</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Edit</span> : 한 줄 텍스트 입력창</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">MaskEdit</span> : 정해진 형식(마스크)에 맞춰 입력받는 창</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">TextArea</span> : 여러 줄 입력이 가능한 텍스트창</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Static</span> : 수정할 수 없는 텍스트 라벨</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">PopupDiv</span> : 스크립트로 열어야 나타나는 팝업 영역</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Radio</span> : 여러 개 중 하나만 고르는 버튼</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">CheckBox</span> : 참/거짓을 표시하는 체크박스</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">ListBox</span> : 목록에서 항목을 고르는 리스트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Grid</span> : 표 형태로 데이터를 보여주는 컴포넌트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Spin</span> : 숫자를 증감시키는 버튼</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Menu</span> : 풀다운 메뉴를 구성하는 컴포넌트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">PopupMenu</span> : 마우스 우클릭 시 나오는 메뉴</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Tab</span> : 화면을 여러 탭으로 나눠 보여줌</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">GroupBox</span> : 관련 컴포넌트를 테두리로 묶어 보여줌</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Calendar</span> : 날짜를 선택하는 달력</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">ImageViewer</span> : 이미지를 보여주는 컴포넌트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">ProgressBar</span> : 진행률을 막대로 보여줌</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Plugin</span> : 외부 웹 콘텐츠를 연동하는 컴포넌트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Dataset</span> : 화면 데이터를 담는 보이지 않는 객체</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">ListView</span> : 카드형 레이아웃으로 목록을 보여줌</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">DataObject</span> : 데이터를 다루는 보이지 않는 객체</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">CheckBoxSet</span> : 여러 체크박스를 묶어서 관리</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">MultiCombo</span> : 콤보에서 여러 개를 선택</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">Panel</span> : 컴포넌트를 그룹으로 묶는 레이아웃 요소</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">TextField</span> : 모바일용 한 줄 입력창</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">MultiLineTextField</span> : 모바일용 여러 줄 입력창</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">DateField</span> : 모바일에서 날짜 하나를 선택</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">DateRangePicker</span> : 화면에 상시 펼쳐진 기간 선택 달력</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">PopupDateRangePicker</span> : 팝업으로 여는 기간 선택 달력</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">FileUpload</span> : 파일을 서버로 올리는 기능</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">FileDownload</span> : 서버 파일을 내려받는 기능</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">FileUpTransfer</span> : 파일 업로드를 처리하는 컴포넌트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">FileDownTransfer</span> : 파일 다운로드를 처리하는 컴포넌트</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-semibold text-zinc-700">FileDialog</span> : 파일 선택 창을 여는 컴포넌트</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Dataset -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="dataset 데이터셋 바인딩 검색 findrow filter 정렬 addrow setcolumn deleterow crud">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:database-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Dataset</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Dataset을 만드는 두 가지 방법</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">컬럼과 데이터는 두 가지 방식으로 채울 수 있다. XML 소스를 직접 작성하거나, Dataset Editor에서 표처럼 하나씩 입력하면 된다. 결과는 같으니 편한 쪽을 쓰면 된다.</p>
+                <div class="space-y-4">
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/dataset-source-editor.png" alt="Dataset Source Editor - XML로 컬럼/행 직접 작성">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">소스 방식: ColumnInfo/Rows를 XML 태그로 직접 작성한다. 코드를 붙여넣거나 대량 데이터를 다룰 때 편하다.</p>
+                  </div>
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/dataset-visual-editor.png" alt="Dataset Editor - Columns/Rows 표로 하나씩 입력">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">에디터 방식: Columns 표에서 컬럼을 정의하고 Rows 표에 값을 하나씩 입력한다. 아래 Dataset/Source 탭으로 두 화면을 오갈 수 있다.</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">개념과 바인딩</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Dataset은 화면에 보이지 않는 표 형태의 데이터 그릇이다. 그 자체로는 아무것도 안 보이고, Grid 등과 binddataset 속성(또는 셀 단위 바인딩)으로 연결돼야 화면에 표시된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">데이터 조회/검색</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">getRowCount()</span>/<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">getColumn(행, 컬럼)</span>으로 기본 조회를 하고, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">findRow</span>(단일 조건, 첫 매치 행만, 없으면 -1)와 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">findRowExpr</span>(복합 조건식)로 원하는 행을 찾는다. 조건에 맞는 행을 전부 뽑고 싶으면 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">extractRows</span>로 인덱스 배열을 한 번에 받는다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">정렬과 필터</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">keystring에 "S:+컬럼/-컬럼" 형태로 넣으면 정렬된다. filter("조건식")은 데이터를 지우는 게 아니라 화면 표시만 걸러내며, filter("")로 다시 해제한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">추가·수정·삭제(CRUD)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">addRow/insertRow + setColumn으로 행을 추가하고, setColumn으로 값을 고치면(원본값은 getOrgColumn으로 확인 가능) 상태가 바뀐다. deleteRow/deleteMultiRows로 삭제하며, getRowType으로 각 행의 상태(1정상·2추가·4수정·8삭제)를 확인할 수 있다. 주의: 이 모든 조작은 화면 메모리상의 값만 바꾸는 것이라, 서버(DB)에는 별도로 전송해야 반영된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">초기화·복사·이벤트</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">reset()은 처음 불러온 상태로 되돌리고, clearData()는 완전히 비운다. copyData/copyRow로 다른 Dataset과 데이터를 주고받을 수 있다. cancolumnchange(변경 직전, false 반환 시 취소 가능)·oncolumnchanged(변경 직후) 이벤트로 값 변경을 감시·검증할 수 있다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Grid -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="grid 그리드 cell displaytype edittype tree 트리 그룹핑 병합 페이징 paging 드래그 드롭 바인딩">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:widget-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Grid</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Grid를 Dataset과 연결하는 두 가지 방법</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Project Explorer의 Dataset(컬럼)을 Grid 셀 위로 끌어다 놓으면 별도 설정 없이 바로 바인딩된다. 아래 사진에서 동그라미 친 부분이 드래그 중인 Dataset 아이콘(원통 모양)이다 — 이렇게 마우스 커서 옆에 옅게 붙어서 따라오다가, 원하는 셀에 놓는 순간(drop) 바인딩이 끝난다.</p>
+                <div class="space-y-4">
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/grid-drag-drop-binding.png" alt="Dataset를 Grid로 드래그 앤 드롭하여 바인딩">
+                      <div class="annot-circle" style="left:12.3%; top:62%; width:2.4%; height:7.4%;"></div>
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">동그라미 부분이 드래그 중인 Dataset 아이콘(원통 모양). 이 상태로 원하는 셀 위에서 손을 놓으면 바인딩 끝.</p>
+                  </div>
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/grid-contents-editor.png" alt="Grid Contents Editor에서 바인딩 결과 확인">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">드롭 후 Grid Contents Editor의 Properties를 보면 text가 "bind:DEPT_CODE"로 자동 채워진 걸 확인할 수 있다.</p>
+                  </div>
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/grid-binddataset-property.png" alt="Properties 패널에서 binddataset 속성으로 직접 바인딩">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">드래그 앤 드롭 대신, Grid를 선택하고 Properties의 Binding 카테고리에서 binddataset 속성에 Dataset 이름(ds_emp)을 직접 입력해도 똑같이 바인딩된다.</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">셀 클릭 → 다른 컴포넌트 속성 바꾸기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Grid와 다른 컴포넌트(Edit 등)를 같은 Dataset에 함께 바인딩해두면, Grid에서 행을 클릭했을 때 그 컴포넌트의 속성이 자동으로 바뀐다. 아래는 Edit 컴포넌트의 value 속성을 ds_emp의 EMP_NAME으로 바인딩해 둔 예시다.</p>
+                <div class="space-y-4">
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/grid-edit-binding-setup.png" alt="Edit 컴포넌트의 value 속성을 ds_emp/EMP_NAME으로 바인딩">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">Edit 컴포넌트를 선택하고 Properties의 value 속성을 ds_emp Dataset의 EMP_NAME 컬럼으로 바인딩한다.</p>
+                  </div>
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/grid-edit-binding-result.png" alt="Grid에서 행을 클릭하면 Edit 컴포넌트 값이 자동으로 바뀌는 결과">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">실행 결과: Grid에서 "Jungkook" 행을 클릭하면 바인딩된 Edit 컴포넌트에도 "Jungkook"이 자동으로 표시된다(배경색은 MEMO 컬럼 값과 바인딩된 예시).</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Cell text 3가지 방식</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">하드코딩 텍스트, "bind::컬럼"으로 Dataset 값 바인딩, "expr::연산식"(currow 등 함수·계산식)까지 세 가지로 셀 내용을 정할 수 있다. 주의: Grid의 expression 안에서 comp는 Grid 자기 자신이므로, Form에 정의된 함수를 부르려면 comp.parent로 한 단계 올라가야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">displaytype / edittype</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">보여주는 방식과 편집하는 방식을 따로 지정한다(예: combotext는 클릭했을 때만 콤보로 바뀌고, combocontrol은 항상 콤보 모양). 콤보·체크박스·날짜·마스크 등 다양한 셀 타입을 조합해 쓸 수 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Tree형 Grid</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">displaytype을 treeitemcontrol, edittype을 tree로 두고 treelevel에 레벨 컬럼을 bind하면 폴더 구조처럼 펼쳐진다. 주의: 트리는 화면 Row 순서와 Dataset Row 순서가 달라질 수 있어, 변환에는 getTreeRow/getTreeStatus/setTreeStatus를 써야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">그룹핑과 소계</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">keystring에 "G:-컬럼"을 넣으면 같은 값끼리 묶고 소계 행이 자동 생성된다. 소계 계산 방식(SUM/COUNT/AVG 등)은 컬럼의 prop 속성으로 바꿀 수 있는데, 스크립트로 바꿨다면 updateSortGroup()을 호출해야 화면에 반영된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">셀 병합·서프레스·기타</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Merge Cells는 셀을 완전히 하나로 합치고, Having child cells는 겉만 합치고 내부 subcell을 유지한다. suppress는 반복되는 값을 자동으로 병합 표시해준다. getCellProperty/setCellProperty로 실행 중 셀 속성을 읽고 바꿀 수 있고, 페이징은 서버에서 offset/개수만큼 끊어 받아온 뒤 공통 함수로 페이지 버튼을 그려주는 방식으로 구현한다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 디자인/스타일 (Theme·XCSS) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="theme xcss 스타일 디자인 selector class border background font 우선순위">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:layers-minimalistic-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">디자인/스타일 (Theme·XCSS)</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">적용 우선순위와 Theme 개념</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">같은 속성을 여러 곳에서 지정하면 Properties → XCSS → Theme 순으로 우선순위가 높다. Theme는 프로젝트 전체 공통 디자인(스타일+이미지) 저장소로, 확장자 .xtheme는 편집 불가한 압축형이고 확장자 없는 Theme는 자유롭게 편집 가능하다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Selector와 상태(Status/UserStatus)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Add Selector로 컴포넌트별 기본 스타일을 정의하고, enabled/mouseover 같은 Status나 pushed/selected 같은 UserStatus별로 다른 디자인을 줄 수 있다. 여러 상태를 OR로 묶으려면 Multi Selector, AND 조건으로 묶으려면 Status Combination을 쓴다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Class Selector로 개별 디자인</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">같은 종류의 컴포넌트라도 클래스명(예: btn_TF_Save)을 붙이면 그 클래스가 붙은 것만 다른 스타일을 적용할 수 있다. "컴포넌트_위치_역할" 순서로 이름 짓는 방식이 관례다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">복합 컴포넌트 스타일링</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Combo(dropbutton·comboedit·combolist), Calendar(calendaredit·dropbutton·datepicker)처럼 내부에 여러 요소가 있는 컴포넌트는 자식 셀렉터를 하나씩 따로 만들어 디자인해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">자주 헷갈리는 주의사항</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">background는 상속되지 않아 부모 배경이 자식에 자동 적용되지 않는다. border는 top/right/bottom/left를 항상 함께 지정해야 하고, 넥사크로 런타임은 border-style 중 solid만 정식 지원한다. "디자인을 바꾸는 것"과 "기능을 켜고 끄는 것"은 각각 Theme와 Properties로 서로 다른 곳에서 처리한다는 원칙을 기억해야 한다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Div·Tab·팝업 -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="div tab popup 팝업 childframe modal modaless popupdiv inner form">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:document-layout-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Div·Tab·팝업</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Div의 Inner Form 구조</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Div 위에 놓은 컴포넌트는 실제로는 눈에 안 보이는 내부 폼(inner form) 위에 배치되기 때문에, 코드에서 접근할 때는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">div00.form.컴포넌트id</span>처럼 한 단계 더 들어가야 한다. url 속성으로 다른 화면을 그대로 끼워 넣을 수도 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">팝업(ChildFrame): Modal vs Modaless</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">넥사크로에는 새 창 개념이 없어 ChildFrame을 스크립트로 만들어 팝업처럼 띄운다. Modal은 떠 있는 동안 부모 화면 조작이 막히고(실무에서 주로 사용), Modaless는 부모 화면을 계속 조작할 수 있는 대신 좌표를 직접 계산해서 띄워야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">부모-자식 데이터 전달</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">showModal()의 인자로 전달 데이터와 콜백 함수를 함께 넘긴다. 팝업에서 되돌려줄 값은 close()에 문자열 하나만 담을 수 있어 여러 값은 구분자로 이어붙여 보낸다. 주의: 통신은 비동기라 showModal() 바로 다음 줄에서 반환값을 읽으면 안 되고, 반드시 지정한 콜백 함수 안에서 처리해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">PopupDiv</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Div와 비슷하게 url로 다른 화면을 연결할 수 있지만, 화면에 놓아두기만 해서는 안 보이고 trackPopupByComponent()/trackPopup()으로 스크립트에서 직접 열어야 나타난다. 포커스를 잃으면 자동으로 닫힌다는 점이 Div와 다르다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Tab</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">화면 여러 개를 탭으로 전환하며 보여준다. tabjustify를 true로 두면 탭 버튼 너비가 전체 폭에 맞춰 균등하게 늘어난다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Frame 구조 & 실무 화면 설계 -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="frame vframeset hframeset sdi mdi frametop frameleft framemdi framework 로그인 반응형">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:server-square-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Frame 구조 & 실무 화면 설계</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Frame 계열과 SDI·MDI</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">VFrameSet(세로 분할)·HFrameSet(가로 분할)·FrameSet(좌표 분할)으로 화면을 상단 메뉴/좌측 메뉴/본문 등의 영역으로 나눈다. 한 번에 화면 하나만 보여주는 SDI와, 여러 업무 화면을 탭으로 동시에 열어두는 MDI 중 실무에서는 MDI를 더 많이 쓴다. separatesize로 각 영역의 크기(비율)를 지정하며 스크립트로 실시간으로 바꿔 화면 전환처럼 보이게도 할 수 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">상단/좌측 메뉴 구성</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">상단 메뉴(frameTop)는 메뉴 정보를 담은 Dataset을 읽어 Button을 코드로 동적 생성하는 방식으로 만든다. 좌측 메뉴(frameLeft)에서 항목을 더블클릭하면 ChildFrame과 공통 틀 화면(frameWork)을 통해 실제 업무 화면을 불러오고, 동시에 frameMdi에 탭도 함께 추가된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">반응형 로그인 화면</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">보이지 않는 기준 컴포넌트(가로·세로 50%)를 하나 두고, 로그인 박스를 그 기준점에서 자기 크기의 절반만큼 음수 오프셋으로 배치하면 창 크기가 바뀌어도 항상 정중앙을 유지한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">참고</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">이 구조는 실무 프로젝트의 전체 골격을 짜는 설계 패턴이라 처음엔 복잡해 보일 수 있지만, "메뉴 Dataset → 동적 버튼/탭 생성 → ChildFrame으로 업무 화면 로드"라는 한 가지 흐름만 이해하면 대부분 응용할 수 있다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. 기타 고급 기능 -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="timer 타이머 동적생성 addchild removechild global function gfn typedefinition webview fileupload 화살표함수">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:code-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">기타 고급 기능</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Timer</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">setTimer(id, 주기)로 일정 간격마다 ontimer 이벤트를 반복 발생시키고, killTimer(id)로 멈춘다. 여러 타이머를 동시에 쓸 땐 e.timerid로 구분한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">컴포넌트 동적 생성/제거</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">new 컴포넌트(...)로 만든 뒤 addChild로 등록하고 show()를 호출해야 화면에 나타난다. 제거할 때는 removeChild → destroy() → 변수를 null 처리하는 순서를 지킨다. 주의: 같은 id로 중복 생성하면 오류가 나므로 isValidObject()로 먼저 존재 여부를 확인하는 것이 안전하다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Global Function(gfn)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">알림창, 팝업 열기, 공통 코드 조회처럼 여러 화면에서 반복되는 로직을 gfn 접두어 전역 함수(gfnAlert, gfnOpenPopup, gfnGetCommonCode 등)로 한 번만 만들어 공용으로 쓴다. 화면마다 같은 로직을 새로 짤 필요가 없고 문구·검증 규칙도 일관되게 유지된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">WebView 연동</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">화면 안에 웹페이지를 띄울 땐 구형 WebBrowser 대신 WebView(Chromium 기반)를 쓴다. callScript()로 넥사크로에서 HTML 함수를 실행시키고, HTML 쪽은 FireUserNotify()로 데이터를 보내면 넥사크로의 onusernotify 이벤트에서 e.userdata로 받는다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">파일 업로드</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">FileDialog로 파일 선택창을 띄우고, FileUpTransfer의 addFile()로 대기열에 담은 뒤 upload()로 서버에 전송한다. 성공하면 onsuccess 이벤트에서 서버 응답을 받아 처리한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">일반 함수 vs 화살표 함수의 this</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">일반 function은 그 함수를 호출한 대상이 this가 되고, 화살표 함수(=&gt;)는 정의된 시점의 this를 그대로 물려받는다. 콜백으로 함수를 넘길 때 this가 예상과 달라지는 버그를 막으려면 이 차이를 꼭 기억해야 한다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. transaction() 기본과 서버 통신 구조 (서버 연결 문서 · 파란색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:server-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">transaction() 기본과 서버 통신 구조</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">서버 통신 개요</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Web Server는 정적 자원을, WAS는 DB 조회 같은 동적 처리를 담당한다. 자바 쪽 조회 결과(RS)는 넥사크로가 바로 못 읽으므로 Dataset(DS) 형태로 변환하는 중간 모듈을 거쳐야 화면에 바인딩할 수 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">transaction()의 6개 인자</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">순서대로 ① 요청 식별 이름, ② 서버 서비스 경로(URL), ③ 서버로 보낼 Dataset, ④ 서버에서 받아올 Dataset 매핑("화면Dataset=서버Dataset"), ⑤ 낱개 변수 파라미터, ⑥ 완료 후 실행할 콜백 함수명이다. 조회 결과 건수 등은 이 콜백 함수 안에서 확인해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Sync/Async와 콜백의 중요성</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">넥사크로 기본 통신 방식은 비동기(Async)다. transaction() 호출 직후 다음 줄에서 바로 결과를 읽으면 아직 서버 응답이 도착하기 전이라 잘못된 값을 보게 된다. 반드시 지정한 콜백 함수 안에서 결과를 처리해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">CORS와 NRE</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">브라우저는 동일 출처 정책(CORS)으로 화면 주소와 다른 도메인의 서버 요청을 막을 수 있다. 별도 실행기인 NRE로 실행하면 이 제약 없이 통신할 수 있어, 개발 중 테스트 때 자주 활용한다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. 파라미터 전달과 Dataset 송수신 (서버 연결 문서 · 파란색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:database-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">파라미터 전달과 Dataset 송수신</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">파라미터 문자열과 공백 문제</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">파라미터는 "key=값" 형태를 공백으로 이어붙여 전달하는데, 값 자체에 공백이 있으면(예: 띄어쓰기 있는 이름) 그 지점에서 값이 잘려버린다. 주의: <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nexacro.wrapQuote()</span>로 값을 감싸야 공백이 있어도 안전하게 전달된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Dataset 전송 범위: :u vs :a</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Dataset을 서버로 보낼 때 뒤에 붙이는 :u는 변경된(추가·수정·삭제) 데이터만, :a는 전체 데이터를 보낸다. 전송량을 줄이려면 :u를 주로 쓰며, 여러 Dataset을 동시에 보낼 땐 공백으로 나열한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">URL을 별칭으로 관리(TypeDefinition-Services)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">서버 주소를 코드에 직접 쓰지 않고 "EduUrl" 같은 PrefixID로 등록해두면 "EduUrl::save_emp.jsp"처럼 짧게 쓸 수 있다. 환경(개발/운영)이 바뀌어도 이 등록 값 한 곳만 고치면 돼서 유지보수가 쉬워진다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. 서버 측 처리 구조 (Controller·Service·Mapper) (서버 연결 문서 · 파란색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="controller service mapper requestmapping paramvariable paramdataset nexacroresult mvc 전자정부">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:sitemap-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">서버 측 처리 구조 (Controller·Service·Mapper)</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">3계층 구조와 MVC</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">서버는 Spring 기반 전자정부 프레임워크의 MVC 패턴을 따르며, 요청은 Controller → Service → Mapper → DB 순으로 내려가고 결과는 반대로 올라온다. 계층을 나누면 화면·로직·SQL이 서로 분리되어 유지보수가 쉬워진다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Controller 작성 요소</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">@RequestMapping으로 요청 경로를 지정하고, 낱개 값은 @ParamVariable, Dataset 전체는 @ParamDataSet으로 받는다. 응답은 NexacroResult에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">addDataSet()</span>/<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">addVariable()</span>로 담아 반환하면 화면의 transaction 콜백으로 자동 연결된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Service/Mapper 위임과 RowType 분기</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Controller는 직접 DB에 접근하지 않고 Service(인터페이스+구현체)에 위임하고, Service는 다시 Mapper를 호출한다. 저장 시에는 각 행의 RowType(추가/수정/삭제)을 확인해 insert/update/delete 메서드를 각각 분기 호출한다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. 실전 연동 패턴 (서버 연결 문서 · 파란색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="파일업로드 페이징 로그인 gdsuser gfntransaction 아이디중복체크">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:programming-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">실전 연동 패턴 (업로드·페이징·로그인)</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">파일 업로드 서버 처리</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">서버 Controller가 업로드 요청을 받아 저장 경로를 만들고 파일을 디스크에 저장한 뒤, 저장된 파일 정보를 Dataset으로 되돌려준다. 같은 이름의 파일이 있으면 새 이름을 만들어 덮어쓰기를 막는다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">페이징 데이터 조회 흐름</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">화면에서 cnt(한 페이지 개수)·offset(시작 위치)을 파라미터로 보내면 서버가 그 구간만 조회해서 돌려준다. 페이지 번호가 바뀔 때마다 offset만 다시 계산해서 재요청하는 방식이다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">로그인·중복체크와 전역 Dataset</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">로그인 성공 시 서버가 돌려준 사용자 정보를 gdsUser 같은 애플리케이션 전역 Dataset에 채워두면, 이후 어느 화면에서든 다시 서버에 묻지 않고 바로 꺼내 쓸 수 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">gfnTransaction (공통 함수)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">transaction()을 감싼 프로젝트 공통 함수로, 사용법은 transaction()과 거의 같다. 화면마다 반복되는 통신 코드를 줄이고 일관된 방식으로 서버를 호출할 수 있게 해준다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. MyBatis 파라미터 바인딩 (SQL 문서 · 빨간색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="mybatis 파라미터 vo map _parameter where if 바인딩 sql인젝션">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:code-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">MyBatis 파라미터 바인딩</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">파라미터 형태별 처리</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">문자열 하나만 넘어올 땐 이름이 없으므로 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">_parameter</span> 예약어로 받아야 한다. 조건이 여러 개면 VO 클래스로 묶어 parameterType을 VO로 지정하고, Dataset을 그대로 넘길 땐 parameterType="map"으로 받아 컬럼명을 그대로 조건식에 쓴다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">#{ } 바인딩과 조건절 자동 처리</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">#{파라미터명}은 값을 SQL 인젝션 없이 안전하게 채워 넣는 문법이다. &lt;if&gt; 태그로 조건절 자체를 생략 가능하게 만들 수 있고, &lt;where&gt; 태그를 쓰면 조건이 하나라도 참일 때만 WHERE를 붙이고 불필요한 첫 AND도 자동으로 지워준다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. 조회/저장 SQL 패턴 (SQL 문서 · 빨간색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="mapper.xml select insert update delete 중복체크 로그인 sql">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:database-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">조회/저장 SQL 패턴</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Mapper.xml 조회 SQL</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">하나의 Mapper.xml 안에 여러 &lt;select id="..."&gt; 태그를 두고 조건 유무·형태별로 SQL을 나눠 작성한다. 화면 Dataset 컬럼명과 맞추기 위해 AS로 별칭을 붙이는 경우가 많다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Insert/Update/Delete 매퍼</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">&lt;insert&gt;/&lt;update&gt;/&lt;delete&gt; 태그로 각각 정의하며, update·delete는 대개 PK 컬럼(예: EMP_ID)을 WHERE 조건으로 사용한다. 서버 Service 단계의 RowType 분기와 짝을 이뤄, 저장 버튼 한 번으로 여러 행의 추가/수정/삭제가 한꺼번에 처리된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">중복체크·로그인 인증 SQL</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">아이디 중복 체크는 COUNT(*)로 존재 개수만 확인하고, 로그인은 아이디+비밀번호로 COUNT를 세어 성공 여부를 판단하거나 조건에 맞는 회원 정보를 통째로 조회하는 방식을 함께 쓴다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. 페이징 & 공통코드 설계 (SQL 문서 · 빨간색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="row_number limit offset 페이징 공통코드 tbl_common_code heidisql">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">페이징 & 공통코드 설계</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">ROW_NUMBER()와 LIMIT/OFFSET</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">ROW_NUMBER() OVER(ORDER BY ...)로 순번을 매기고, LIMIT/OFFSET으로 필요한 구간만 잘라온다. 화면에서 넘긴 cnt/offset 값을 그대로 #{cnt}/#{offset}에 바인딩하는 방식으로 페이지마다 다른 구간을 조회한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">공통 코드 테이블 설계</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">직급·부서·취미처럼 자주 안 바뀌는 코드들을 각각 테이블로 만들지 않고, MST_CODE(분류)·DET_CODE(세부값) 구조의 공통 코드 테이블 하나로 모아 관리한다. 앱 시작 시 한 번만 전역으로 조회해두면 불필요한 서버 통신을 줄일 수 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">HeidiSQL로 DB 직접 확인</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">HeidiSQL 같은 DB 툴로 실제 테이블 데이터와 구조를 미리 확인한 뒤 Mapper.xml의 SQL을 작성하면 컬럼명·데이터 형태를 헷갈리지 않고 정확하게 매핑할 수 있다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. 프로젝트/제품 개요 (기타 문서 · 회색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="투비소프트 nexacro studio ide 프로젝트 생성 project explorer resource explorer">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:case-round-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">프로젝트/제품 개요</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">투비소프트와 넥사크로</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">투비소프트는 기업용 업무 화면(UI) 솔루션을 만드는 회사이고, 넥사크로는 그 화면을 만드는 개발 도구다. IDE인 NEXACRO Studio로 화면을 만들면 .xfdl 파일이 생성된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">프로젝트 생성 절차</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">New로 새 프로젝트를 만들 때 이름/경로, 대상 디바이스, 초기 화면 구성을 순서대로 지정한다. 생성되는 프로젝트에는 Environment, TypeDefinition(Objects·Services), Application Information 같은 설정 항목이 기본으로 함께 만들어진다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Project Explorer vs Resource Explorer</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Project Explorer는 환경설정·컴포넌트 정보·서비스 경로 같은 프로젝트 구조를 담고, Resource Explorer는 Theme 등 디자인 리소스를 담는다. Form에 컴포넌트를 추가하면 관련 디자인 요소가 자동으로 Resource Explorer에 반영된다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 17. 외부 리소스 가져오기 & 참고 도구 (기타 문서 · 회색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="theme 폴더 가져오기 refresh compguide services reference guide mainframe">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:widget-2-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">외부 리소스 가져오기 & 참고 도구</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">외부 Theme 폴더 가져오기</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Resource Explorer에서 "Open Theme Folder"로 실제 저장 경로를 연 뒤 폴더를 복사해 넣는다. 주의: 외부에서 직접 복사한 파일은 자동 인식되지 않으므로 반드시 Refresh를 해줘야 프로젝트에 반영된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">외부 화면 폴더 가져오기</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">CompGuide 같은 외부 폼 폴더는 단순히 복사만 해서는 인식되지 않는다. TypeDefinition의 Services에 이름·경로·타입(form)을 등록해야 그 폴더의 화면을 실제로 쓸 수 있다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Nexacro N Reference Guide</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Help 메뉴의 이 도움말에서 컴포넌트별 속성·메소드·이벤트뿐 아니라 내부 구조(Control Map)까지 확인할 수 있어, 세부 스타일을 지정하기 전에 어떤 하위 요소가 있는지 미리 파악하기 좋다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">mainframe 크기 설정</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Application Information의 mainframe 속성에서 전체 창의 width/height, 정렬 방식을 설정한다. 이 값은 Modaless 팝업을 화면 정중앙에 계산해 띄울 때 기준으로 쓰인다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 18. 실행 환경과 배포 (기타 문서 · 회색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="generate xjs xfdl local web server tomcat webapp quickview 배포">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:code-square-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">실행 환경과 배포</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">.xjs/.xfdl과 Generate</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">.xjs 파일은 실제로는 XML 안에 스크립트를 담은 형식이다. 브라우저에서 실행하려면 Generate 과정을 거쳐 xfdl/xjs를 실제 js 파일로 변환해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Local Web Server의 한계</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">스튜디오 내장 Local Web Server는 실제 백엔드에 연결되어 있지 않아 화면·레이아웃 확인용으로만 적합하다. 서버 데이터 연동까지 확인하려면 실제 Web Server(Tomcat 등)로 실행해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">webapp 폴더와 Generate Path</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Java 웹 프로젝트의 src/main/webapp이 실제 웹 주소의 루트가 된다. Generate Path를 이 webapp 하위 경로로 맞춰두면 변환된 결과물이 곧바로 서버가 읽을 수 있는 위치에 생성된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">QuickView로 실서버 테스트</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Run Environment를 Web Server로 바꾸고 실제 톰캣 주소를 지정하면, Generate된 결과물이 진짜 서버를 통해 로드되어 데이터 조회·수정까지 정상 테스트할 수 있다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19. 프로젝트 설계 참고 (기타 문서 · 회색) -->
+      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="application frame template 전역 dataset 화면계층 mdi 요약">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:notebook-bookmark-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">프로젝트 설계 참고</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Application 추가와 Frame Template</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Application Information에서 새 Application을 추가할 때 Frame Template을 "Full"로 두면 화면 전체를 채우는 기본 골격(Form_Work.xfdl)이 자동 생성되어, 매번 빈 화면부터 짤 필요가 없다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">전역 Dataset과 화면 계층 설계</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">로그인 정보처럼 앱 전체가 공유할 데이터는 전역 Dataset(gdsUser 등)에 두고, 하나의 뼈대 화면 안에서 상황에 따라 필요한 하위 화면(로그인/회원가입 등)만 바꿔 끼우는 구조로 설계하면 화면 간 연결을 이해하기 쉬워진다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">MDI 프레임 구조 요약</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">frameTop(상단 메뉴)·frameLeft(좌측 메뉴)·frameMdi(탭 관리)·frameWork(업무 화면 공통 틀)이 서로 맞물려 하나의 MDI 애플리케이션 골격을 이룬다. 각 프레임의 자세한 구현은 "넥사크로 소개" 쪽 Frame 구조 항목을 함께 참고하면 좋다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p id="noResult" class="kr hidden mt-8 text-center text-sm text-zinc-400">검색 결과가 없습니다.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="border-t border-zinc-100">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <span class="kr text-xs text-zinc-400">Nexacro Study Note · 개인 학습용 페이지</span>
+    <span class="text-xs text-zinc-300">© 2026</span>
+  </div>
+</footer>
+
+<script>
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = { intro: document.getElementById('panel-intro'), tool: document.getElementById('panel-tool') };
+
+  function setActiveTab(name) {
+    tabBtns.forEach(btn => {
+      const active = btn.dataset.tab === name;
+      btn.classList.toggle('bg-white', active);
+      btn.classList.toggle('text-zinc-900', active);
+      btn.classList.toggle('text-zinc-300', !active);
+    });
+    Object.entries(panels).forEach(([key, el]) => el.classList.toggle('active', key === name));
+    history.replaceState(null, '', '#' + name);
+  }
+
+  tabBtns.forEach(btn => btn.addEventListener('click', () => setActiveTab(btn.dataset.tab)));
+
+  const initial = location.hash.replace('#', '');
+  setActiveTab(initial === 'tool' ? 'tool' : 'intro');
+
+  // 서브탭 (컴포넌트 정리 / 자세한 사용법)
+  const subtabBtns = document.querySelectorAll('.subtab-btn');
+  const subpanels = { mindmap: document.getElementById('subpanel-mindmap'), usage: document.getElementById('subpanel-usage') };
+
+  function setActiveSubtab(name) {
+    subtabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.subtab === name));
+    Object.entries(subpanels).forEach(([key, el]) => el.classList.toggle('active', key === name));
+  }
+
+  subtabBtns.forEach(btn => btn.addEventListener('click', () => setActiveSubtab(btn.dataset.subtab)));
+  setActiveSubtab('mindmap');
+
+  // 아코디언
+  document.querySelectorAll('.acc-toggle').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.accordion').classList.toggle('open'));
+  });
+
+  // 검색 필터 + 하이라이트
+  const searchInput = document.getElementById('toolSearch');
+  const items = document.querySelectorAll('#toolList .accordion');
+  const noResult = document.getElementById('noResult');
+
+  function clearHighlights(root) {
+    root.querySelectorAll('mark.hl').forEach(mark => {
+      const parent = mark.parentNode;
+      parent.replaceChild(document.createTextNode(mark.textContent), mark);
+      parent.normalize();
+    });
+  }
+
+  function highlightMatches(root, query) {
+    const lowerQuery = query.toLowerCase();
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        const tag = node.parentNode.nodeName;
+        if (tag === 'SCRIPT' || tag === 'STYLE') return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    const nodes = [];
+    let n;
+    while ((n = walker.nextNode())) nodes.push(n);
+
+    nodes.forEach(node => {
+      const text = node.nodeValue;
+      const lowerText = text.toLowerCase();
+      if (!lowerText.includes(lowerQuery)) return;
+      const frag = document.createDocumentFragment();
+      let lastIndex = 0;
+      let idx = lowerText.indexOf(lowerQuery);
+      while (idx !== -1) {
+        frag.appendChild(document.createTextNode(text.slice(lastIndex, idx)));
+        const mark = document.createElement('mark');
+        mark.className = 'hl';
+        mark.textContent = text.slice(idx, idx + query.length);
+        frag.appendChild(mark);
+        lastIndex = idx + query.length;
+        idx = lowerText.indexOf(lowerQuery, lastIndex);
+      }
+      frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim();
+    const qLower = q.toLowerCase();
+    let visibleCount = 0;
+    items.forEach(item => {
+      clearHighlights(item);
+      const hay = (item.dataset.keywords + ' ' + item.innerText).toLowerCase();
+      const match = hay.includes(qLower);
+      item.classList.toggle('hidden', !match);
+      if (match) {
+        visibleCount++;
+        if (q) {
+          item.classList.add('open');
+          highlightMatches(item, q);
+        }
+      }
+    });
+    noResult.classList.toggle('hidden', visibleCount !== 0);
+  });
+</script>
+
+</body>
+</html>
