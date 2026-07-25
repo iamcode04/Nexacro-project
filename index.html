@@ -210,6 +210,44 @@
     pointer-events: none;
   }
 
+  .annot-box {
+    position: absolute;
+    border: 3px solid #ef4444;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+    pointer-events: none;
+  }
+
+  .annot-box-blue {
+    position: absolute;
+    border: 3px solid #2563eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+    pointer-events: none;
+  }
+
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+    70%  { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+
+  .pulse-highlight {
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  .img-hover-zoom {
+    overflow: hidden;
+  }
+
+  .img-hover-zoom img {
+    transition: transform 0.35s ease;
+  }
+
+  .img-hover-zoom:hover img {
+    transform: scale(1.06);
+  }
+
   .hotspot-hover:hover .hotspot-pop {
     opacity: 1;
     visibility: visible;
@@ -258,8 +296,8 @@
   <section id="panel-intro" class="tab-panel active">
 
     <div class="stagger" style="animation-delay:0ms">
-      <span class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1 text-xs font-semibold">
-        <iconify-icon icon="solar:notebook-bookmark-linear"></iconify-icon>
+      <span class="inline-flex items-center gap-1.5 text-white bg-emerald-800 border border-emerald-800 rounded-full px-3 py-1 text-xs font-semibold">
+        <iconify-icon icon="solar:notebook-bookmark-bold"></iconify-icon>
         개인 학습 노트 · Intro
       </span>
       <h1 class="kr mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-tight text-zinc-900">
@@ -275,22 +313,22 @@
     <!-- 왜 배우는가 -->
     <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4">
       <div class="stagger bg-white border border-zinc-100 rounded-2xl p-6 shadow-sm shadow-zinc-900/5" style="animation-delay:60ms">
-        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
-          <iconify-icon icon="solar:case-round-linear"></iconify-icon>
+        <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-lg">
+          <iconify-icon icon="solar:case-round-bold"></iconify-icon>
         </div>
         <h3 class="kr mt-4 font-semibold text-zinc-900">실무 SI 표준</h3>
         <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">공공/금융 SI 프로젝트에서 화면 개발 표준 툴로 채택되는 경우가 많아 취업 실무와 바로 연결됩니다.</p>
       </div>
       <div class="stagger bg-white border border-zinc-100 rounded-2xl p-6 shadow-sm shadow-zinc-900/5" style="animation-delay:120ms">
-        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
-          <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
+        <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-lg">
+          <iconify-icon icon="solar:widget-4-bold"></iconify-icon>
         </div>
         <h3 class="kr mt-4 font-semibold text-zinc-900">컴포넌트 기반 개발</h3>
         <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">Grid, Div, Dataset 등 컴포넌트 단위 개발 방식을 익히면 다른 RIA/UI 프레임워크 이해에도 도움이 됩니다.</p>
       </div>
       <div class="stagger bg-white border border-zinc-100 rounded-2xl p-6 shadow-sm shadow-zinc-900/5" style="animation-delay:180ms">
-        <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
-          <iconify-icon icon="solar:server-square-linear"></iconify-icon>
+        <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center text-lg">
+          <iconify-icon icon="solar:server-square-bold"></iconify-icon>
         </div>
         <h3 class="kr mt-4 font-semibold text-zinc-900">데이터셋 중심 구조</h3>
         <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">화면과 서버 통신을 Dataset이 매개하는 구조라, 데이터 바인딩 개념을 확실히 잡아둘 필요가 있습니다.</p>
@@ -365,9 +403,9 @@
       </div>
     </div>
 
-    <div class="mt-16 bg-emerald-50/60 border border-emerald-100 rounded-2xl p-6 flex items-start gap-3">
-      <iconify-icon icon="solar:info-circle-linear" class="text-emerald-600 text-xl mt-0.5 shrink-0"></iconify-icon>
-      <p class="kr text-sm text-emerald-900 leading-relaxed">
+    <div class="mt-16 bg-emerald-800 border border-emerald-800 rounded-2xl p-6 flex items-start gap-3">
+      <iconify-icon icon="solar:info-circle-bold" class="text-white text-xl mt-0.5 shrink-0"></iconify-icon>
+      <p class="kr text-sm text-white leading-relaxed">
         이 페이지는 강의와 실습을 통해 배운 내용을 개인적으로 복습하기 위해 정리한 학습 노트입니다.
         내용은 학습이 진행되는 대로 계속 업데이트할 예정입니다.
       </p>
@@ -378,8 +416,8 @@
   <section id="panel-tool" class="tab-panel">
 
     <div class="stagger" style="animation-delay:0ms">
-      <span class="inline-flex items-center gap-1.5 text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-full px-3 py-1 text-xs font-semibold">
-        <iconify-icon icon="solar:programming-linear"></iconify-icon>
+      <span class="inline-flex items-center gap-1.5 text-white bg-emerald-800 border border-emerald-800 rounded-full px-3 py-1 text-xs font-semibold">
+        <iconify-icon icon="solar:programming-bold"></iconify-icon>
         개인 학습 노트 · Tool
       </span>
       <h1 class="kr mt-5 text-4xl md:text-5xl font-bold tracking-tight leading-tight text-zinc-900">
@@ -403,10 +441,10 @@
     <div id="subpanel-mindmap" class="sub-panel mt-10 space-y-3">
 
       <!-- 아코디언 1: 넥사크로 툴 정리 (마인드맵) -->
-      <div class="accordion open bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+      <div class="accordion open bg-white border border-zinc-300 rounded-2xl overflow-hidden">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:sitemap-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">넥사크로 툴 정리</span>
@@ -470,10 +508,10 @@
       </div>
 
       <!-- 아코디언 2: 서버 연동 방식 -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:server-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">서버 연동 방식</span>
@@ -510,10 +548,10 @@
       </div>
 
       <!-- 아코디언 3: SQL 작성 방식 -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:code-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">SQL 작성 방식</span>
@@ -551,19 +589,19 @@
 
     <!-- 검색 -->
     <div class="relative max-w-md">
-      <iconify-icon icon="solar:magnifer-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-lg"></iconify-icon>
+      <iconify-icon icon="solar:magnifer-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 text-lg"></iconify-icon>
       <input id="toolSearch" type="text" placeholder="예: dataset, 이벤트, transaction..."
-        class="kr w-full pl-11 pr-4 py-3 rounded-full border border-zinc-200 bg-white text-sm text-zinc-700 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 transition">
+        class="kr w-full pl-11 pr-4 py-3 rounded-full border border-zinc-400 bg-white text-sm text-zinc-700 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400 transition">
     </div>
 
     <!-- 항목 리스트 (아코디언) -->
     <div id="toolList" class="mt-8 space-y-3">
 
       <!-- 1. 화면/스크립트 기초 -->
-      <div class="accordion open bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="form 화면 생성 이벤트 핸들러 스크립트 문법 generate wre nre 실행">
+      <div class="accordion open bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="form 화면 생성 이벤트 핸들러 스크립트 문법 generate wre nre 실행">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:code-square-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">화면/스크립트 기초</span>
@@ -654,8 +692,52 @@
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">화면 한 장을 Form이라 부르고, 툴바에서 컴포넌트를 끌어다 놓으면 배치된다. Properties 패널은 Property·Event·Bindable·Initialize·StringResource 5개 탭이 있는데 실무에서는 앞의 세 개(속성·이벤트·바인딩)를 주로 쓴다.</p>
               </div>
               <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-3">Properties 패널 툴바 아이콘</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">컴포넌트를 선택했을 때 Properties 패널 상단 툴바로 목록 정렬 방식을 바꾸거나 5개 탭을 전환한다. 아래는 Edit 컴포넌트를 선택한 예시(파란 테두리 = 현재 켜진 상태).</p>
+                <div class="annot-frame max-w-sm">
+                  <img src="images/toolbar-icons.png" alt="Properties 패널 상단 툴바 아이콘">
+                  <div class="hotspot hotspot-hover pop-right" style="left:9.7%; top:50%;">
+                    <span class="hotspot-dot">1</span>
+                    <div class="hotspot-pop">왼쪽에서부터 정렬 (등록된 순서 그대로)</div>
+                  </div>
+                  <div class="hotspot hotspot-hover" style="left:21.5%; top:50%;">
+                    <span class="hotspot-dot">2</span>
+                    <div class="hotspot-pop">알파벳순 정렬</div>
+                  </div>
+                  <div class="hotspot hotspot-hover" style="left:33.8%; top:50%;">
+                    <span class="hotspot-dot">3</span>
+                    <div class="hotspot-pop">Property (속성) 탭</div>
+                  </div>
+                  <div class="hotspot hotspot-hover" style="left:45.8%; top:50%;">
+                    <span class="hotspot-dot">4</span>
+                    <div class="hotspot-pop">Event (이벤트) 탭</div>
+                  </div>
+                  <div class="hotspot hotspot-hover" style="left:58.8%; top:50%;">
+                    <span class="hotspot-dot">5</span>
+                    <div class="hotspot-pop">Bindable (바인딩) 탭 — 현재 선택됨</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-left" style="left:71%; top:50%;">
+                    <span class="hotspot-dot">6</span>
+                    <div class="hotspot-pop">Initialize (초기화) 탭</div>
+                  </div>
+                  <div class="hotspot hotspot-hover pop-left" style="left:83.3%; top:50%;">
+                    <span class="hotspot-dot">7</span>
+                    <div class="hotspot-pop">StringResource (문자열 리소스) 탭</div>
+                  </div>
+                </div>
+              </div>
+              <div>
                 <p class="kr text-sm font-semibold text-zinc-800">이벤트 핸들러 & 함수 문법</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">이벤트를 더블클릭하면 핸들러 함수가 자동 생성된다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.함수명 = function(obj, e) {}</span> 형태(함수 표현식)를 압도적으로 많이 쓰며, this는 그 스크립트가 속한 Form 자신을 가리킨다. obj는 이벤트가 발생한 컴포넌트, e는 부가 정보다. 주의: 자동 생성된 함수 이름을 바꿨다면 반드시 바뀐 이름으로 계속 작성해야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-3">Event 설정 실습 예시 (onmouseenter)</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Event 탭에서 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">onmouseenter</span> 속성을 더블클릭하면 Script 창에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.divMain_staLounge_onmouseenter = function(obj, e) {}</span> 뼈대가 자동으로 생겨나고, 그 안에 원하는 동작(여기선 마우스가 올라오면 테두리를 파란색으로 바꾸는 코드)을 작성한다. 아래 화면은 다른 함수도 여러 개 함께 보여서 헷갈리기 쉬우므로, 방금 만든 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">divMain_staLounge_onmouseenter</span> 함수와 오른쪽 Event 패널의 onmouseenter 속성을 빨간 박스로 표시했다.</p>
+                <div class="annot-frame">
+                  <img src="images/event-onmouseenter.png" alt="onmouseenter 이벤트를 더블클릭해 생성된 함수와 Event 패널의 onmouseenter 속성">
+                  <div class="annot-box" style="left:0.4%; top:50.5%; width:51%; height:18.6%;"></div>
+                  <div class="annot-box" style="left:58.8%; top:8.3%; width:12.3%; height:6.3%;"></div>
+                </div>
               </div>
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">Generate와 실행 방식(WRE/NRE)</p>
@@ -667,10 +749,10 @@
       </div>
 
       <!-- 2. UI 컴포넌트 카탈로그 -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="컴포넌트 component static button edit maskedit calendar combo radio listbox checkbox textfield 카탈로그">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="컴포넌트 component static button edit maskedit calendar combo radio listbox checkbox textfield 카탈로그">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">UI 컴포넌트 카탈로그</span>
@@ -805,11 +887,85 @@
         </div>
       </div>
 
-      <!-- 3. Dataset -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="dataset 데이터셋 바인딩 검색 findrow filter 정렬 addrow setcolumn deleterow crud">
+      <!-- 2.5 포지션 컴포넌트 (정렬/배분/순서 툴바) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="포지션 정렬 배분 align distribute 정렬배분 레이어 순서 맨앞으로 맨뒤로 z-order">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:magnet-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">포지션 컴포넌트</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-6">
+              <p class="kr text-sm text-zinc-400 leading-relaxed">여러 컴포넌트를 한 번에 선택했을 때 위치를 맞춰주는 툴바 아이콘들이다.</p>
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">정렬 · 간격 툴바</p>
+                <div class="max-w-lg rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/position-toolbar-1.png" alt="정렬/간격 툴바" class="w-full block">
+                </div>
+                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Distribute Horizontally by Specified Value</span> — 지정한 값만큼 가로 간격을 균등 배분</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Distribute Vertically by Specified Value</span> — 지정한 값만큼 세로 간격을 균등 배분</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Left</span> — 부모 컴포넌트의 왼쪽으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Center</span> — 부모 컴포넌트의 가로 중앙으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Right</span> — 부모 컴포넌트의 오른쪽으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">6</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Top</span> — 부모 컴포넌트의 위쪽으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">7</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Middle</span> — 부모 컴포넌트의 세로 중앙으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">8</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Bottom</span> — 부모 컴포넌트의 아래쪽으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">9</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Width</span> — 선택한 컴포넌트들의 너비에 맞춰 크기 조정</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">10</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Height</span> — 선택한 컴포넌트들의 높이에 맞춰 크기 조정</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">11</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Both</span> — 선택한 컴포넌트들의 너비·높이 모두에 맞춰 크기 조정</p></div>
+                </div>
+              </div>
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">레이어 순서 툴바</p>
+                <div class="max-w-xs rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/position-toolbar-2.png" alt="레이어 순서(z-order) 툴바" class="w-full block">
+                </div>
+                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Bring to Front</span> — 스택 맨 위로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Send to Back</span> — 스택 맨 아래로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Bring Forward</span> — 한 단계 앞으로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Send Backward</span> — 한 단계 뒤로 이동</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Arrange to Tab Order</span> — 탭 순서에 따라 정렬</p></div>
+                </div>
+              </div>
+
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">정렬 · 배분 툴바 (다른 위치)</p>
+                <div class="max-w-lg rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/position-toolbar-3.png" alt="정렬/배분 툴바" class="w-full block">
+                </div>
+                <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Left</span> — 왼쪽 정렬</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Center</span> — 가로 가운데 정렬</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Right</span> — 오른쪽 정렬</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Top</span> — 위쪽 정렬</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Middle</span> — 세로 가운데 정렬</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">6</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Bottom</span> — 아래쪽 정렬</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">7</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Same Width</span> — 선택한 컴포넌트들을 같은 너비로 맞춤</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">8</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Same Height</span> — 선택한 컴포넌트들을 같은 높이로 맞춤</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">9</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Same Size</span> — 선택한 컴포넌트들을 같은 크기로 맞춤</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">10</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Distribute Horizontally</span> — 컴포넌트를 가로로 고르게 배분</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">11</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">Distribute Vertically</span> — 컴포넌트를 세로로 고르게 배분</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Dataset -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="dataset 데이터셋 바인딩 검색 findrow filter 정렬 addrow setcolumn deleterow crud">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:database-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">Dataset</span>
@@ -863,10 +1019,10 @@
       </div>
 
       <!-- 4. Grid -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="grid 그리드 cell displaytype edittype tree 트리 그룹핑 병합 페이징 paging 드래그 드롭 바인딩">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="grid 그리드 cell displaytype edittype tree 트리 그룹핑 병합 페이징 paging 드래그 드롭 바인딩">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:widget-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">Grid</span>
@@ -928,6 +1084,10 @@
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">보여주는 방식과 편집하는 방식을 따로 지정한다(예: combotext는 클릭했을 때만 콤보로 바뀌고, combocontrol은 항상 콤보 모양). 콤보·체크박스·날짜·마스크 등 다양한 셀 타입을 조합해 쓸 수 있다.</p>
               </div>
               <div>
+                <p class="kr text-sm font-semibold text-zinc-800">실행 중 컬럼 이동·너비 조절</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">사용자가 실행 중에 마우스로 컬럼 순서를 바꾸거나 너비를 조정할 수 있게 하려면 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">cellmovingtype</span>(컬럼 이동 여부)과 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">cellsizingtype</span>(컬럼 너비 조절 여부)을 사용한다.</p>
+              </div>
+              <div>
                 <p class="kr text-sm font-semibold text-zinc-800">Tree형 Grid</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">displaytype을 treeitemcontrol, edittype을 tree로 두고 treelevel에 레벨 컬럼을 bind하면 폴더 구조처럼 펼쳐진다. 주의: 트리는 화면 Row 순서와 Dataset Row 순서가 달라질 수 있어, 변환에는 getTreeRow/getTreeStatus/setTreeStatus를 써야 한다.</p>
               </div>
@@ -939,16 +1099,152 @@
                 <p class="kr text-sm font-semibold text-zinc-800">셀 병합·서프레스·기타</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Merge Cells는 셀을 완전히 하나로 합치고, Having child cells는 겉만 합치고 내부 subcell을 유지한다. suppress는 반복되는 값을 자동으로 병합 표시해준다. getCellProperty/setCellProperty로 실행 중 셀 속성을 읽고 바꿀 수 있고, 페이징은 서버에서 offset/개수만큼 끊어 받아온 뒤 공통 함수로 페이지 버튼을 그려주는 방식으로 구현한다.</p>
               </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">suppress·suppressalign — 반복값 묶어서 보여주기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">suppress</span>에 번호를 지정하면 그 컬럼에서 값이 같은 셀들이 하나로 묶여 표시된다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">suppressalign</span>은 묶인 셀 안에서 텍스트가 위(first)·가운데(center)·아래(last) 중 어디에 놓일지 정한다. 아래는 부서 컬럼에 suppress=1, suppressalign="first"를 지정한 Properties 패널이다(마우스를 올리면 확대된다).</p>
+                <div class="max-w-lg rounded-xl border border-zinc-200 overflow-hidden bg-white img-hover-zoom">
+                  <img src="images/grid-suppress.png" alt="Grid 컬럼의 suppress/suppressalign 속성 설정" class="w-full block">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">이렇게 설정하면 같은 부서 값이 이어지는 행들에서는 부서명이 매 행마다 반복되지 않고, 그 구간의 첫 행에만 한 번 표시된다 — 예를 들어 "Education Team"·"Support Team"처럼 여러 행에 걸친 부서명이 한 번만 보이고, 그 아래 소계 행(합계 금액 등)과 함께 깔끔하게 정리되어 보인다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">디자인 화면에서 셀 병합·추가·삭제하기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">디자인 화면에서 셀을 선택하고 마우스 오른쪽 버튼을 누르면 뜨는 메뉴로도 같은 작업을 할 수 있다. Add Column으로 열을, Add Head/Body/Summary Row로 헤더·본문·소계 행을 추가하고, Add·Insert·Delete로 셀 자체를 더하거나 지운다. 여러 셀을 선택한 뒤 Merge Cells로 합치거나 Split Cell로 다시 나눌 수 있고, Same Width·Same Height로 선택한 셀들의 크기를 맞출 수도 있다.</p>
+                <div class="max-w-sm rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/grid-cell-context-menu.png" alt="Grid 셀 우클릭 메뉴 - Add Column, Add Row, Merge Cells, Split Cell 등" class="w-full block">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.5 캘린더 -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="calendar 캘린더 dateformat editformat 날짜 형식 yyyy mm dd ddd">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:calendar-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Calendar</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">dateformat / editformat으로 날짜 형식 지정</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Calendar 컴포넌트는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">dateformat</span>으로 화면에 보여줄 형식을, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">editformat</span>으로 실제 입력·편집할 때 쓸 형식을 각각 지정한다. yyyy(연도)·MM(월)·dd(일) 같은 형식 문자를 조합해 원하는 표기로 자유롭게 바꿀 수 있다.</p>
+                <div class="annot-frame max-w-md">
+                  <img src="images/calendar-dateformat.png" alt="Calendar 컴포넌트의 dateformat/editformat 속성">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">형식 문자 한 줄 설명</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-1.5">
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">yyyy</span> : 연도 4자리</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">MM</span> : 월 2자리</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">dd</span> : 일 2자리</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">ddd</span> : 요일</p>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">예: dateformat을 "yyyy-MM-dd ddd"로 두면 "2026-07-25 토"처럼 요일까지 표시되고, editformat을 "yyyy-MM-dd"로 두면 실제 입력값은 요일 없이 저장된다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.6 Combo -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="combo 콤보 codecolumn datacolumn innerdataset 바인딩 드롭다운">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:list-down-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Combo</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">codecolumn / datacolumn / innerdataset</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Combo는 목록 데이터를 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">innerdataset</span>에 지정한 Dataset에서 가져온다. 그 Dataset의 어느 컬럼을 화면에 보여줄지는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">datacolumn</span>이, 실제 선택된 값(코드)으로 저장할 컬럼은 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">codecolumn</span>이 정한다. 즉 화면엔 datacolumn 값이 보이지만, 실제로 컴포넌트에 저장되는 값은 codecolumn 값이다.</p>
+                <div class="space-y-4">
+                  <div>
+                    <div class="annot-frame">
+                      <img src="images/combo-binding-property.png" alt="Combo를 선택하고 Properties의 Binding에서 codecolumn/datacolumn/innerdataset 지정">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">Combo를 선택하고 Properties의 Binding 카테고리에서 codecolumn(c)·datacolumn(d)·innerdataset(Dataset00)을 지정한 예시.</p>
+                  </div>
+                  <div>
+                    <div class="annot-frame max-w-xs">
+                      <img src="images/combo-binding-result.png" alt="바인딩 결과 실행 화면 - Combo 드롭다운에 목록이 표시됨">
+                    </div>
+                    <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">실행 결과: 드롭다운을 펼치면 innerdataset(Dataset00)의 datacolumn 값들이 목록으로 나열되고, 그중 하나를 고르면 같은 행의 codecolumn 값이 실제 선택값으로 저장된다.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.7 Edit/MaskEdit/TextArea 비교 -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="edit maskedit textarea 비교 displaynulltext maskedittype format 마스크 정렬">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:text-field-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Edit, MaskEdit, TextArea</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">세 컴포넌트 모두 텍스트를 입력받는다는 점은 같지만 용도가 다르다.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div class="rounded-2xl border border-zinc-200 p-4">
+                    <p class="kr font-semibold text-zinc-900 text-sm mb-1">Edit</p>
+                    <p class="kr text-xs text-zinc-500 leading-relaxed">숫자·영문·한글을 모두 입력할 수 있는 가장 기본적인 한 줄 입력창.</p>
+                  </div>
+                  <div class="rounded-2xl border border-zinc-200 p-4">
+                    <p class="kr font-semibold text-zinc-900 text-sm mb-1">MaskEdit</p>
+                    <p class="kr text-xs text-zinc-500 leading-relaxed">기본값으로는 숫자만 입력할 수 있고, <span class="font-mono">format</span> 속성으로 정해진 형태(마스크)를 지정하면 그 형태에 맞는 텍스트만 입력할 수 있다.</p>
+                  </div>
+                  <div class="rounded-2xl border border-zinc-200 p-4">
+                    <p class="kr font-semibold text-zinc-900 text-sm mb-1">TextArea</p>
+                    <p class="kr text-xs text-zinc-500 leading-relaxed">Edit처럼 숫자·영문·한글을 모두 입력할 수 있지만, 여러 줄을 입력할 수 있다는 점이 다르다.</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">format으로 입력 형식 강제하기 (MaskEdit)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">예를 들어 format을 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">"######-#######"</span>로 지정하면 주민등록번호처럼 앞 6자리-뒤 7자리 숫자만 "010101-0000000" 형태로 입력되도록 강제할 수 있고, 이 형식에 맞지 않게 입력하면 오류가 표시된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">displaynulltext — 입력 전 안내 문구</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">로그인 화면의 "아이디를 입력하세요" 문구처럼, 값을 입력하기 전에는 안내 문구가 보이다가 사용자가 실제로 입력하면 문구가 사라지도록 해주는 속성이다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">maskedittype — 숫자/문자 전환</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">MaskEdit은 maskedittype 속성으로 입력 형식을 number(숫자, 기본값, 우측 정렬)에서 string(문자, 좌측 정렬)으로 바꿀 수 있으며, 입력값 정렬 방향이 타입에 따라 자동으로 달라진다.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- 5. 디자인/스타일 (Theme·XCSS) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="theme xcss 스타일 디자인 selector class border background font 우선순위">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="theme xcss 스타일 디자인 selector class border background font 우선순위">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:layers-minimalistic-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">디자인/스타일 (Theme·XCSS)</span>
@@ -959,38 +1255,93 @@
           <div>
             <div class="px-6 pb-6 -mt-1 space-y-4">
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">적용 우선순위와 Theme 개념</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">같은 속성을 여러 곳에서 지정하면 Properties → XCSS → Theme 순으로 우선순위가 높다. Theme는 프로젝트 전체 공통 디자인(스타일+이미지) 저장소로, 확장자 .xtheme는 편집 불가한 압축형이고 확장자 없는 Theme는 자유롭게 편집 가능하다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800">Theme을 쓰는 이유</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">넥사크로는 컴포넌트 하나하나에 개별적으로 스타일을 만들지 않고, Theme을 프로젝트 전체에 적용하는 방식을 쓴다. 그래서 화면마다·컴포넌트마다 매번 스타일을 새로 지정해주는 번거로움이 줄어든다.</p>
               </div>
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">Selector와 상태(Status/UserStatus)</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Add Selector로 컴포넌트별 기본 스타일을 정의하고, enabled/mouseover 같은 Status나 pushed/selected 같은 UserStatus별로 다른 디자인을 줄 수 있다. 여러 상태를 OR로 묶으려면 Multi Selector, AND 조건으로 묶으려면 Status Combination을 쓴다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800">두 종류의 Theme: NexacroTheme vs Theme</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Resource Explorer에는 두 종류의 테마가 있다. <span class="font-semibold text-zinc-700">NexacroTheme</span>(확장자 .xtheme)은 style과 image가 하나로 합쳐진 압축 형태라 삭제·수정 같은 편집이 불가능하다. <span class="font-semibold text-zinc-700">Theme</span>은 style과 image가 분리되어 있어 자유롭게 편집할 수 있다.</p>
               </div>
-              <div>
-                <p class="kr text-sm font-semibold text-zinc-800">Class Selector로 개별 디자인</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">같은 종류의 컴포넌트라도 클래스명(예: btn_TF_Save)을 붙이면 그 클래스가 붙은 것만 다른 스타일을 적용할 수 있다. "컴포넌트_위치_역할" 순서로 이름 짓는 방식이 관례다.</p>
-              </div>
-              <div>
-                <p class="kr text-sm font-semibold text-zinc-800">복합 컴포넌트 스타일링</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Combo(dropbutton·comboedit·combolist), Calendar(calendaredit·dropbutton·datepicker)처럼 내부에 여러 요소가 있는 컴포넌트는 자식 셀렉터를 하나씩 따로 만들어 디자인해야 한다.</p>
-              </div>
-              <div>
-                <p class="kr text-sm font-semibold text-zinc-800">자주 헷갈리는 주의사항</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">background는 상속되지 않아 부모 배경이 자식에 자동 적용되지 않는다. border는 top/right/bottom/left를 항상 함께 지정해야 하고, 넥사크로 런타임은 border-style 중 solid만 정식 지원한다. "디자인을 바꾸는 것"과 "기능을 켜고 끄는 것"은 각각 Theme와 Properties로 서로 다른 곳에서 처리한다는 원칙을 기억해야 한다.</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="group rounded-2xl border border-zinc-200 p-5 bg-zinc-50 transition-colors duration-300 hover:border-amber-500">
+                  <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-zinc-200 text-zinc-600 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                      <iconify-icon icon="solar:lock-linear"></iconify-icon>
+                    </span>
+                    <p class="kr font-semibold text-zinc-900 text-sm">NexacroTheme <span class="font-mono text-xs text-zinc-400">.xtheme</span></p>
+                  </div>
+                  <div class="mt-3 rounded-xl border border-zinc-300 border-dashed bg-white p-3 flex items-center justify-center gap-2 transition-colors duration-300 group-hover:border-amber-400">
+                    <span class="text-xs font-mono bg-zinc-100 text-zinc-600 rounded px-2 py-1 transition-colors duration-300 group-hover:text-amber-700">style</span>
+                    <span class="text-zinc-300">+</span>
+                    <span class="text-xs font-mono bg-zinc-100 text-zinc-600 rounded px-2 py-1 transition-colors duration-300 group-hover:text-amber-700">image</span>
+                  </div>
+                  <p class="kr mt-3 text-xs text-zinc-500 leading-relaxed">style과 image가 하나로 합쳐져 있어 편집 불가(삭제·수정 불가)</p>
+                </div>
+                <div class="group rounded-2xl border border-zinc-200 p-5 bg-zinc-50 transition-colors duration-300 hover:border-indigo-500">
+                  <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-zinc-200 text-zinc-600 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-indigo-500 group-hover:text-white">
+                      <iconify-icon icon="solar:pen-linear"></iconify-icon>
+                    </span>
+                    <p class="kr font-semibold text-zinc-900 text-sm">Theme</p>
+                  </div>
+                  <div class="mt-3 flex items-center justify-center gap-2">
+                    <span class="text-xs font-mono bg-white border border-zinc-200 text-zinc-600 rounded px-2 py-1.5 transition-colors duration-300 group-hover:border-indigo-400 group-hover:text-indigo-700">style</span>
+                    <span class="text-xs font-mono bg-white border border-zinc-200 text-zinc-600 rounded px-2 py-1.5 transition-colors duration-300 group-hover:border-indigo-400 group-hover:text-indigo-700">image</span>
+                  </div>
+                  <p class="kr mt-3 text-xs text-zinc-500 leading-relaxed">style·image가 분리되어 있어 자유롭게 편집 가능</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 6. Div·Tab·팝업 -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="div tab popup 팝업 childframe modal modaless popupdiv inner form">
+      <!-- 5.5 Property 속성들 -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="property 속성 border background bg-image linear-gradient font box-shadow 그라데이션 그림자">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-              <iconify-icon icon="solar:document-layout-linear"></iconify-icon>
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:palette-linear"></iconify-icon>
             </span>
-            <span class="kr font-semibold text-zinc-900">Div·Tab·팝업</span>
+            <span class="kr font-semibold text-zinc-900">Property 속성들</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1">
+              <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Theme의 XCSS에서 자주 쓰는 스타일 속성들이다. 자세한 문법은 필요할 때 하나씩 찾아 쓰면 되고, 여기서는 "이런 속성이 있다"는 것만 정리한다.</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+                <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">border</span> : 테두리 설정</p>
+                <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">background</span> : 배경 설정</p>
+                <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">bg-image</span> : 배경 이미지 설정</p>
+                <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">linear-gradient</span> : 그라데이션</p>
+                <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">font</span> : 폰트 설정</p>
+                <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">box-shadow</span> : 그림자 설정</p>
+              </div>
+
+              <p class="kr text-sm font-semibold text-zinc-800 mt-5 mb-2">Timer — 일정 시간마다 반복 실행</p>
+              <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">시계나 카운트다운처럼 일정 주기로 반복되는 로직은 Form &gt; Event &gt; <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">ontimer</span>를 더블클릭해 스크립트를 작성한다. 관련 메소드는 다음과 같다.</p>
+              <div class="space-y-2">
+                <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.setTimer(id, ms)</span> — 지정한 주기(ms)마다 ontimer 이벤트를 반복 발생시킴 (예: 1000 → 1초마다)</p></div>
+                <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.timerid</span> — ontimer 안에서 어느 타이머가 발생시켰는지 구분 (여러 타이머 동시 운용 가능)</p></div>
+                <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.killTimer(id)</span> — 반복 정지</p></div>
+                <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug">응용 · 카운트다운 — 남은 초를 변수에 저장해두고 ontimer마다 1씩 줄이며 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Math.floor(초/60) + ":" + (초%60)</span>로 계산해 Static의 text에 표시</p></div>
+                <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug">응용 · PopupDiv를 일정 시간(예: 2초) 뒤 자동으로 닫히게 처리</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.7 Div -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="div background innerform inner form cssclass 배경 중첩 컴포넌트">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Div</span>
           </div>
           <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
         </button>
@@ -998,17 +1349,183 @@
           <div>
             <div class="px-6 pb-6 -mt-1 space-y-4">
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">Div의 Inner Form 구조</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Div 위에 놓은 컴포넌트는 실제로는 눈에 안 보이는 내부 폼(inner form) 위에 배치되기 때문에, 코드에서 접근할 때는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">div00.form.컴포넌트id</span>처럼 한 단계 더 들어가야 한다. url 속성으로 다른 화면을 그대로 끼워 넣을 수도 있다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800">background와 Inner Form</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Div 컴포넌트의 background 속성을 빨간색이나 파란색으로 바꿔도 실제 화면에는 그 색이 나타나지 않는 경우가 있다. 그 이유는 Div 위에 눈에 보이지 않는 "Inner Form"이라는 내부 폼이 하나 더 겹쳐져 있기 때문으로, Div 안에 Button 같은 컴포넌트를 추가하면 실제로는 Div 바로 위가 아니라 이 Inner Form 위에 배치되는 구조다. 그래서 Div 자체에 배경 스타일을 제대로 주려면 Properties에서 직접 background를 바꾸는 대신, cssclass(예: <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">.Div.div_blue { background: #0000ff; }</span>)로 클래스를 만들어 그 클래스를 Div 컴포넌트의 cssclass 속성에 연결해줘야 한다. 클래스만 만들어 놓고 컴포넌트에 연결하지 않으면 스타일이 적용되지 않는다는 점도 주의해야 한다.</p>
+                <div class="mt-3 max-w-xs rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/div-inner-form-button.png" alt="파란 배경의 Div 위에 Button00이 Inner Form을 통해 겹쳐진 모습" class="w-full block">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">옅은 파란 배경 전체가 cssclass로 스타일을 준 Div 영역이고, 그 안의 청록색 Button00은 Div 위의 Inner Form에 올라간 컴포넌트다.</p>
               </div>
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">팝업(ChildFrame): Modal vs Modaless</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">넥사크로에는 새 창 개념이 없어 ChildFrame을 스크립트로 만들어 팝업처럼 띄운다. Modal은 떠 있는 동안 부모 화면 조작이 막히고(실무에서 주로 사용), Modaless는 부모 화면을 계속 조작할 수 있는 대신 좌표를 직접 계산해서 띄워야 한다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800">Div 안에 컴포넌트를 넣으면 스크립트도 한 단계 더 들어간다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Div 위에 놓은 컴포넌트는 Inner Form 위에 배치되기 때문에, 코드에서 접근할 때는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">div00.form.컴포넌트id</span>처럼 한 단계 더 들어가야 한다. 이벤트를 더블클릭해 자동 생성되는 핸들러 함수 이름에도 같은 원리로 Div 이름이 한 단계 더 붙는다. 예를 들어 Div00 안의 Button00을 더블클릭해 onclick 핸들러를 만들면, Form에 바로 놓은 컴포넌트와 달리 함수 이름이 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.Div00_Button00_onclick = function(obj, e) {}</span>처럼 "Div이름_컴포넌트이름" 형태로 생성된다.</p>
+                <div class="mt-3 annot-frame max-w-lg">
+                  <img src="images/div-button-onclick-code.png" alt="Div00 안의 Button00에 대해 자동 생성된 this.Div00_Button00_onclick 함수">
+                </div>
               </div>
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">부모-자식 데이터 전달</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">showModal()의 인자로 전달 데이터와 콜백 함수를 함께 넘긴다. 팝업에서 되돌려줄 값은 close()에 문자열 하나만 담을 수 있어 여러 값은 구분자로 이어붙여 보낸다. 주의: 통신은 비동기라 showModal() 바로 다음 줄에서 반환값을 읽으면 안 되고, 반드시 지정한 콜백 함수 안에서 처리해야 한다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Div에 url로 다른 화면 가지고 오기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Div는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">url</span> 속성에 다른 화면(xfdl) 경로를 지정해두면, 그 화면의 내용을 그대로 가져와 Div 안에 끼워 넣어 보여준다. 아래는 Div00의 url을 "Work::Work_formsev.xfdl"로 지정해, 그 화면의 "팝업창" 내용이 빨간 테두리로 표시된 Div 영역 안에 그대로 로드된 예시다.</p>
+                <div class="max-w-md rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/div-in-url.png" alt="Div의 url 속성에 다른 화면(xfdl)을 지정해 내용을 가져온 예시" class="w-full block">
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5.8 Popup -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="popup 팝업 childframe modal modaless showmodal openalign formurl callback close 콜백">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Popup</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">넥사크로에는 "새 창"이 없다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">브라우저의 새 창(window.open)과 달리 넥사크로에는 새 창을 띄우는 기능 자체가 없다. 그래서 팝업이 필요할 때는 스크립트로 ChildFrame을 만들어 화면 위에 겹쳐 띄우는 방식으로 구현한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Modal vs Modaless</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div class="group rounded-2xl border border-zinc-200 p-5 bg-zinc-50 transition-colors duration-300 hover:border-amber-500">
+                    <div class="flex items-center gap-2">
+                      <span class="w-8 h-8 rounded-lg bg-zinc-200 text-zinc-600 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-amber-500 group-hover:text-white">
+                        <iconify-icon icon="solar:lock-linear"></iconify-icon>
+                      </span>
+                      <p class="kr font-semibold text-zinc-900 text-sm">Modal</p>
+                    </div>
+                    <p class="kr mt-3 text-xs text-zinc-500 leading-relaxed">팝업이 떠 있는 동안 mainframe(부모 화면)을 사용할 수 없다. 실무에서 주로 사용하는 방식.</p>
+                  </div>
+                  <div class="group rounded-2xl border border-zinc-200 p-5 bg-zinc-50 transition-colors duration-300 hover:border-indigo-500">
+                    <div class="flex items-center gap-2">
+                      <span class="w-8 h-8 rounded-lg bg-zinc-200 text-zinc-600 flex items-center justify-center shrink-0 transition-colors duration-300 group-hover:bg-indigo-500 group-hover:text-white">
+                        <iconify-icon icon="solar:widget-2-linear"></iconify-icon>
+                      </span>
+                      <p class="kr font-semibold text-zinc-900 text-sm">Modaless</p>
+                    </div>
+                    <p class="kr mt-3 text-xs text-zinc-500 leading-relaxed">부모 화면을 계속 조작할 수 있는 대신, 좌표를 직접 계산해서 띄워야 한다.</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Modal 팝업 예시 — 여는 스크립트</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">버튼을 클릭하면 ChildFrame을 만들어 Modal로 띄우는 스크립트다. edt00·edt01에 입력된 값을 param 딕셔너리로 묶어 팝업에 함께 넘긴다.</p>
+                <div class="annot-frame">
+                  <img src="images/modal-popup-script.png" alt="ChildFrame을 만들어 Modal로 띄우는 onclick 스크립트">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">실행 결과</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Modal 팝업이 떠 있는 동안에는 뒤의 mainframe이 어둡게 처리되며 조작할 수 없다.</p>
+                <div class="max-w-xs rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/modal-popup-window.png" alt="Modal 팝업 실행 결과 - 뒤쪽 mainframe이 어둡게 표시됨" class="w-full block">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">ChildFrame 생성자 — id·top·left·width·height</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">부모 화면에서 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">new ChildFrame(id, top, left, width, height)</span> 형태로 자식 프레임(팝업)을 만든다. 매개변수는 왼쪽부터 순서대로 id·top·left·width·height다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3 font-mono text-xs bg-zinc-100 px-2 py-1.5 rounded inline-block">new ChildFrame("popup1", 0, 0, 300, 400)</p>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-x-4 gap-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug">id — "popup1"</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug">top — 0</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug">left — 0</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug">width — 300</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug">height — 400</p></div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">formurl·openalign — 어떤 화면을, 어디에</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed">만들어진 ChildFrame에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">formurl</span>로 팝업창에 띄울 화면(xfdl) 파일을 연결하고, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">openalign</span>으로 팝업창이 나타날 위치("center middle" 등)를 지정한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">showModal() — 부모 → 자식으로 데이터 전달</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">팝업을 실제로 띄우는 메소드는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">showModal()</span>이며, 매개변수는 순서대로 다음과 같다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3 font-mono text-xs bg-zinc-100 px-2 py-1.5 rounded inline-block">objCF.showModal(this.getOwnerFrame(), param, this, "fn_popupCallback")</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.getOwnerFrame()</span> — 팝업을 띄우는 부모 프레임</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug">부모 → 자식으로 넘길 인자. 이 예시에서는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">{userId: this.edt00.value, userName: this.edt01.value}</span>처럼 딕셔너리로 묶어서 전달했다.</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug">콜백 함수를 가진 객체 (보통 this)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug">팝업이 닫힌 뒤 실행할 콜백 함수 이름 — "fn_popupCallback"</p></div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">close() — 자식 → 부모로 데이터 되돌려주기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">반대로 팝업(자식) 화면에서 입력한 값을 부모 화면으로 되돌려줘야 할 때도 있다. 팝업 쪽 버튼에서 edt00·edt01 값을 읽어 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">":"</span>로 이어붙인 뒤 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.close(...)</span>로 팝업을 닫으면서 값을 함께 넘긴다. close()에는 문자열 하나만 담을 수 있어서, 값이 여러 개면 이렇게 구분자로 이어붙여 보내야 한다.</p>
+                <div class="annot-frame">
+                  <img src="images/modal-popup-close-to-parent.png" alt="팝업(자식)에서 this.close()로 값을 부모에게 되돌려주는 스크립트">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">콜백 함수 — 되돌아온 값 받기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">부모 화면의 콜백 함수는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">sPopupId</span>(어떤 팝업이 닫혔는지)와 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">sReturn</span>(close()로 넘어온 값)을 받는다. sPopupId로 어느 팝업인지 확인하고, sReturn을 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">split(":")</span>으로 다시 나눠 각 입력창에 채워 넣는다. 주의: 통신은 비동기라 showModal() 바로 다음 줄에서 반환값을 읽으면 안 되고, 반드시 이 콜백 함수 안에서 처리해야 한다.</p>
+                <div class="annot-frame">
+                  <img src="images/modal-popup-callback.png" alt="fn_popupCallback에서 sReturn을 split으로 나눠 입력창에 채우는 스크립트">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Modaless 팝업을 위한 준비 — Application 구조</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed">넥사크로 화면은 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Application &gt; MainFrame &gt; Form</span> 순서로 구성된다. Modaless 팝업은 Modal과 달리 좌표를 직접 계산해서 띄워야 하는데, 그러려면 화면 크기의 기준이 되는 mainframe에 접근해야 하고, 그러려면 그 위 단계인 Application을 먼저 가져와야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">Modaless 팝업 스크립트</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nexacro.getApplication()</span>으로 Application을 가져오고, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">mainframe.width</span>/<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">height</span>로 메인 창의 크기를 읽는다. (전체 너비/높이 − 팝업 너비/높이)를 각각 2로 나누면 팝업을 정중앙에 둘 왼쪽(left)·위(top) 좌표가 나온다. 이렇게 구한 좌표는 화면 안에서의 상대 좌표이므로, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">system.clientToScreenX()</span>/<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">clientToScreenY()</span>로 모니터 화면 기준 좌표로 바꿔줘야 실제로 화면에 배치할 수 있다.</p>
+                <div class="annot-frame">
+                  <img src="images/modaless-popup-script.png" alt="nexacro.getApplication()과 clientToScreenX/Y로 Modaless 팝업 좌표를 계산하는 스크립트">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">주의: 이 예시의 nT 계산에는 objApp.mainframe.width가 두 번 쓰였다 — 세로 좌표이니 원래는 height여야 할 자리로 보이니, 실제로 쓸 때는 확인해보는 게 좋다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">nexacro.open() — Modaless 팝업 열기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Modal의 showModal()과 달리, Modaless 팝업은 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nexacro.open()</span>으로 연다. 매개변수는 왼쪽부터 순서대로 popup id·경로·부모 프레임·전달할 데이터·옵션 문자열·left·top·width·height·opener다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3 font-mono text-xs bg-zinc-100 px-2 py-1.5 rounded inline-block">nexacro.open("Popup2", "Work::Work_formsev.xfdl", this.getOwnerFrame(), param, "showtitlebar=true", nL, nT, nW, nH, this)</p>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-x-4 gap-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug">popup id — "Popup2"</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug">경로 — 띄울 화면(xfdl)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug">부모 프레임</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug">전달할 데이터(param)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug">옵션 문자열</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">6</span><p class="kr text-sm text-zinc-500 leading-snug">left(nL)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">7</span><p class="kr text-sm text-zinc-500 leading-snug">top(nT)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">8</span><p class="kr text-sm text-zinc-500 leading-snug">width(nW)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">9</span><p class="kr text-sm text-zinc-500 leading-snug">height(nH)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">10</span><p class="kr text-sm text-zinc-500 leading-snug">opener(this)</p></div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">실행 결과 — mainframe이 어두워지지 않는다</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Modal과 달리 Modaless 팝업은 떠 있는 동안에도 뒤쪽 mainframe이 어두워지지 않고, 계속 조작할 수 있다.</p>
+                <div class="max-w-xs rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                  <img src="images/modaless-popup-nodim.png" alt="Modaless 팝업 실행 결과 - 뒤쪽 mainframe이 어두워지지 않음" class="w-full block">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Tab·PopupDiv -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="tab popupdiv trackpopup tabjustify">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:document-layout-linear"></iconify-icon>
+            </span>
+            <span class="kr font-semibold text-zinc-900">Tab·PopupDiv</span>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-4">
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">PopupDiv</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Div와 비슷하게 url로 다른 화면을 연결할 수 있지만, 화면에 놓아두기만 해서는 안 보이고 trackPopupByComponent()/trackPopup()으로 스크립트에서 직접 열어야 나타난다. 포커스를 잃으면 자동으로 닫힌다는 점이 Div와 다르다.</p>
@@ -1023,10 +1540,10 @@
       </div>
 
       <!-- 7. Frame 구조 & 실무 화면 설계 -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="frame vframeset hframeset sdi mdi frametop frameleft framemdi framework 로그인 반응형">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="frame vframeset hframeset sdi mdi frametop frameleft framemdi framework 로그인 반응형">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:server-square-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">Frame 구조 & 실무 화면 설계</span>
@@ -1058,10 +1575,10 @@
       </div>
 
       <!-- 8. 기타 고급 기능 -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="timer 타이머 동적생성 addchild removechild global function gfn typedefinition webview fileupload 화살표함수">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="timer 타이머 동적생성 addchild removechild global function gfn typedefinition webview fileupload 화살표함수">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:code-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">기타 고급 기능</span>
@@ -1076,8 +1593,27 @@
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">setTimer(id, 주기)로 일정 간격마다 ontimer 이벤트를 반복 발생시키고, killTimer(id)로 멈춘다. 여러 타이머를 동시에 쓸 땐 e.timerid로 구분한다.</p>
               </div>
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">컴포넌트 동적 생성/제거</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">new 컴포넌트(...)로 만든 뒤 addChild로 등록하고 show()를 호출해야 화면에 나타난다. 제거할 때는 removeChild → destroy() → 변수를 null 처리하는 순서를 지킨다. 주의: 같은 id로 중복 생성하면 오류가 나므로 isValidObject()로 먼저 존재 여부를 확인하는 것이 안전하다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">컴포넌트 동적 생성/제거</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">화면 디자인 시점에 미리 배치하지 않고, 스크립트로 실행 중에 컴포넌트를 새로 만들어 넣는 것을 동적 생성이라고 한다. 아래 스크립트에서 <span class="text-blue-600 font-semibold">파란 박스</span>가 생성 버튼, <span class="text-red-600 font-semibold">빨간 박스</span>가 제거 버튼의 코드다.</p>
+                <div class="annot-frame">
+                  <img src="images/dynamic-create-script.png" alt="컴포넌트를 동적으로 생성하는 btn08_onclick과 제거하는 btn09_onclick 스크립트">
+                  <div class="annot-box-blue" style="left:0.5%; top:1.9%; width:99%; height:54%;"></div>
+                  <div class="annot-box" style="left:0.5%; top:59%; width:99%; height:41%;"></div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">new Button(id, x, y, width, height)</span> — 컴포넌트 객체 생성</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.addChild(id, obj)</span> — Form의 자식으로 등록</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">obj.show()</span> — 이 호출까지 있어야 실제 화면에 나타남</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.div02.form.addChild(...)</span> — Div 내부(Inner Form)에도 같은 방식으로 동적 생성 가능</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">isValidObject(id)</span> — 이미 존재하는지 먼저 확인(같은 id 중복 생성 방지)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">6</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">obj.addEventHandler("onclick", 함수, this)</span> — 동적 컴포넌트에 이벤트 핸들러 연결</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">7</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">this.removeChild(id)</span> — Form에서 떼어냄 (동적 생성한 컴포넌트에만 사용)</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">8</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">obj.destroy()</span> → <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">obj = null</span> — 완전히 파괴하고 변수를 비워 메모리 참조를 남기지 않음</p></div>
+                </div>
+                <p class="kr mt-3 text-xs text-zinc-500 leading-relaxed">실행 결과: 버튼을 클릭하면 노란 버튼이 새로 생겨나고, 다시 클릭하면 사라진다.</p>
+                <div class="mt-2 max-w-xs rounded-xl overflow-hidden pulse-highlight">
+                  <img src="images/dynamic-create-result.png" alt="동적으로 생성된 노란 버튼 실행 결과" class="w-full block rounded-xl border border-zinc-200">
+                </div>
               </div>
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">Global Function(gfn)</p>
@@ -1101,10 +1637,10 @@
       </div>
 
       <!-- 9. transaction() 기본과 서버 통신 구조 (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:server-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">transaction() 기본과 서버 통신 구조</span>
@@ -1136,10 +1672,10 @@
       </div>
 
       <!-- 10. 파라미터 전달과 Dataset 송수신 (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:database-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">파라미터 전달과 Dataset 송수신</span>
@@ -1167,10 +1703,10 @@
       </div>
 
       <!-- 11. 서버 측 처리 구조 (Controller·Service·Mapper) (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="controller service mapper requestmapping paramvariable paramdataset nexacroresult mvc 전자정부">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="controller service mapper requestmapping paramvariable paramdataset nexacroresult mvc 전자정부">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:sitemap-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">서버 측 처리 구조 (Controller·Service·Mapper)</span>
@@ -1198,10 +1734,10 @@
       </div>
 
       <!-- 12. 실전 연동 패턴 (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="파일업로드 페이징 로그인 gdsuser gfntransaction 아이디중복체크">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="파일업로드 페이징 로그인 gdsuser gfntransaction 아이디중복체크">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:programming-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">실전 연동 패턴 (업로드·페이징·로그인)</span>
@@ -1233,10 +1769,10 @@
       </div>
 
       <!-- 13. MyBatis 파라미터 바인딩 (SQL 문서 · 빨간색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="mybatis 파라미터 vo map _parameter where if 바인딩 sql인젝션">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="mybatis 파라미터 vo map _parameter where if 바인딩 sql인젝션">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-red-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:code-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">MyBatis 파라미터 바인딩</span>
@@ -1260,10 +1796,10 @@
       </div>
 
       <!-- 14. 조회/저장 SQL 패턴 (SQL 문서 · 빨간색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="mapper.xml select insert update delete 중복체크 로그인 sql">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="mapper.xml select insert update delete 중복체크 로그인 sql">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-red-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:database-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">조회/저장 SQL 패턴</span>
@@ -1291,10 +1827,10 @@
       </div>
 
       <!-- 15. 페이징 & 공통코드 설계 (SQL 문서 · 빨간색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="row_number limit offset 페이징 공통코드 tbl_common_code heidisql">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="row_number limit offset 페이징 공통코드 tbl_common_code heidisql">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-red-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">페이징 & 공통코드 설계</span>
@@ -1322,10 +1858,10 @@
       </div>
 
       <!-- 16. 프로젝트/제품 개요 (기타 문서 · 회색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="투비소프트 nexacro studio ide 프로젝트 생성 project explorer resource explorer">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="투비소프트 nexacro studio ide 프로젝트 생성 project explorer resource explorer">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-zinc-500 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:case-round-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">프로젝트/제품 개요</span>
@@ -1353,10 +1889,10 @@
       </div>
 
       <!-- 17. 외부 리소스 가져오기 & 참고 도구 (기타 문서 · 회색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="theme 폴더 가져오기 refresh compguide services reference guide mainframe">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="theme 폴더 가져오기 refresh compguide services reference guide mainframe">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-zinc-500 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:widget-2-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">외부 리소스 가져오기 & 참고 도구</span>
@@ -1388,10 +1924,10 @@
       </div>
 
       <!-- 18. 실행 환경과 배포 (기타 문서 · 회색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="generate xjs xfdl local web server tomcat webapp quickview 배포">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="generate xjs xfdl local web server tomcat webapp quickview 배포">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-zinc-500 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:code-square-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">실행 환경과 배포</span>
@@ -1423,10 +1959,10 @@
       </div>
 
       <!-- 19. 프로젝트 설계 참고 (기타 문서 · 회색) -->
-      <div class="accordion bg-white border border-zinc-100 rounded-2xl overflow-hidden" data-keywords="application frame template 전역 dataset 화면계층 mdi 요약">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="application frame template 전역 dataset 화면계층 mdi 요약">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-zinc-100 text-zinc-500 flex items-center justify-center shrink-0">
+            <span class="w-9 h-9 rounded-xl bg-zinc-500 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:notebook-bookmark-linear"></iconify-icon>
             </span>
             <span class="kr font-semibold text-zinc-900">프로젝트 설계 참고</span>
