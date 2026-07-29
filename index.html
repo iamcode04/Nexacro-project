@@ -121,7 +121,7 @@
   }
   .mm-node:hover { transform: translateX(3px); }
   /* 말단 항목은 남는 가로 공간을 채우도록 늘린다 (하위 갈래를 가진 노드는 제외) */
-  .mm-child > .mm-node { display: block; }
+  .mm-child > .mm-node { display: block; max-width: 25rem; }
 
   mark.hl {
     background: #fde047;
@@ -464,7 +464,7 @@
               </p>
               <div class="mm-branch">
                 <svg class="mm-svg text-zinc-300"></svg>
-                <div class="mm-root-wrap pr-8">
+                <div class="mm-root-wrap pr-8 sm:pr-20 lg:pr-32">
                   <a class="mm-node bg-zinc-900 text-white font-bold text-sm rounded-2xl px-5 py-3.5 shadow-sm">넥사크로<br>컴포넌트</a>
                 </div>
                 <div class="mm-children-wrap">
@@ -473,7 +473,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-emerald-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">기본 UI<br>컴포넌트</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -492,7 +492,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-emerald-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">데이터 &<br>스타일</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -509,7 +509,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-emerald-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">레이아웃<br>& 구조</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -526,7 +526,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-emerald-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">통신 &<br>서버 연동</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -546,7 +546,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-emerald-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-emerald-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">기타 &<br>프로젝트</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -566,7 +566,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-amber-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-amber-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">모바일<br>& 배포</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -587,7 +587,7 @@
                     <div class="mm-child">
                       <div class="mm-branch">
                         <svg class="mm-svg text-amber-200"></svg>
-                        <div class="mm-root-wrap pr-6">
+                        <div class="mm-root-wrap pr-6 sm:pr-16 lg:pr-24">
                           <a class="mm-node bg-amber-600 text-white font-semibold text-xs rounded-xl px-4 py-2.5">X-PUSH</a>
                         </div>
                         <div class="mm-children-wrap">
@@ -3514,7 +3514,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
         const mx = (rx + cx) / 2;
         d += `M ${rx} ${ry} C ${mx} ${ry}, ${mx} ${cy}, ${cx} ${cy} `;
       });
-      svg.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>`;
+      svg.innerHTML = `<path d="${d}" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"></path>`;
     });
   }
 
