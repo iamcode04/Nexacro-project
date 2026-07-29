@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_bookSub" width="320" height="160" titletext="New Form">
+    <Layouts>
+      <Layout height="160" width="320">
+        <ImageViewer id="ImageViewer00" taborder="0" left="0" top="0" width="320" height="160" image="url('imagerc::book.png')" stretch="fit"/>
+        <ImageViewer id="ImageViewer01" taborder="1" left="16" top="16" width="124" height="134" border="2px solid black" borderRadius="10px 10px 10px 10px"/>
+        <Static id="Static00" taborder="2" text="제목" left="146" top="21" width="164" height="26" background="white" border="2px solid black" borderRadius="10px 10px 10px 10px" padding="5px"/>
+        <Static id="Static00_00" taborder="3" text="저자" left="146" top="52" width="164" height="26" background="white" border="2px solid black" borderRadius="10px 10px 10px 10px" padding="5px"/>
+        <Static id="Static00_00_00" taborder="4" text="출판사" left="146" top="83" width="164" height="26" background="white" border="2px solid black" borderRadius="10px 10px 10px 10px" padding="5px"/>
+        <Static id="Static00_00_00_00" taborder="5" text="가격" left="146" top="114" width="164" height="26" background="white" border="2px solid black" borderRadius="10px 10px 10px 10px" padding="5px" onclick="Static00_00_00_00_onclick"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="dsBook">
+        <ColumnInfo>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="AUTHORS" type="STRING" size="256"/>
+          <Column id="PRICE" type="STRING" size="256"/>
+          <Column id="PUBLISHER" type="STRING" size="256"/>
+          <Column id="THUMBNAIL" type="STRING" size="256"/>
+          <Column id="URL" type="STRING" size="256"/>
+          <Column id="DATETIME" type="STRING" size="256"/>
+        </ColumnInfo>
+        <Rows>
+          <Row>
+            <Col id="TITLE">명품 자바 에센셜</Col>
+            <Col id="AUTHORS">황기태</Col>
+            <Col id="PRICE">26000</Col>
+            <Col id="PUBLISHER">생능출판</Col>
+            <Col id="THUMBNAIL">https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F961627%3Ftimestamp%3D20200408131904</Col>
+            <Col id="URL">https://search.daum.net/search?w=bookpage&amp;bookId=961627&amp;q=%EB%AA%85%ED%92%88+%EC%9E%90%EB%B0%94+%EC%97%90%EC%84%BC%EC%85%9C</Col>
+            <Col id="DATETIME">2014-11-25</Col>
+          </Row>
+        </Rows>
+      </Dataset>
+    </Objects>
+    <Bind>
+      <BindItem id="item0" compid="ImageViewer01" propid="image" datasetid="dsBook" columnid="THUMBNAIL"/>
+      <BindItem id="item1" compid="Static00" propid="text" datasetid="dsBook" columnid="TITLE"/>
+      <BindItem id="item2" compid="Static00_00" propid="text" datasetid="dsBook" columnid="AUTHORS"/>
+      <BindItem id="item3" compid="Static00_00_00" propid="text" datasetid="dsBook" columnid="PUBLISHER"/>
+      <BindItem id="item4" compid="Static00_00_00_00" propid="text" datasetid="dsBook" columnid="PRICE"/>
+    </Bind>
+    <Script type="xscript5.1"><![CDATA[]]></Script>
+  </Form>
+</FDL>

@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="Form_Work" width="1000" height="850" titletext="메인화면" onsize="form_onsize" onload="form_onload">
+    <Layouts>
+      <Layout width="1000" height="850" screenid="Desktop_screen">
+        <Div id="divTop" taborder="0" text="divTop" left="0" top="0" width="1000" cssclass="div_WF_Area" height="80" border="0px solid black,0px solid black,1px solid gray">
+          <Layouts>
+            <Layout>
+              <Button id="btnSignUp" taborder="0" text="회원가입" left="872" top="29" width="105" height="30" background="indianred" color="snow" borderRadius="10px 10px 10px 10px" border="0px solid white" font="normal bold 13pt/normal &quot;Arial&quot;" onclick="divTop_btnSignUp_onclick" boxShadow="2px 2px 0px 0px black" onmouseenter="divTop_btnSignUp_onmouseenter" onmouseleave="divTop_btnSignUp_onmouseleave"/>
+              <ImageViewer id="ImageViewer00" taborder="1" left="9" top="9" width="200" height="64" tabstop="false" image="url('imagerc::Pinklogo.png')" stretch="fixaspectratio" border="0px solid white" text=""/>
+              <ImageViewer id="ImageViewer00_00_00" taborder="2" left="181" top="9" width="144" height="64" tabstop="false" image="url('imagerc::pinkhansung.png')" stretch="fixaspectratio" border="0px solid white" text="" onclick="divTop_ImageViewer00_00_00_onclick"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+        <Div id="divMain" taborder="1" left="0" top="80" width="1000" cssclass="div_WF_Area" bottom="0" text="" border="0px solid black">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="0" text="에게 물어보세요" left="112" top="19" width="246" height="53" font="normal 700 15pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_01" taborder="10" text="바로가기" left="512" top="19" width="80" height="53" font="normal 700 15pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_01_00" taborder="16" text="바로가기" left="568" top="304" width="80" height="22" font="normal 700 15pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_01_00_00" taborder="23" text="바로가기" left="548" top="486" width="80" height="22" font="normal 700 15pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_00" taborder="1" text="Gemini" left="41" top="27" width="68" height="36" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightcoral" color="white"/>
+              <Static id="Static00_00_00" taborder="8" text="TOBESOFT" left="399" top="27" width="109" height="36" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightcoral" color="white"/>
+              <Static id="Static00_00_00_00" taborder="15" text="TOBE Workspace" left="399" top="294" width="167" height="36" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightcoral" color="white"/>
+              <Static id="Static00_00_00_00_00" taborder="22" text="TOBE LOUNGE" left="399" top="472" width="147" height="36" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightcoral" color="white" cursor="none"/>
+              <Static id="Static01" taborder="2" text="답답하지 않도록 준비했어요!" left="41" top="68" width="172" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray"/>
+              <Static id="Static01_00" taborder="9" text="투비소프트는 이런 회사 입니다." left="399" top="68" width="359" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray"/>
+              <Static id="Static01_00_01" taborder="20" left="410" top="250" width="205" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray" cursor="pointer" text="&lt;l v='https://www.tobesoft.com/main'&gt;투비소프트 공식홈페이지(클릭!)&lt;/l&gt;" usedecorate="true" onmouseenter="divMain_Static01_00_01_onmouseenter" onmouseleave="divMain_Static01_00_01_onmouseleave"/>
+              <Static id="Static01_00_01_00" taborder="21" text="투비소프트 고객지원센터" left="670" top="250" width="155" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray" cursor="pointer" onmouseenter="divMain_Static01_00_01_00_onmouseenter" onmouseleave="divMain_Static01_00_01_00_onmouseleave"/>
+              <Static id="Static01_00_00" taborder="17" left="648" top="311" width="145" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray" text="업무를 더 빠르고 편하게"/>
+              <Static id="Static01_00_00_00" taborder="24" left="628" top="492" width="155" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray" text="일 얘기는 빼고, 다 됩니다"/>
+              <Static id="aiChatScreenw" taborder="3" left="39" top="95" width="286" height="455" color="black" background="snow" borderRadius="20px 20px 20px 20px" border="2px solid lightcoral"/>
+              <TextArea id="aiChatScreen" taborder="6" left="59" top="110" width="245" height="420" background="snow" border="0px solid snow"/>
+              <Static id="Static02" taborder="7" left="38" top="564" width="287" height="61" background="white" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px"/>
+              <TextArea id="aiTextArea" taborder="4" left="49" top="573" width="204" height="43" border="0px solid lightcoral" background="white"/>
+              <Button id="aiGo" taborder="5" text="입력" left="259" top="565" width="57" height="54" borderRadius="20px 20px 20px 20px" background="lightcoral" border="2px solid red" font="normal 700 10pt/normal &quot;Arial&quot;" color="white" onclick="divMain_aiGo_onclick" boxShadow="2px 2px 0px 0px black" onmouseenter="divMain_aiGo_onmouseenter" onmouseleave="divMain_aiGo_onmouseleave"/>
+              <ImageViewer id="ImageViewer00" taborder="11" left="400" top="95" width="242" height="151" image="url('imagerc::pppppppttt.png')" stretch="fit" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px" onclick="divMain_ImageViewer00_onclick"/>
+              <ImageViewer id="ImageViewer00_00" taborder="12" left="661" top="95" width="270" height="151" image="url('imagerc::tobecall.png')" stretch="fit" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px"/>
+              <Static id="Static04" taborder="14" text="&lt;l v='https://113366.com/tobesoft'&gt;고객지원센터 바로가기(클릭!)&lt;/l&gt;" left="661" top="95" width="270" height="151" usedecorate="true" color="transparent" font="normal 700 100pt/normal &quot;Arial&quot;" cursor="pointer" borderRadius="20px 20px 20px 20px" border="2px solid lightcoral" onmouseenter="divMain_Static04_onmouseenter" onmouseleave="divMain_Static04_onmouseleave"/>
+              <Static id="Static03" taborder="13" text="&lt;l v='https://www.tobesoft.com/main'&gt;회사 홈페이지 바로가기 (클릭!)&lt;/l&gt;" left="400" top="95" width="242" height="152" usedecorate="true" color="transparent" background="transparent" font="normal 700 100pt/normal &quot;Arial&quot;" onclick="divMain_Static03_onclick" borderRadius="20px 20px 20px 20px" border="2px solid lightcoral" onmouseenter="divMain_Static03_onmouseenter" onmouseleave="divMain_Static03_onmouseleave" cursor="pointer"/>
+              <ImageViewer id="ImageViewer01" taborder="18" left="398" top="346" width="532" height="96" image="url('imagerc::TTOOBBEEWORK.png')" stretch="fit" borderRadius="20px 20px 20px 20px" border="2px solid lightcoral"/>
+              <Static id="staMove" taborder="19" text="이이이이동" left="398" top="346" width="532" height="96" font="normal 100pt/normal &quot;Arial&quot;" onclick="divMain_staMove_onclick" color="transparent" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px" onmouseenter="divMain_staMove_onmouseenter" onmouseleave="divMain_staMove_onmouseleave" cursor="pointer"/>
+              <ImageViewer id="ImageViewer02" taborder="25" left="398" top="530" width="532" height="96" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px" image="url('imagerc::l3.png')" stretch="fixaspectratio" text="" onclick="divMain_staLounge_onclick"/>
+              <Static id="staLounge" taborder="26" text="투비라운지" left="398" top="530" width="532" height="96" font="normal 100pt/normal &quot;bold/normal&quot;" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px" color="transparent" onclick="divMain_staLounge_onclick" cursor="pointer" onmouseenter="divMain_staLounge_onmouseenter" onmouseleave="divMain_staLounge_onmouseleave"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+      </Layout>
+      <Layout name="screen00" width="1280" height="850" screenid="screen00"/>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.fvApp = nexacro.getApplication();
+this.fvAiReply = "";
+this.fvLoginTarget = "";
+this.fvLoungeUserId = "";
+this.fvLoungeUserName = "";
+
+this.form_onsize = function(obj:nexacro.Form,e:nexacro.SizeEventInfo)
+{
+	var nLeft = (this.fvApp.mainframe.width/2) - Math.round((this.divTop.form.getOffsetWidth()) / 2);
+	
+	if(nLeft <= 0) {
+		this.divTop.setOffsetLeft(0);
+		this.divMain.setOffsetLeft(0);
+	}
+	else {
+		this.divTop.setOffsetLeft(nLeft);
+		this.divMain.setOffsetLeft(nLeft);
+	}
+};
+
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.form_onsize();
+	
+	var objCF = new ChildFrame("popupLoginIntro", 0, 0, 320, 600);
+	objCF.formurl = "User::User_Login.xfdl";
+	objCF.openalign = "center middle";
+		this.divMain.form.aiChatScreen.set_readonly(true);
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_loginIntroPopupCallback");
+	
+};
+
+this.fn_loginIntroPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupLoginIntro")
+	{
+		// 팝업 닫힌 후 필요하면 여기서 처리
+	}
+};
+
+this.divTop_btnSignUp_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var objCF = new ChildFrame("popupSignUp", 0, 0, 1000, 850);
+	objCF.formurl = "User::User_SignUp.xfdl";
+	objCF.openalign = "center middle";
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_signUpPopupCallback");
+};
+
+this.fn_signUpPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupSignUp")
+	{
+		// 회원가입 팝업이 닫힌 후 필요하면 여기서 처리
+	}
+};
+
+this.divMain_aiGo_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var msg = this.divMain.form.aiTextArea.value;
+	if (msg == "" || msg == null)
+	{
+		this.alert("메시지를 입력해주세요.");
+		return;
+	}
+
+	this.transaction("svcAiChat"
+	                 ,"SvcUrl::ai/chat.do"
+	                 ,""
+	                 ,""
+	                 ,"message=" + nexacro.wrapQuote(msg)
+	                 ,"fn_aiChatCallback");
+};
+
+this.fn_aiChatCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("AI 응답 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.divMain.form.aiChatScreen.set_value(this.fvAiReply);
+};
+
+this.divMain_ImageViewer00_onclick = function(obj:nexacro.ImageViewer,e:nexacro.ClickEventInfo)
+{
+	window.open("https://www.tobesoft.com/main", "_blank");
+};
+
+this.divTop_btnSignUp_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "darkblue";
+};
+
+this.divTop_btnSignUp_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "indianred";
+};
+
+this.divTop_btnSignUp00_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "blue";
+};
+
+this.divTop_btnSignUp00_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "#ff99aa";
+};
+
+this.divMain_Static03_onmouseenter = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid blue";
+};
+
+this.divMain_Static03_onmouseleave = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid lightcoral";
+};
+
+this.divMain_Static04_onmouseenter = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid blue";
+};
+
+this.divMain_Static04_onmouseleave = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid lightcoral";
+};
+
+this.divTop_ImageViewer00_00_00_onclick = function(obj:nexacro.ImageViewer,e:nexacro.ClickEventInfo)
+{
+	alert("ㅎㅎㅎㅎㅎㅎ");
+};
+
+this.divMain_staMove_onclick = function(obj:nexacro.Static,e:nexacro.ClickEventInfo)
+{
+	this.fvLoginTarget = "workpage";
+	var objCF = new ChildFrame("popupLogin", 0, 0, 300, 300);
+	objCF.formurl = "FrameBase::sdiOnLogin.xfdl";
+	objCF.openalign = "center middle";
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_loginPopupCallback");
+};
+
+this.fn_loginPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupLogin" && sReturn != null && sReturn.indexOf("OK|") == 0)
+	{
+		var arrRet = sReturn.split("|");
+		var sUserId = arrRet[1];
+		var sUserName = arrRet[2];
+		var sSecName = arrRet[3];
+
+		if (this.fvLoginTarget == "lounge")
+		{
+			if (sSecName == "" || sSecName == null)
+			{
+				this.fvLoungeUserId = sUserId;
+				this.fvLoungeUserName = sUserName;
+
+				var objNick = new ChildFrame("popupNick", 0, 0, 300, 300);
+				objNick.formurl = "User::User_LoungeNick.xfdl";
+				objNick.openalign = "center middle";
+				objNick.param = {userId: sUserId};
+				objNick.showModal(this.getOwnerFrame(), null, this, "fn_nickPopupCallback");
+			}
+			else
+			{
+				this.fn_openLounge(sUserId, sUserName, sSecName);
+			}
+		}
+		else
+		{
+			var objWork = new ChildFrame("workPage", 0, 0, 1000, 850);
+			objWork.formurl = "User::User_WorkPage.xfdl";
+			objWork.openalign = "center middle";
+			objWork.param = {userId: sUserId, userName: sUserName};
+			objWork.showModal(this.getOwnerFrame(), null, this, "fn_workPageCallback");
+		}
+	}
+};
+
+this.fn_nickPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupNick" && sReturn != null && sReturn != "")
+	{
+		this.fn_openLounge(this.fvLoungeUserId, this.fvLoungeUserName, sReturn);
+	}
+};
+
+this.fn_openLounge = function(sUserId, sUserName, sSecName)
+{
+	var objLounge = new ChildFrame("loungePage", 0, 0, 1000, 850);
+	objLounge.formurl = "User::User_lounge.xfdl";
+	objLounge.openalign = "center middle";
+	objLounge.param = {userId: sUserId, userName: sUserName, secName: sSecName};
+	objLounge.showModal(this.getOwnerFrame(), null, this, "fn_loungePageCallback");
+};
+
+this.fn_loungePageCallback = function(sPopupId, sReturn)
+{
+	// 라운지 닫힐 때 처리할 게 있으면 여기에
+};
+
+this.fn_workPageCallback = function(sPopupId, sReturn)
+{
+	// 업무 화면이 닫힐 때 처리할 게 있으면 여기에
+};
+
+this.divMain_Static01_00_01_onmouseenter = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.color= "blue";
+};
+
+this.divMain_Static01_00_01_onmouseleave = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.color = "gray";
+};
+
+this.divMain_Static01_00_01_00_onmouseenter = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.color = "blue";
+};
+
+this.divMain_Static01_00_01_00_onmouseleave = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.color ="gray";
+};
+
+this.divMain_staMove_onmouseenter = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid blue";
+};
+
+this.divMain_staMove_onmouseleave = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid lightcoral";
+};
+
+this.divMain_staLounge_onclick = function(obj:nexacro.Static,e:nexacro.ClickEventInfo)
+{
+	this.fvLoginTarget = "lounge";
+	var objCF = new ChildFrame("popupLogin", 0, 0, 300, 300);
+	objCF.formurl = "FrameBase::sdiOnLogin.xfdl";
+	objCF.openalign = "center middle";
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_loginPopupCallback");
+};
+this.divMain_staLounge_onmouseenter = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid blue";
+};
+
+this.divMain_staLounge_onmouseleave = function(obj:nexacro.Static,e:nexacro.MouseEventInfo)
+{
+	obj.border = "2px solid lightcoral";
+};
+this.divMain_aiGo_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("red");
+};
+
+this.divMain_aiGo_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightcoral");
+};
+]]></Script>
+  </Form>
+</FDL>

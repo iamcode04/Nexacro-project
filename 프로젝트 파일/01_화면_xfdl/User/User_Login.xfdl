@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_Login" width="320" height="600" titletext="New Form" onclick="btnSearch_onclick">
+    <Layouts>
+      <Layout height="600" mobileorientation="landscape" width="320">
+        <ImageViewer id="ImageViewer00" taborder="0" left="0" top="0" width="320" height="600" image="url('imagerc::post.png')" stretch="fixaspectratio" border="3px solid black" borderRadius="20px 20px 20px 20px" text=""/>
+        <Button id="btnSearch" taborder="1" text="검색하러 가기" left="20" top="487" width="280" height="53" borderRadius="20px 20px 20px 20px" border="3px solid lightcoral" font="normal 700 20pt/normal &quot;Arial&quot;" background="lavenderblush" onclick="btnSearch_onclick"/>
+        <Static id="Static00" taborder="2" text="Static00" left="263" top="12" width="50" height="21" onclick="Static00_onclick" color="transparent"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[
+this.Static00_onclick = function(obj:nexacro.Static,e:nexacro.ClickEventInfo)
+{
+	this.close("");
+};
+this.btnSearch_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var objCF = new ChildFrame("popupBookSearch", 0, 0, 1000, 850);
+	objCF.formurl = "User::User_book.xfdl";
+	objCF.openalign = "center middle";
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_bookSearchPopupCallback");
+};
+
+this.fn_bookSearchPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupBookSearch")
+	{
+		// 팝업 닫힌 후 필요하면 여기서 처리
+	}
+};]]></Script>
+  </Form>
+</FDL>

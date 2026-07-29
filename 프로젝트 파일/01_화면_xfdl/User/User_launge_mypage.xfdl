@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_launge_mypage" width="1000" height="850" titletext="New Form" onload="form_onload ">
+    <Layouts>
+      <Layout height="850" width="1000">
+        <Div id="divTop" taborder="0" text="divTop" left="0" top="0" width="1000" cssclass="div_WF_Area" height="80" border="0px solid black,0px solid black,1px solid gray">
+          <Layouts>
+            <Layout>
+              <ImageViewer id="ImageViewer00" taborder="0" left="9" top="9" width="200" height="64" tabstop="false" image="url('imagerc::Pinklogo.png')" stretch="fixaspectratio" border="0px solid white" text=""/>
+              <ImageViewer id="ImageViewer00_00_00" taborder="1" left="181" top="9" width="144" height="64" tabstop="false" image="url('imagerc::pinkhansung.png')" stretch="fixaspectratio" border="0px solid white" text="" onclick="divTop_ImageViewer00_00_00_onclick"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+        <Static id="userWelcome" taborder="1" text="000님 환영합니다         " left="650" top="53" height="17" right="180"/>
+        <Button id="btnBack" taborder="2" text="돌아가기" left="830" top="29" width="147" height="30" background="indianred" color="gold" borderRadius="10px 10px 10px 10px" border="0px solid white" font="normal bold 13pt/normal &quot;Arial&quot;" onclick="btnBack_onclick" boxShadow="2px 2px 0px 0px black" onmouseenter="btnBack_onmouseenter" onmouseleave="btnBack_onmouseleave" icon="url('theme://images/btn_LF_Logout.png')" textPadding="7px"/>
+        <Div id="Div01" taborder="3" left="0" top="80" width="200" height="770" background="white" border="0px none,1px solid black,0px none,0px none"/>
+        <Div id="Div00" taborder="4" left="200" top="80" width="800" bottom="0" background="white" border="0px none">
+          <Layouts>
+            <Layout>
+              <Grid id="myWrite" taborder="0" left="32" top="32" width="738" height="319" binddataset="myPageInfo" autofittype="col">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="56"/>
+                      <Column size="261"/>
+                      <Column size="105"/>
+                      <Column size="51"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell text="게시판"/>
+                      <Cell col="1" text="제목"/>
+                      <Cell col="2" text="작성일"/>
+                      <Cell col="3" text="좋아요"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:게시판"/>
+                      <Cell col="1" text="bind:제목"/>
+                      <Cell col="2" text="bind:작성일"/>
+                      <Cell col="3" text="bind:좋아요"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Grid id="myAnswer" taborder="1" left="32" top="411" width="738" height="319" binddataset="myPageInfo2" autofittype="col">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="55"/>
+                      <Column size="246"/>
+                      <Column size="80"/>
+                      <Column size="66"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell text="게시판"/>
+                      <Cell col="1" text="내용"/>
+                      <Cell col="2" text="작성일"/>
+                      <Cell col="3" text="바로가기"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:게시판"/>
+                      <Cell col="1" text="bind:내용"/>
+                      <Cell col="2" text="bind:작성일"/>
+                      <Cell col="3" text="바로가기" displaytype="buttoncontrol"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="myPageInfo">
+        <ColumnInfo>
+          <Column id="게시판" type="STRING" size="256"/>
+          <Column id="제목" type="STRING" size="256"/>
+          <Column id="작성일" type="STRING" size="256"/>
+          <Column id="좋아요" type="STRING" size="256"/>
+          <Column id="POST_ID" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="myPageInfo2">
+        <ColumnInfo>
+          <Column id="게시판" type="STRING" size="256"/>
+          <Column id="내용" type="STRING" size="256"/>
+          <Column id="작성일" type="STRING" size="256"/>
+          <Column id="바로가기" type="STRING" size="256"/>
+          <Column id="POST_ID" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[this.fvUserId = "";
+this.fvSecName = "";
+
+this.form_onload = function(obj, e)
+{
+	var objParam = this.getOwnerFrame().param;
+	if (objParam)
+	{
+		this.fvUserId = objParam.userId;
+		this.fvSecName = objParam.secName;
+	}
+	this.userWelcome.set_text(this.fvSecName + "님 환영합니다");
+
+	this.fn_loadMyPosts();
+	this.fn_loadMyComments();
+
+	this.Div00.form.myWrite.addEventHandler("oncelldblclick", this.myWrite_oncelldblclick, this);
+this.Div00.form.myAnswer.addEventHandler("oncellclick", this.myAnswer_oncellclick, this);
+};
+
+this.fn_loadMyPosts = function()
+{
+	this.transaction("svcSelectMyPosts"
+	                 ,"SvcUrl::lounge/selectMyPosts.do"
+	                 ,""
+	                 ,"myPageInfo=dsList"
+	                 ,"userId=" + this.fvUserId
+	                 ,"fn_selectMyPostsCallback");
+};
+
+this.fn_selectMyPostsCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("작성한 글 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+};
+
+this.fn_loadMyComments = function()
+{
+	this.transaction("svcSelectMyComments"
+	                 ,"SvcUrl::lounge/selectMyComments.do"
+	                 ,""
+	                 ,"myPageInfo2=dsList"
+	                 ,"userId=" + this.fvUserId
+	                 ,"fn_selectMyCommentsCallback");
+};
+
+this.fn_selectMyCommentsCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("작성한 댓글 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+};
+
+this.myWrite_oncelldblclick = function(obj, e)
+{
+	if (e.row < 0) return;
+	this.fn_openPost(this.myPageInfo.getColumn(e.row, "POST_ID"));
+};
+
+this.myAnswer_oncellclick = function(obj, e)
+{
+	if (e.row < 0 || e.col != 3) return;
+	this.fn_openPost(this.myPageInfo2.getColumn(e.row, "POST_ID"));
+};
+
+this.fn_openPost = function(nPostId)
+{
+	var objCF = new ChildFrame("popupPostDetail", 0, 0, 600, 850);
+	objCF.formurl = "User::User_lounge_back.xfdl";
+	objCF.openalign = "center middle";
+	objCF.param = {postId: nPostId, userId: this.fvUserId, secName: this.fvSecName};
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_postDetailPopupCallback");
+};
+
+this.fn_postDetailPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupPostDetail" && sReturn == "LIKED")
+	{
+		this.fn_loadMyPosts();
+	}
+};
+
+this.btnBack_onclick = function(obj, e)
+{
+	this.close();
+};
+
+this.btnBack_onmouseenter = function(obj, e)
+{
+	obj.background = "darkblue";
+};
+
+this.btnBack_onmouseleave = function(obj, e)
+{
+	obj.background = "indianred";
+};]]></Script>
+  </Form>
+</FDL>

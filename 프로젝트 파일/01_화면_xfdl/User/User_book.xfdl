@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_book" width="1000" height="850" titletext="New Form" onload="form_onload">
+    <Layouts>
+      <Layout height="850" mobileorientation="landscape" width="1000">
+        <Div id="divTop" taborder="0" text="divTop" left="0" top="0" width="1000" cssclass="div_WF_Area" height="80" border="0px solid black,0px solid black,1px solid gray">
+          <Layouts>
+            <Layout>
+              <ImageViewer id="ImageViewer00" taborder="0" left="9" top="9" width="200" height="64" tabstop="false" image="url('imagerc::Pinklogo.png')" stretch="fixaspectratio" border="0px solid white" text=""/>
+              <ImageViewer id="ImageViewer00_00_00" taborder="1" left="181" top="9" width="144" height="64" tabstop="false" image="url('imagerc::pinkhansung.png')" stretch="fixaspectratio" border="0px solid white" text="" onclick="divTop_ImageViewer00_00_00_onclick"/>
+              <Button id="mainBack" taborder="2" text="메인화면" left="823" top="35" width="147" height="30" color="white" background="indianred" font="normal bold 12pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="10px 10px 10px 10px" boxShadow="2px 2px 0px 0px black" onclick="mainBack_onclick" textPadding="7px" icon="url('theme://images/btn_LF_Logout.png')" onmouseenter="divTop_mainBack_onmouseenter" onmouseleave="divTop_mainBack_onmouseleave"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+        <Div id="divMain" taborder="1" left="0" top="80" width="1000" cssclass="div_WF_Area" bottom="0" text="" border="0px solid black">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="0" text="베스트셀러" left="111" top="49" width="100" height="22" font="normal 700 15pt/normal &quot;Arial&quot;" onclick="divMain_Static00_onclick"/>
+              <Static id="Static00_00" taborder="1" text="신간도서" left="21" top="37" width="86" height="36" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightcoral" color="white" onclick="divMain_Static00_00_onclick"/>
+              <Static id="Static01" taborder="2" text="2026 BEST TOP 9" left="21" top="78" width="172" height="15" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray"/>
+              <Div id="divNewBook" taborder="3" text="Div00" left="20" top="110" width="950" height="600" background="white" formscrolltype="none" formscrollbartype="none">
+                <Layouts>
+                  <Layout type="default" flexwrap="wrap">
+                    <Grid id="gridBookList" taborder="0" left="1" top="0" width="949" height="620" binddataset="dsBookList" autofittype="col">
+                      <Formats>
+                        <Format id="default">
+                          <Columns>
+                            <Column size="240"/>
+                            <Column size="120"/>
+                            <Column size="40"/>
+                            <Column size="97"/>
+                            <Column size="98"/>
+                          </Columns>
+                          <Rows>
+                            <Row size="24" band="head"/>
+                            <Row size="24"/>
+                          </Rows>
+                          <Band id="head">
+                            <Cell text="TITLE"/>
+                            <Cell col="1" text="AUTHORS"/>
+                            <Cell col="2" text="PRICE"/>
+                            <Cell col="3" text="PUBLISHER"/>
+                            <Cell col="4" text="DATETIME"/>
+                          </Band>
+                          <Band id="body">
+                            <Cell text="bind:TITLE"/>
+                            <Cell col="1" text="bind:AUTHORS"/>
+                            <Cell col="2" text="bind:PRICE"/>
+                            <Cell col="3" text="bind:PUBLISHER"/>
+                            <Cell col="4" text="bind:DATETIME"/>
+                          </Band>
+                        </Format>
+                      </Formats>
+                    </Grid>
+                  </Layout>
+                </Layouts>
+              </Div>
+              <Button id="btnBookList" taborder="4" text="더보기" left="880" top="63" width="90" height="37" background="lightcoral" color="white" font="normal bold 12pt/normal &quot;Arial&quot;" border="2px solid pink" onmouseenter="divMain_btnBookList_onmouseenter" onmouseleave="divMain_btnBookList_onmouseleave"/>
+              <Button id="btnSearch" taborder="5" text="도서검색" left="780" top="63" width="90" height="37" background="lightcoral" color="white" font="normal bold 12pt/normal &quot;Arial&quot;" border="2px solid pink" onmouseenter="divMain_btnSearch_onmouseenter" onmouseleave="divMain_btnSearch_onmouseleave"/>
+              <Edit id="edtSearch" taborder="6" left="576" top="63" width="190" height="37" border="2px solid pink"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.fvApp = nexacro.getApplication();
+
+this.form_onsize = function(obj, e)
+{
+	var nLeft = (this.fvApp.mainframe.width / 2) - Math.round(this.divTop.form.getOffsetWidth() / 2);
+
+	if (nLeft <= 0)
+	{
+		this.divTop.setOffsetLeft(0);
+		this.divMain.setOffsetLeft(0);
+	}
+	else
+	{
+		this.divTop.setOffsetLeft(nLeft);
+		this.divMain.setOffsetLeft(nLeft);
+	}
+};
+
+this.form_onload = function(obj,e)
+{
+	this.nLastBookCardCount = 0;
+	this.aBookCardDivs = [];
+
+	this.fnGetNewBook();
+
+	this.divMain.form.btnBookList.addEventHandler("onclick", this.fn_onClickMore, this);
+	this.divMain.form.btnSearch.addEventHandler("onclick", this.fn_onClickMore, this);
+	this.divMain.form.divNewBook.form.gridBookList.set_visible(false);
+
+	this.addEventHandler("onsize", this.form_onsize, this);
+	this.form_onsize();
+	this.divMain.form.divNewBook.form.gridBookList.addEventHandler("oncelldblclick", this.gridBookList_oncelldblclick, this);
+};
+
+this.fnGetNewBook = function()
+{
+	this.transaction("svcGetNewBook"
+	                 ,"SvcUrl::book/getNewBookList.do"
+	                 ,""
+	                 ,"dsNewBook=dsList"
+	                 ,""
+	                 ,"fn_getNewBookCallback");
+};
+
+this.fn_getNewBookCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("신간도서 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.fnCreateNewBook();
+};
+
+this.fnCreateNewBook = function()
+{
+	var objContainer = this.divMain.form.divNewBook;
+
+	var nWidth = 320;
+	var nHeight = 160;
+	var nGap = 8;
+
+	for (var i = 0; i < this.nLastBookCardCount; i++)
+	{
+		try { objContainer.removeChild("divBookCard" + i); } catch (e) {}
+	}
+
+	this.aBookCardDivs = [];
+
+	for (var i = 0; i < this.dsNewBook.rowcount; i++)
+	{
+		var nCol = i % 3;
+		var nRow = Math.floor(i / 3);
+		var objDiv = new Div("divBookCard" + i, nCol * (nWidth + nGap), 18 + nRow * (nHeight + nGap), nWidth, nHeight);
+		objContainer.addChild(objDiv.name, objDiv);
+		objDiv.async = false;
+		objDiv.url = "FrameBase::User_bookSub.xfdl";
+		objDiv.show();
+
+		this.fn_setBookCard(objDiv, i);
+		this.aBookCardDivs.push(objDiv);
+	}
+
+	this.nLastBookCardCount = this.dsNewBook.rowcount;
+};
+
+this.fn_setBookCard = function(objCardDiv, nRow)
+{
+	var objDs = objCardDiv.form.dsBook;
+	objDs.clearData();
+	objDs.addRow();
+	objDs.setColumn(0, "TITLE", this.dsNewBook.getColumn(nRow, "TITLE"));
+	objDs.setColumn(0, "AUTHORS", this.dsNewBook.getColumn(nRow, "AUTHORS"));
+	objDs.setColumn(0, "PRICE", this.dsNewBook.getColumn(nRow, "PRICE"));
+	objDs.setColumn(0, "PUBLISHER", this.dsNewBook.getColumn(nRow, "PUBLISHER"));
+	objDs.setColumn(0, "THUMBNAIL", this.dsNewBook.getColumn(nRow, "THUMBNAIL"));
+	objDs.setColumn(0, "URL", this.dsNewBook.getColumn(nRow, "URL"));
+	objDs.setColumn(0, "DATETIME", this.dsNewBook.getColumn(nRow, "DATETIME"));
+};
+
+this.fn_onClickMore = function(obj, e)
+{
+	this.transaction("svcGetBookList"
+	                 ,"SvcUrl::book/getBookList.do"
+	                 ,""
+	                 ,"dsBookList=dsList"
+	                 ,""
+	                 ,"fn_getBookListCallback");
+};
+
+this.fn_getBookListCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("도서 목록 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	var sKeyword = this.divMain.form.edtSearch.value || "";
+if (sKeyword != "")
+{
+	var sEscaped = sKeyword.toLowerCase().replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+	this.dsBookList.filter("TITLE.toLowerCase().indexOf('" + sEscaped + "') >= 0 || AUTHORS.toLowerCase().indexOf('" + sEscaped + "') >= 0");
+}
+else
+{
+	this.dsBookList.filter("");
+}
+
+	var objContainer = this.divMain.form.divNewBook;
+	for (var i = 0; i < this.nLastBookCardCount; i++)
+	{
+		try { objContainer.removeChild("divBookCard" + i); } catch (e) {}
+	}
+	this.nLastBookCardCount = 0;
+	this.aBookCardDivs = [];
+
+	this.divMain.form.divNewBook.form.gridBookList.set_binddataset(this.dsBookList);
+	this.divMain.form.divNewBook.form.gridBookList.set_visible(true);
+};
+
+this.gridBookList_oncelldblclick = function(obj, e)
+{
+	if (e.row < 0) return;
+
+	var sIsbn = this.dsBookList.getColumn(e.row, "ISBN");
+
+	var objCF = new ChildFrame("popupBookInfo", 0, 0, 500, 500);
+	objCF.formurl = "User::User_book_info.xfdl";
+	objCF.openalign = "center middle";
+	objCF.param = {isbn: sIsbn};
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_bookInfoPopupCallback");
+};
+
+this.fn_bookInfoPopupCallback = function(sPopupId, sReturn)
+{
+	// 필요하면 여기서 처리
+};
+this.mainBack_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close("");
+};
+
+this.divTop_mainBack_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "darkblue";
+};
+
+this.divTop_mainBack_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "indianred";
+};
+
+this.divMain_btnSearch_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "indianred";
+};
+
+this.divMain_btnSearch_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "lightcoral";
+};
+
+this.divMain_btnBookList_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "indianred";
+};
+
+this.divMain_btnBookList_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "lightcoral";
+};
+]]></Script>
+    <Objects>
+      <Dataset id="dsNewBook"/>
+      <Dataset id="dsBookList">
+        <ColumnInfo>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="AUTHORS" type="STRING" size="256"/>
+          <Column id="PRICE" type="STRING" size="256"/>
+          <Column id="PUBLISHER" type="STRING" size="256"/>
+          <Column id="DATETIME" type="STRING" size="256"/>
+          <Column id="ISBN" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="dsBook">
+        <ColumnInfo>
+          <Column id="title" type="STRING" size="256"/>
+          <Column id="authors" type="STRING" size="256"/>
+          <Column id="publisher" type="STRING" size="256"/>
+          <Column id="price" type="STRING" size="256"/>
+          <Column id="isbn" type="STRING" size="256"/>
+          <Column id="thumbnail" type="STRING" size="256"/>
+          <Column id="url" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

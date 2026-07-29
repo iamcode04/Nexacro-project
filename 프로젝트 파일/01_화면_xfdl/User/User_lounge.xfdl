@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_lounge" width="1000" height="850" titletext="New Form" onload="User_lounge_onload" onsize="form_onsize">
+    <Layouts>
+      <Layout height="850" mobileorientation="landscape" width="1000">
+        <Div id="divTop" taborder="0" text="divTop" left="0" top="0" width="1000" cssclass="div_WF_Area" height="80" border="0px solid black,0px solid black,1px solid gray">
+          <Layouts>
+            <Layout>
+              <ImageViewer id="ImageViewer00" taborder="0" left="9" top="9" width="200" height="64" tabstop="false" image="url('imagerc::Pinklogo.png')" stretch="fixaspectratio" border="0px solid white" text=""/>
+              <ImageViewer id="ImageViewer00_00_00" taborder="1" left="181" top="9" width="144" height="64" tabstop="false" image="url('imagerc::pinkhansung.png')" stretch="fixaspectratio" border="0px solid white" text="" onclick="divTop_ImageViewer00_00_00_onclick"/>
+              <Button id="mainBack" taborder="2" text="메인화면" left="673" top="29" width="147" height="30" color="white" background="indianred" font="normal bold 12pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="10px 10px 10px 10px" boxShadow="2px 2px 0px 0px black" onclick="mainBack_onclick" textPadding="7px" icon="url('theme://images/btn_LF_Logout.png')" onmouseenter="divTop_mainBack_onmouseenter" onmouseleave="divTop_mainBack_onmouseleave"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+        <Div id="Div00" taborder="1" left="200" top="80" width="800" bottom="0" background="white" border="0px none">
+          <Layouts>
+            <Layout>
+              <Tab id="tabBoard" taborder="0" tabindex="0" left="0" top="0" width="800" height="38" onchanged="tabBoard_onchanged">
+                <Tabpages>
+                  <Tabpage id="FREE" text="자유게시판">
+                    <Layouts>
+                      <Layout/>
+                    </Layouts>
+                  </Tabpage>
+                  <Tabpage id="INFO" text="정보게시판">
+                    <Layouts>
+                      <Layout/>
+                    </Layouts>
+                  </Tabpage>
+                  <Tabpage id="QNA" text="질문게시판">
+                    <Layouts>
+                      <Layout/>
+                    </Layouts>
+                  </Tabpage>
+                  <Tabpage id="ETC" text="잡담게시판">
+                    <Layouts>
+                      <Layout/>
+                    </Layouts>
+                  </Tabpage>
+                </Tabpages>
+              </Tab>
+              <Grid id="grdPostList" taborder="1" left="20" top="50" width="761" height="506" binddataset="ds_postList" autofittype="col">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="57"/>
+                      <Column size="291"/>
+                      <Column size="102"/>
+                      <Column size="110"/>
+                      <Column size="51"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell text="No"/>
+                      <Cell col="1" text="제목"/>
+                      <Cell col="2" text="글쓴이"/>
+                      <Cell col="3" text="작성시간"/>
+                      <Cell col="4" text="좋아요"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:ROWNUM"/>
+                      <Cell col="1" text="bind:TITLE"/>
+                      <Cell col="2" text="bind:SEC_NAME"/>
+                      <Cell col="3" text="bind:REG_DATE"/>
+                      <Cell col="4" text="bind:LIKE_CNT"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Div id="divPage" taborder="2" text="Div00" left="158" top="571" width="461" height="30" url="Cmm::CmmPaging.xfdl" async="false"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Button id="btnMyPage" taborder="2" text="마이페이지" left="830" top="29" width="147" height="30" background="indianred" color="snow" borderRadius="10px 10px 10px 10px" border="0px solid white" font="normal bold 13pt/normal &quot;Arial&quot;" onclick="divTop_btnMyPage_onclick" boxShadow="2px 2px 0px 0px black" onmouseenter="divTop_btnMyPage_onmouseenter" onmouseleave="divTop_btnMyPage_onmouseleave" icon="url('theme://images/btn_LF_Home.png')" textPadding="7px"/>
+        <Div id="Div01" taborder="3" left="0" top="80" width="200" height="770" background="white" border="0px none,1px solid black,0px none,0px none"/>
+        <Button id="btnWrite" taborder="4" text="글쓰기" left="872" top="649" width="105" height="30" background="indianred" color="snow" borderRadius="10px 10px 10px 10px" border="0px solid white" font="normal bold 13pt/normal &quot;Arial&quot;" boxShadow="2px 2px 0px 0px black" icon="url('theme://images/btn_LF_BookmarkS.png')" textPadding="5px" onclick="btnWrite_onclick" onmouseenter="btnWrite_onmouseenter" onmouseleave="btnWrite_onmouseleave"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.fvApp = nexacro.getApplication();
+this.fvUserId = "";
+this.fvSecName = "";
+this.fvCurrentBoardType = "FREE";
+this.fvRecords = 20;
+this.fvRecordsOffset = 0;
+this.fvTotalCount = 0;
+
+this.form_onsize = function(obj:nexacro.Form,e:nexacro.SizeEventInfo)
+{
+	var nLeft = Math.round((this.getOffsetWidth() - 1000) / 2);
+	if (nLeft < 0) nLeft = 0;
+
+	this.divTop.setOffsetLeft(0 + nLeft);
+	this.Div00.setOffsetLeft(200 + nLeft);
+	this.Div01.setOffsetLeft(0 + nLeft);
+	this.btnMyPage.setOffsetLeft(830 + nLeft);
+	this.btnWrite.setOffsetLeft(872 + nLeft);
+};
+
+this.User_lounge_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.form_onsize();
+
+	var objParam = this.getOwnerFrame().param;
+	if (objParam)
+	{
+		this.fvUserId = objParam.userId;
+		this.fvSecName = objParam.secName;
+	}
+	this.fn_loadPostList(this.fvCurrentBoardType, 0);
+	this.Div00.form.grdPostList.addEventHandler("oncelldblclick", this.grdPostList_oncelldblclick, this);
+};
+
+this.tabBoard_onchanged = function(obj:nexacro.Tab,e:nexacro.TabIndexChangeEventInfo)
+{
+	this.fvCurrentBoardType = obj.tabpages[e.postindex].name;
+	this.fn_loadPostList(this.fvCurrentBoardType, 0);
+};
+
+this.fn_loadPostList = function(sBoardType, nRecordsOffset)
+{
+	this.fvRecordsOffset = nRecordsOffset;
+
+	this.transaction("svcSelectPostList"
+	                 ,"SvcUrl::lounge/selectPostList.do"
+	                 ,""
+	                 ,"ds_postList=dsList"
+	                 ,"boardType=" + sBoardType + " recordsOffset=" + nRecordsOffset + " records=" + this.fvRecords
+	                 ,"fn_selectPostListCallback");
+};
+
+this.fn_selectPostListCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("게시글 목록 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	this.fvTotalCount = nexacro.toNumber(this.fvTotalCount);
+	var nPage = Math.floor(this.fvRecordsOffset / this.fvRecords);
+
+	this.Div00.form.divPage.form.fnCreatePage("fnPagingCallback", this.fvTotalCount, this.fvRecords, nPage, 10);
+};
+
+this.fnPagingCallback = function(nPage, nRecordsOffset)
+{
+	this.fn_loadPostList(this.fvCurrentBoardType, nRecordsOffset);
+};
+
+this.btnWrite_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var objCF = new ChildFrame("popupPost", 0, 0, 500, 400);
+	objCF.formurl = "User::User_LoungePost.xfdl";
+	objCF.openalign = "center middle";
+	objCF.param = {userId: this.fvUserId, secName: this.fvSecName, boardType: this.fvCurrentBoardType};
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_writePopupCallback");
+};
+
+this.fn_writePopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupPost" && sReturn != null && sReturn.indexOf("OK|") == 0)
+	{
+		var sBoardType = sReturn.split("|")[1];
+		this.fvCurrentBoardType = sBoardType;
+		this.fn_loadPostList(sBoardType, 0);
+	}
+};
+
+this.grdPostList_oncelldblclick = function(obj, e)
+{
+	this.alert("row: " + e.row + " / cellrow: " + e.cellrow + " / postId: " + this.ds_postList.getColumn(e.row, "POST_ID"));
+	if (e.row < 0) return;
+
+	var nPostId = this.ds_postList.getColumn(e.row, "POST_ID");
+
+	var objCF = new ChildFrame("popupPostDetail", 0, 0, 600, 850);
+	objCF.formurl = "User::User_lounge_back.xfdl";
+	objCF.openalign = "center middle";
+	objCF.param = {postId: nPostId, userId: this.fvUserId, secName: this.fvSecName};
+	objCF.showModal(this.getOwnerFrame(), null, this, "fn_postDetailPopupCallback");
+};
+
+this.fn_postDetailPopupCallback = function(sPopupId, sReturn)
+{
+	if (sPopupId == "popupPostDetail" && sReturn == "LIKED")
+	{
+		this.fn_loadPostList(this.fvCurrentBoardType, this.fvRecordsOffset);
+	}
+};
+this.divTop_btnMyPage_onclick = function(obj, e)
+{
+	var objMyPage = new ChildFrame("myPage", 0, 0, 1000, 850);
+	objMyPage.formurl = "User::User_launge_mypage.xfdl";
+	objMyPage.openalign = "center middle";
+	objMyPage.param = {userId: this.fvUserId, secName: this.fvSecName};
+	objMyPage.showModal(this.getOwnerFrame(), null, this, "fn_myPageCallback");
+};
+
+this.fn_myPageCallback = function(sPopupId, sReturn)
+{
+	// 필요하면 여기서 처리
+};
+
+this.divTop_btnMyPage_onmouseenter = function(obj, e)
+{
+	obj.background = "darkblue";
+};
+
+this.divTop_btnMyPage_onmouseleave = function(obj, e)
+{
+	obj.background = "indianred";
+};
+this.mainBack_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close("");
+};
+
+this.divTop_mainBack_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "darkblue";
+};
+
+this.divTop_mainBack_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "indianred";
+};
+
+this.btnWrite_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "darkblue";
+};
+
+this.btnWrite_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.background = "indianred";
+};
+]]></Script>
+    <Objects>
+      <Dataset id="ds_postList">
+        <ColumnInfo>
+          <Column id="POST_ID" type="STRING" size="256"/>
+          <Column id="BOARD_TYPE" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="SEC_NAME" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="LIKE_CNT" type="STRING" size="256"/>
+          <Column id="VIEW_CNT" type="STRING" size="256"/>
+          <Column id="REG_DATE" type="STRING" size="256"/>
+          <Column id="ROWNUM" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_WorkPage" width="1000" height="720" titletext="New Form" onload="User_WorkPage_onload">
+    <Layouts>
+      <Layout height="720" mobileorientation="landscape" width="1000">
+        <Div id="divTop" taborder="0" text="divTop" left="0" top="0" width="1000" cssclass="div_WF_Area" height="80" border="0px solid black,0px solid black,1px solid gray">
+          <Layouts>
+            <Layout>
+              <ImageViewer id="ImageViewer00" taborder="0" left="9" top="9" width="200" height="64" tabstop="false" image="url('imagerc::Pinklogo.png')" stretch="fixaspectratio" border="0px solid white" text=""/>
+              <ImageViewer id="ImageViewer00_00_00" taborder="1" left="181" top="9" width="144" height="64" tabstop="false" image="url('imagerc::pinkhansung.png')" stretch="fixaspectratio" border="0px solid white" text="" onclick="divTop_ImageViewer00_00_00_onclick"/>
+              <ImageViewer id="loginImg" taborder="2" left="926" top="6" width="64" height="69" border="2px solid lightcoral" borderRadius="20px 20px 20px 20px" stretch="fit"/>
+              <Static id="userWelcome" taborder="3" text="000님 환영합니다         " left="750" top="53" height="17" right="80"/>
+            </Layout>
+            <Layout name="screen00"/>
+          </Layouts>
+        </Div>
+        <Div id="Div00" taborder="1" left="0" top="80" width="1000" bottom="0" background="white">
+          <Layouts>
+            <Layout>
+              <Grid id="grdLogin" taborder="0" left="20" top="20" width="965" height="280" binddataset="ds_userList" autofittype="col">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="80"/>
+                      <Column size="87"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell text="USER_ID"/>
+                      <Cell col="1" text="PASS"/>
+                      <Cell col="2" text="USER_NAME"/>
+                      <Cell col="3" text="EMAIL"/>
+                      <Cell col="4" text="TEL_NO"/>
+                      <Cell col="5" text="POST"/>
+                      <Cell col="6" text="ADDR1"/>
+                      <Cell col="7" text="ADDR2"/>
+                      <Cell col="8" text="PROFILE"/>
+                      <Cell col="9" text="REG_DATE"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:USER_ID" edittype="normal"/>
+                      <Cell col="1" text="bind:PASS"/>
+                      <Cell col="2" text="bind:USER_NAME" edittype="normal"/>
+                      <Cell col="3" text="bind:EMAIL" edittype="normal"/>
+                      <Cell col="4" text="bind:TEL_NO" edittype="normal"/>
+                      <Cell col="5" text="bind:POST" edittype="normal"/>
+                      <Cell col="6" text="bind:ADDR1" edittype="normal"/>
+                      <Cell col="7" text="bind:ADDR2" edittype="normal"/>
+                      <Cell col="8" text="bind:PROFILE" edittype="normal"/>
+                      <Cell col="9" text="bind:REG_DATE" edittype="normal"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+              <Button id="btnSave" taborder="1" text="저장" left="20" top="310" width="115" height="40" color="white" background="lightseagreen" font="normal bold 12pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="btnSave_onclick" onmouseenter="Div00_btnSave_onmouseenter" onmouseleave="Div00_btnSave_onmouseleave"/>
+              <Button id="mainBack" taborder="2" text="메인화면" left="155" top="310" width="115" height="40" color="white" background="indianred" font="normal bold 12pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="mainBack_onclick" onmouseenter="Div00_mainBack_onmouseenter" onmouseleave="Div00_mainBack_onmouseleave"/>
+              <Button id="btnPost" taborder="4" text="공지사항 작성" left="290" top="310" width="130" height="40" color="white" background="goldenrod" font="normal bold 12pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="btnPost" onmouseenter="Div00_btnPost_onmouseenter" onmouseleave="Div00_btnPost_onmouseleave"/>
+              <Grid id="Grid00" taborder="3" left="20" top="362" width="965" height="248" binddataset="ds_post" autofittype="col" oncelldblclick="Div00_Grid00_oncelldblclick">
+                <Formats>
+                  <Format id="default">
+                    <Columns>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                      <Column size="80"/>
+                    </Columns>
+                    <Rows>
+                      <Row size="24" band="head"/>
+                      <Row size="24"/>
+                    </Rows>
+                    <Band id="head">
+                      <Cell text="No"/>
+                      <Cell col="1" text="제목"/>
+                      <Cell col="2" text="작성일"/>
+                      <Cell col="3" text="작성자"/>
+                    </Band>
+                    <Band id="body">
+                      <Cell text="bind:NOTICE_ID"/>
+                      <Cell col="1" text="bind:TITLE"/>
+                      <Cell col="2" text="bind:REG_DATE"/>
+                      <Cell col="3" text="bind:USER_ID"/>
+                    </Band>
+                  </Format>
+                </Formats>
+              </Grid>
+            </Layout>
+          </Layouts>
+        </Div>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_userList">
+        <ColumnInfo>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="USER_NAME" type="STRING" size="256"/>
+          <Column id="EMAIL" type="STRING" size="256"/>
+          <Column id="TEL_NO" type="STRING" size="256"/>
+          <Column id="POST" type="STRING" size="256"/>
+          <Column id="ADDR1" type="STRING" size="256"/>
+          <Column id="ADDR2" type="STRING" size="256"/>
+          <Column id="PROFILE" type="STRING" size="256"/>
+          <Column id="REG_DATE" type="STRING" size="256"/>
+          <Column id="PASS" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_post">
+        <ColumnInfo>
+          <Column id="NOTICE_ID" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="REG_DATE" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[this.fvUserId = "";
+this.fvUserName = "";
+this.fvIsAdmin = false;
+
+this.User_WorkPage_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	var objParam = this.getOwnerFrame().param;
+	if (objParam)
+	{
+		this.fvUserId = objParam.userId;
+		this.fvUserName = objParam.userName;
+	}
+	this.divTop.form.userWelcome.set_text(this.fvUserName + "님 환영합니다");
+	this.fvIsAdmin = (this.fvUserId == "admin");
+	this.Div00.form.btnPost.set_visible(this.fvIsAdmin);
+
+	this.transaction("svcSelectUserList"
+	                 ,"SvcUrl::user/selectUserList.do"
+	                 ,""
+	                 ,"ds_userList=dsList"
+	                 ,""
+	                 ,"fn_selectUserListCallback");
+	this.fn_loadNoticeList();
+};
+
+this.fn_loadNoticeList = function()
+{
+	this.transaction("svcSelectNoticeList"
+					 ,"SvcUrl::notice/selectNoticeList.do"
+					 ,""
+					 ,"ds_post=dsList" // 서버에서 dsList를 가지고 와서 ds_post에 저장해라
+					 ,""
+					 ,"fn_selectNoticeListCallback");
+}
+
+this.fn_selectUserListCallback = function(svcID, errCode, errMsg)
+{
+	if(errCode < 0) // 에러코드가 0 이하이면 오류가 발생한다.
+	{
+		this.alert("공지사항 목록 조회 중 오류가 발생했습니다.");
+		return;
+	}
+};
+
+this.fn_selectUserListCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("회원 목록 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	var nRow = this.ds_userList.findRow("USER_ID", this.fvUserId);
+	if (nRow >= 0)
+	{
+		var sProfile = this.ds_userList.getColumn(nRow, "PROFILE");
+		if (sProfile != null && sProfile != "")
+		{
+			this.divTop.form.loginImg.set_image("url('http://localhost:8088/edupack_egov/upload/edu/upload_file/" + sProfile + "')");
+		}
+		else
+		{
+			this.divTop.form.loginImg.set_stretch("fixaspectratio");
+			this.divTop.form.loginImg.set_image("url('imagerc::Pinklogo.png')");
+		}
+	}
+};
+
+this.btnSave_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.transaction("svcUpdateUser"
+	                 ,"SvcUrl::user/updateUserList.do"
+	                 ,"dsList=ds_userList:U"
+	                 ,""
+	                 ,""
+	                 ,"fn_updateUserCallback");
+};
+
+this.fn_updateUserCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("저장 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.alert("저장되었습니다.");
+};
+this.mainBack_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close("");
+};
+
+this.btnPost = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	if(this.fvIsAdmin == false)
+	{
+		this.alert("공지를 작성할 권한이 없습니다");
+		return;
+	}
+	var ObjCF = new ChildFrame("popupNoticeWrite",0,0,700,630);
+	ObjCF.formurl = "User::User_NoticeWrite.xfdl";
+	ObjCF.openalign = "center middle";
+	ObjCF.param = {userId : this.fvUserId};
+	ObjCF.showModal(this.getOwnerFrame(),null, this, "fn_noticeCallback");
+};
+
+this.fn_noticeCallback = function(sPopId, sReturn) {
+	if(sPopId == "popupNoticeWrite" && sReturn =="OK")
+	{
+		this.fn_loadNoticeList();  // 정상적으로 ok를 눌렀다면 서버에 연결해서 sql에 저장하라
+	}
+}
+
+this.Div00_Grid00_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	if(e.row < 0 )
+	{
+		return;
+	}
+	var nNoticeId = this.ds_post.getColumn(e.row, "NOTICE_ID");
+	var ObjCF = new ChildFrame("popupSeeNotice", 0, 0, 500, 430);
+	ObjCF.formurl = "User::User_seeNotice.xfdl";
+	ObjCF.openalign= "center middle";
+	ObjCF.param = {noticeId : nNoticeId};
+	ObjCF.showModal(this.getOwnerFrame(), null, this, "fn_seeNoticeCallback");
+};
+
+this.fn_seeNoticeCallback = function(sPopId, sReturn)
+{
+	// 구현
+};
+
+this.Div00_btnSave_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("teal");
+};
+
+this.Div00_btnSave_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightseagreen");
+};
+
+this.Div00_mainBack_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("darkred");
+};
+
+this.Div00_mainBack_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("indianred");
+};
+
+this.Div00_btnPost_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("darkgoldenrod");
+};
+
+this.Div00_btnPost_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("goldenrod");
+};
+]]></Script>
+  </Form>
+</FDL>

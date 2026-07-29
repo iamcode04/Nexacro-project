@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_seeNotice" width="700" height="600" titletext="New Form" onload="form_onload">
+    <Layouts>
+      <Layout height="600" width="700">
+        <ImageViewer id="ImageViewer00" taborder="0" left="0" top="0" height="600" image="url('imagerc::NoticeBG.png')" stretch="fit" width="700" text=""/>
+        <Static id="staNoticeTitle" taborder="1" text="제목" left="36" top="25" width="628" height="37" background="whitesmoke" border="2px solid lightblue" borderRadius="10px 10px 10px 10px" font="normal 700 10pt/normal &quot;Arial&quot;" padding="5px"/>
+        <TextArea id="staNoticeContent" taborder="2" left="36" top="71" width="628" height="416" background="whitesmoke" border="2px solid lightblue" borderRadius="10px 10px 10px 10px" font="normal 10pt/normal &quot;Arial&quot;"/>
+        <Static id="staTime" taborder="3" text="작성일" left="251" top="498" width="219" height="22" font="normal bold 8pt/normal &quot;Arial&quot;" color="crimson"/>
+        <Static id="staUser" taborder="4" text="작성자" left="52" top="498" width="178" height="22" font="normal bold 8pt/normal &quot;Arial&quot;"/>
+        <Button id="btnClose" taborder="5" text="확인" left="576" top="497" width="88" height="27" font="normal bold 10pt/normal &quot;Arial&quot;" border="2px solid black" background="mediumseagreen" onclick="btnClose_onclick" color="white" onmouseleave="btnClose_onmouseleave" onmouseenter="btnClose_onmouseenter"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_noticeDetail">
+        <ColumnInfo>
+          <Column id="NOTICE_ID" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="CONTENT" type="STRING" size="256"/>
+          <Column id="REG_DATE" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[this.fvNoticeId = 0;
+this.form_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	var ObjParam = this.getOwnerFrame().param;
+	if(ObjParam)
+	{
+		this.fvNoticeId = ObjParam.noticeId;
+	}
+	this.staNoticeContent.set_readonly(true);
+	this.fn_loadNoticeDetail();
+};
+
+this.fn_loadNoticeDetail = function()
+{
+	this.transaction("svcSelectNoticeDetail"
+					,"SvcUrl::notice/selectNoticeDetail.do"
+					,""
+					,"ds_noticeDetail=dsList"
+					,"noticeId=" + this.fvNoticeId
+					,"fn_selectNoticeDetailCallback");
+};
+
+this.fn_selectNoticeDetailCallback = function(svcId, errCode, errMsg)
+{
+	if(errCode < 0 )
+	{
+		this.alert("공지사항 조회중 오류가 발생했습니다." + errMsg);
+		return;
+	}
+	
+	if(this.ds_noticeDetail.getRowCount() == 0)
+	{
+		this.alert("공지사항이 없습니다");
+		this.close("");
+		return;
+	}
+	
+	this.staNoticeTitle.set_text(this.ds_noticeDetail.getColumn(0, "TITLE"));
+	this.staNoticeContent.set_value(this.ds_noticeDetail.getColumn(0, "CONTENT"));
+	this.staUser.set_text("작성자 : " + this.ds_noticeDetail.getColumn(0, "USER_ID"));
+	this.staTime.set_text("작성일 : " + this.ds_noticeDetail.getColumn(0, "REG_DATE"));
+};
+
+this.btnClose_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close("");
+};
+
+
+this.btnClose_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("mediumseagreen");
+};
+
+this.btnClose_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("red");
+};
+]]></Script>
+  </Form>
+</FDL>

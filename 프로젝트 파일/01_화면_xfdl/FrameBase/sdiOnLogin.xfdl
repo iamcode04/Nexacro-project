@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="sdiOnLogin" width="300" height="300" titletext="로그인 페이지" onload="sdiOnLogin_onload">
+    <Layouts>
+      <Layout height="300" mobileorientation="landscape" width="300">
+        <ImageViewer id="ImageViewer00" taborder="1" left="0" top="0" width="300" height="300" image="url('imagerc::nightstar.png')" stretch="fit" tabstop="true" border="0px solid black" text=""/>
+        <Static id="idBox" taborder="0" text="아이디" left="25" top="65" width="95" height="30" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" background="goldenrod" color="white" font="normal 700 10pt/normal &quot;Arial&quot;"/>
+        <Static id="idBox00" taborder="4" text="비밀번호" left="25" top="135" width="95" height="30" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" background="goldenrod" color="white" font="normal 700 10pt/normal &quot;Arial&quot;"/>
+        <Edit id="idEdit" taborder="2" left="120" top="65" width="150" height="30" borderRadius="0px 15px 15px 0px" background="whitesmoke" text=""/>
+        <Edit id="idEdit00" taborder="3" left="120" top="135" width="150" height="30" borderRadius="0px 15px 15px 0px" background="whitesmoke" text=""/>
+        <Button id="saveImg" taborder="5" text="로그인" left="75" top="205" width="155" height="35" color="white" background="goldenrod" font="normal 700 15pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="saveImg_onclick" onmouseenter="saveImg_onmouseenter" onmouseleave="saveImg_onmouseleave"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.fvUserId = "";
+this.fvUserName = "";
+this.fvSecName = "";
+this.sdiOnLogin_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+	this.scrollbartype = "none";
+};
+
+this.saveImg_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var userId = this.idEdit.value;
+	var pass = this.idEdit00.value;
+
+	if (userId == "" || userId == null)
+	{
+		this.alert("아이디를 입력해주세요.");
+		return;
+	}
+	if (pass == "" || pass == null)
+	{
+		this.alert("비밀번호를 입력해주세요.");
+		return;
+	}
+
+	this.ds_login.clearData();
+	this.ds_login.addRow();
+	this.ds_login.setColumn(0, "USER_ID", userId);
+	this.ds_login.setColumn(0, "PASS", pass);
+
+	this.transaction("svcLogin"
+	                 ,"SvcUrl::user/login.do"
+	                 ,"input=ds_login"
+	                 ,""
+	                 ,""
+	                 ,"fn_loginCallback");
+};
+
+this.fn_loginCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("로그인 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	if (errCode == 200)
+	{
+		this.close("OK|" + this.fvUserId + "|" + this.fvUserName + "|" + (this.fvSecName == null ? "" : this.fvSecName));
+	}
+	else
+	{
+		this.alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+	}
+};
+this.saveImg_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("darkgoldenrod");
+};
+
+this.saveImg_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("goldenrod");
+};
+]]></Script>
+    <Objects>
+      <Dataset id="ds_login">
+        <ColumnInfo>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="PASS" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

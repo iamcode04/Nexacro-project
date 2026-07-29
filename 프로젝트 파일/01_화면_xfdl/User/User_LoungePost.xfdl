@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_LoungePost" width="600" height="400" titletext="New Form">
+    <Layouts>
+      <Layout height="400" mobileorientation="landscape" width="600">
+        <ImageViewer id="ImageViewer00" taborder="0" left="0" top="0" width="600" height="400" border="0px none" image="url('imagerc::malang.png')" stretch="fit"/>
+        <Edit id="postTitle" taborder="1" left="80" top="40" width="500" height="20"/>
+        <TextArea id="postContent" taborder="2" left="80" top="79" width="500" height="270"/>
+        <Radio id="Radio00" taborder="3" left="81" top="60" width="279" height="19" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" layoutorder="0" rowcount="0" columncount="4" font="normal 700 6pt/normal &quot;Arial&quot;">
+          <Dataset id="innerdataset">
+            <ColumnInfo>
+              <Column id="codecolumn" size="256"/>
+              <Column id="datacolumn" size="256"/>
+            </ColumnInfo>
+            <Rows>
+              <Row>
+                <Col id="codecolumn">1</Col>
+                <Col id="datacolumn">자유게시판</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">2</Col>
+                <Col id="datacolumn">정보게시판</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">3</Col>
+                <Col id="datacolumn">질문게시판</Col>
+              </Row>
+              <Row>
+                <Col id="codecolumn">4</Col>
+                <Col id="datacolumn">잡담게시판</Col>
+              </Row>
+            </Rows>
+          </Dataset>
+        </Radio>
+        <Static id="Static00" taborder="4" text="제목" left="12" top="40" width="60" height="20" textAlign="center" color="white" background="darkblue" font="normal bold 10pt/normal &quot;Arial&quot;" border="0px none"/>
+        <Static id="Static00_00" taborder="5" text="내용" left="12" top="79" width="60" height="20" textAlign="center" color="white" background="darkblue" font="normal bold 10pt/normal &quot;Arial&quot;" border="0px none"/>
+        <Button id="btnPostSave" taborder="6" text="글쓰기" left="475" top="355" width="105" height="30" background="lightseagreen" color="snow" borderRadius="10px 10px 10px 10px" border="0px solid white" font="normal bold 13pt/normal &quot;Arial&quot;" boxShadow="2px 2px 0px 0px black" icon="url('theme://images/btn_LF_Open.png')" textPadding="5px" onclick="btnPostSave_onclick" onmouseenter="btnPostSave_onmouseenter" onmouseleave="btnPostSave_onmouseleave"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.btnPostSave_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var arrBoardType = ["FREE", "INFO", "QNA", "ETC"];
+	var nIndex = this.Radio00.index;
+
+	if (nIndex < 0)
+	{
+		this.alert("게시판을 선택해주세요.");
+		return;
+	}
+
+	var sBoardType = arrBoardType[nIndex];
+	var sTitle = this.postTitle.value;
+	var sContent = this.postContent.value;
+
+	if (sTitle == "" || sTitle == null)
+	{
+		this.alert("제목을 입력해주세요.");
+		return;
+	}
+	if (sContent == "" || sContent == null)
+	{
+		this.alert("내용을 입력해주세요.");
+		return;
+	}
+
+	var objParam = this.getOwnerFrame().param;
+
+	this.ds_post.clearData();
+	this.ds_post.addRow();
+	this.ds_post.setColumn(0, "BOARD_TYPE", sBoardType);
+	this.ds_post.setColumn(0, "USER_ID", objParam.userId);
+	this.ds_post.setColumn(0, "SEC_NAME", objParam.secName);
+	this.ds_post.setColumn(0, "TITLE", sTitle);
+	this.ds_post.setColumn(0, "CONTENT", sContent);
+
+	this.fvSavedBoardType = sBoardType;
+
+	this.transaction("svcInsertPost"
+	                 ,"SvcUrl::lounge/insertPost.do"
+	                 ,"input=ds_post"
+	                 ,""
+	                 ,""
+	                 ,"fn_insertPostCallback");
+};
+
+this.fn_insertPostCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("등록 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.alert("등록되었습니다!");
+	this.close("OK|" + this.fvSavedBoardType);
+};
+
+this.fn_insertPostCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("등록 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.alert("등록되었습니다!");
+	this.close("OK");
+};
+
+this.btnPostSave_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("teal");
+};
+
+this.btnPostSave_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightseagreen");
+};
+]]></Script>
+    <Objects>
+      <Dataset id="ds_post">
+        <ColumnInfo>
+          <Column id="BOARD_TYPE" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="SEC_NAME" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="CONTENT" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

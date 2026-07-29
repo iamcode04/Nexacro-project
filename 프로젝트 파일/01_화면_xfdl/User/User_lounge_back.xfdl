@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_lounge_back" width="600" height="850" titletext="New Form" onload="form_onload">
+    <Layouts>
+      <Layout height="850" width="600">
+        <ImageViewer id="ImageViewer00" taborder="0" text="ImageViewer00" left="0" top="0" width="600" height="850" image="url('imagerc::bbb.png')" stretch="fit"/>
+        <Static id="staTitle" taborder="1" left="50" top="43" width="500" height="37" background="white" borderRadius="10px 10px 10px 10px" border="2px solid "/>
+        <TextArea id="txtContent" taborder="2" left="50" top="82" width="500" height="358" borderRadius="10px 10px 10px 10px" border="2px solid black"/>
+        <Button id="btnLike" taborder="3" text="좋아요" left="435" top="398" width="105" height="37" borderRadius="10px 10px 10px 10px" background="2px solid pink" border="2px solid lightcoral" font="normal 700 12pt/normal &quot;Arial&quot;" color="red" icon="url('theme://images/btn_LF_Home.png')" textPadding="5px" cursor="pointer"/>
+        <Button id="btnCommentSave" taborder="9" text="등록" left="471" top="792" width="75" height="37" borderRadius="10px 10px 10px 10px" background="teal" border="2px solid black" font="normal 700 12pt/normal &quot;Arial&quot;" color="white" textPadding="5px" cursor="pointer"/>
+        <Static id="staLikeCnt" taborder="4" text="1" left="393" top="407" width="42" height="26" textAlign="center" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+        <Static id="staAuthor" taborder="6" text="1" left="60" top="407" width="140" height="26" textAlign="left" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray"/>
+        <Static id="staDate" taborder="7" text="1" left="205" top="407" width="140" height="26" textAlign="left" font="normal bold 10pt/normal &quot;Arial&quot;" color="gray"/>
+        <Grid id="grdComment" taborder="5" left="50" top="440" width="500" height="350" background="lightgray" borderRadius="10px 10px 10px 10px" border="2px solid black" binddataset="ds_commentList" autofittype="col">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="79"/>
+                <Column size="301"/>
+                <Column size="110"/>
+              </Columns>
+              <Rows>
+                <Row size="24"/>
+              </Rows>
+              <Band id="body">
+                <Cell text="bind:SEC_NAME"/>
+                <Cell col="1" text="bind:CONTENT"/>
+                <Cell col="2" text="bind:REG_DATE"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Edit id="editComment" taborder="8" left="50" top="791" width="420" height="39" background="#a7d6c0" border="2px solid black" borderRadius="10px 10px 10px 10px"/>
+        <Button id="btnClose" taborder="10" left="520" top="0" width="80" height="60" icon="url('theme://images/icon_Close.png')" background="transparent" border="0px none" onclick="btnClose_onclick"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.fvPostId = 0;
+this.fvUserId = "";
+this.fvSecName = "";
+this.fvLiked = false;
+this.fvLikeCnt = 0;
+
+this.form_onload = function(obj, e)
+{
+	var objParam = this.getOwnerFrame().param;
+	if (objParam)
+	{
+		this.fvPostId = objParam.postId;
+		this.fvUserId = objParam.userId;
+		this.fvSecName = objParam.secName;
+	}
+
+	this.fn_loadPostDetail();
+	this.fn_loadCommentList();
+
+	this.btnLike.addEventHandler("onclick", this.btnLike_onclick, this);
+	this.btnCommentSave.addEventHandler("onclick", this.btnCommentSave_onclick, this);
+	this.btnClose.addEventHandler("onclick", this.btnClose_onclick, this);
+};
+
+this.fn_loadPostDetail = function()
+{
+	this.transaction("svcSelectPostDetail"
+	                 ,"SvcUrl::lounge/selectPostDetail.do"
+	                 ,""
+	                 ,"ds_postDetail=dsList"
+	                 ,"postId=" + this.fvPostId
+	                 ,"fn_selectPostDetailCallback");
+};
+
+this.fn_selectPostDetailCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("게시글 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	this.staTitle.set_text(this.ds_postDetail.getColumn(0, "TITLE"));
+	this.staAuthor.set_text(this.ds_postDetail.getColumn(0, "SEC_NAME"));
+	this.staDate.set_text(this.ds_postDetail.getColumn(0, "REG_DATE"));
+	this.txtContent.set_value(this.ds_postDetail.getColumn(0, "CONTENT"));
+	this.staLikeCnt.set_text(this.ds_postDetail.getColumn(0, "LIKE_CNT"));
+};
+
+this.fn_loadCommentList = function()
+{
+	this.transaction("svcSelectCommentList"
+	                 ,"SvcUrl::lounge/selectCommentList.do"
+	                 ,""
+	                 ,"ds_commentList=dsList"
+	                 ,"postId=" + this.fvPostId
+	                 ,"fn_selectCommentListCallback");
+};
+
+this.fn_selectCommentListCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("댓글 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+};
+
+this.btnLike_onclick = function(obj, e)
+{
+	this.transaction("svcUpdateLikeCount"
+	                 ,"SvcUrl::lounge/updateLikeCount.do"
+	                 ,""
+	                 ,""
+	                 ,"postId=" + this.fvPostId
+	                 ,"fn_updateLikeCountCallback");
+};
+
+this.fn_updateLikeCountCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("좋아요 처리 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	this.fvLikeCnt = nexacro.toNumber(this.fvLikeCnt);
+	this.staLikeCnt.set_text(this.fvLikeCnt);
+	this.fvLiked = true;
+};
+
+this.btnCommentSave_onclick = function(obj, e)
+{
+	var sContent = this.editComment.value;
+	if (sContent == "" || sContent == null)
+	{
+		this.alert("댓글 내용을 입력해주세요.");
+		return;
+	}
+
+	this.ds_commentInput.clearData();
+	this.ds_commentInput.addRow();
+	this.ds_commentInput.setColumn(0, "POST_ID", this.fvPostId);
+	this.ds_commentInput.setColumn(0, "USER_ID", this.fvUserId);
+	this.ds_commentInput.setColumn(0, "SEC_NAME", this.fvSecName);
+	this.ds_commentInput.setColumn(0, "CONTENT", sContent);
+
+	this.transaction("svcInsertComment"
+	                 ,"SvcUrl::lounge/insertComment.do"
+	                 ,"input=ds_commentInput"
+	                 ,""
+	                 ,""
+	                 ,"fn_insertCommentCallback");
+};
+
+this.fn_insertCommentCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("댓글 등록 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.editComment.set_value("");
+	this.fn_loadCommentList();
+};
+
+this.btnClose_onclick = function(obj, e)
+{
+	this.close(this.fvLiked ? "LIKED" : "");
+};]]></Script>
+    <Objects>
+      <Dataset id="ds_postDetail">
+        <ColumnInfo>
+          <Column id="POST_ID" type="STRING" size="256"/>
+          <Column id="BOARD_TYPE" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="SEC_NAME" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="CONTENT" type="STRING" size="256"/>
+          <Column id="LIKE_CNT" type="STRING" size="256"/>
+          <Column id="VIEW_CNT" type="STRING" size="256"/>
+          <Column id="REG_DATE" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_commentList"/>
+      <Dataset id="ds_commentInput">
+        <ColumnInfo>
+          <Column id="POST_ID" type="STRING" size="256"/>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="SEC_NAME" type="STRING" size="256"/>
+          <Column id="CONTENT" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

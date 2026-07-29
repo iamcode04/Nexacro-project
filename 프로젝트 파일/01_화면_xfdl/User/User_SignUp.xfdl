@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_SignUp" width="1000" height="730" titletext="New Form">
+    <Layouts>
+      <Layout height="730" mobileorientation="landscape" width="1000">
+        <Div id="Div00" taborder="16" left="86" top="95" width="834" height="545" border="3px solid lightcoral" background="snow">
+          <Layouts>
+            <Layout>
+              <Button id="signCheckBox" taborder="0" text="등록" left="312" top="452" width="210" height="47" color="white" background="lightseagreen" font="normal 700 15pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="Div00_signCheckBox_onclick" onmouseenter="Div00_signCheckBox_onmouseenter" onmouseleave="Div00_signCheckBox_onmouseleave"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <Edit id="idEdit" taborder="0" left="490" top="196" width="282" height="40" borderRadius="0px 15px 15px 0px" background="whitesmoke" text=""/>
+        <Edit id="passEdit" taborder="3" left="490" top="246" width="282" height="40" borderRadius="0px 15px 15px 0px" background="whitesmoke" text=""/>
+        <Edit id="nameEdit" taborder="7" left="490" top="296" width="282" height="40" borderRadius="0px 15px 15px 0px" background="whitesmoke"/>
+        <Edit id="phoneEdit" taborder="8" left="490" top="346" width="282" height="40" borderRadius="0px 15px 15px 0px" background="whitesmoke"/>
+        <Edit id="mailEdit" taborder="9" left="490" top="396" width="282" height="40" borderRadius="0px 15px 15px 0px" background="whitesmoke"/>
+        <Edit id="edtAddr" taborder="13" left="490" top="446" width="282" height="40" borderRadius="0px 15px 15px 0px" background="whitesmoke"/>
+        <Static id="idBox" taborder="1" text="아이디" left="360" top="196" width="131" height="40" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" background="lightcoral" color="white" font="normal 700 12pt/normal &quot;Arial&quot;"/>
+        <Static id="passBox" taborder="2" text="비밀번호" left="360" top="246" width="131" height="40" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" onclick="Static00_00_onclick" background="lightcoral" color="white" font="normal 700 12pt/normal &quot;Arial&quot;"/>
+        <Static id="nameBox" taborder="4" text="성명" left="360" top="296" width="131" height="40" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" onclick="Static00_00_onclick" background="lightcoral" font="normal 700 12pt/normal &quot;Arial&quot;" boxShadow="0px 0px 0px 0px white" color="white"/>
+        <Static id="phoneBox" taborder="5" text="전화번호" left="360" top="346" width="131" height="40" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" onclick="Static00_00_onclick" background="lightcoral" color="white" font="normal 700 12pt/normal &quot;Arial&quot;"/>
+        <Static id="mailBox" taborder="6" text="이메일" left="360" top="396" width="131" height="40" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" onclick="Static00_00_onclick" background="lightcoral" font="normal bold 12pt/normal &quot;Arial&quot;" color="white"/>
+        <ImageViewer id="mainImg" taborder="10" left="123" top="171" width="210" height="250" border="1px solid lightcoral" borderRadius="15px 15px 15px 15px" image="url('imagerc::Pinklogo.png')" stretch="fixaspectratio"/>
+        <Button id="saveImg" taborder="11" text="이미지 등록" left="123" top="439" width="210" height="47" color="white" background="lightseagreen" font="normal 700 15pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="saveImg_onclick" onmouseenter="saveImg_onmouseenter" onmouseleave="saveImg_onmouseleave"/>
+        <Button id="checkUserId" taborder="14" text="중복 확인" left="787" top="196" width="115" height="40" color="white" background="lightseagreen" font="normal bold 12pt/normal &quot;Arial&quot;" border="0px solid white" borderRadius="15px 15px 15px 15px" boxShadow="2px 2px 0px 0px black" onclick="checkUserId_onclick" onmouseenter="checkUserId_onmouseenter" onmouseleave="checkUserId_onmouseleave"/>
+        <Static id="Static00_00_00_00_00_00" taborder="12" left="360" top="446" width="131" height="40" borderRadius="15px 0px 0px 15px" border="0px solid white" textAlign="center" onclick="Static00_00_onclick" background="lightcoral" font="normal bold 12pt/normal &quot;Arial&quot;" color="white" text="주소"/>
+        <Static id="textBox" taborder="15" text="회원가입" left="420" top="65" width="160" height="70" textAlign="center" font="normal 700 20pt/normal &quot;Arial&quot;" onclick="Static01_onclick" background="white" borderRadius="15px 15px 15px 15px" border="3px solid lightcoral"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[this.fvUserIdCnt = 0;
+this.fvProfileFileId = "";
+
+this.checkUserId_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var userId = this.idEdit.value;
+	if (userId == "" || userId == null)
+	{
+		this.alert("아이디를 입력해주세요.");
+		return;
+	}
+	this.ds_checkId.clearData();
+	this.ds_checkId.addRow();
+	this.ds_checkId.setColumn(0, "USER_ID", userId);
+
+	this.transaction("svcCheckUserId"
+	                 ,"SvcUrl::user/checkUserId.do"
+	                 ,"input=ds_checkId"
+	                 ,""
+	                 ,""
+	                 ,"fn_checkUserIdCallback");
+};
+
+this.saveImg_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.FileDialog00.open("이미지 선택", 1, "%DOCUMENT%");   // mode 1 = 단일 선택
+};
+
+this.FileDialog00_onclose = function(obj:nexacro.FileDialog,e:nexacro.FileDialogEventInfo)
+{
+	var objFile = e.virtualfiles[0];
+	var sFileName = objFile.filename;
+	
+	if( ! /\.(jpe?g|png|gif)$/i.test(sFileName)) {
+		this.alert("이미지 파일을 선택하세요");
+		return;
+	}
+	this.FileUpTransfer00.clearFileList();
+	this.FileUpTransfer00.addFile(sFileName, objFile);
+	this.FileUpTransfer00.setPostData("filepath", "edu/upload_file");
+	this.FileUpTransfer00.upload("SvcUrl::uploadFile.do");
+};
+
+this.FileUpTransfer00_onsuccess = function(obj:nexacro.FileUpTransfer,e:nexacro.FileUpTransferEventInfo)
+{
+	var objDs = e.datasets[0];
+	if (objDs.rowcount > 0)
+	{
+		this.fvProfileFileId = objDs.getColumn(0, "fileid");
+		this.mainImg.set_image("url('http://localhost:8088/edupack_egov/upload/edu/upload_file/" + this.fvProfileFileId + "')");
+	}
+	this.alert("이미지가 저장되었습니다.");
+};
+
+this.closeBtn_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	this.close("");
+};
+
+this.Div00_signCheckBox_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var userId = this.idEdit.value;
+	var pass = this.passEdit.value;
+	var userName = this.nameEdit.value;
+	var email = this.mailEdit.value;
+	var address = this.edtAddr.value;
+	var phone = this.phoneEdit.value;
+
+	if (userId == "" || userId == null)
+	{
+		this.alert("아이디가 입력되지 않았습니다.");
+		return;
+	}
+	if (pass == "" || pass == null)
+	{
+		this.alert("비밀번호가 입력되지 않았습니다.");
+		return;
+	}
+	if (userName == "" || userName == null)
+	{
+		this.alert("성명이 입력되지 않았습니다.");
+		return;
+	}
+	if (email == "" || email == null)
+	{
+		this.alert("이메일이 입력되지 않았습니다.");
+		return;
+	}
+	if (phone == "" || phone == null)
+	{
+		this.alert("전화번호가 입력되지 않았습니다.");
+		return;
+	}
+	
+	if (address == "" || address == null)
+	{
+		this.alert("주소가 입력되지 않았습니다.");
+		return;
+	}
+	
+	this.ds_signUp.clearData();
+	this.ds_signUp.addRow();
+	this.ds_signUp.setColumn(0, "USER_ID", userId);
+	this.ds_signUp.setColumn(0, "PASS", pass);
+	this.ds_signUp.setColumn(0, "USER_NAME", userName);
+	this.ds_signUp.setColumn(0, "EMAIL", email);
+	this.ds_signUp.setColumn(0, "PROFILE", this.fvProfileFileId);   // 이미지 안 골랐으면 빈 문자열 그대로 감
+	this.ds_signUp.setColumn(0, "TEL_NO", phone);
+	this.ds_signUp.setColumn(0, "ADDR1", this.edtAddr.value);
+	
+	
+	this.transaction("svcSignUp"
+	                 ,"SvcUrl::user/signUp.do"
+	                 ,"input=ds_signUp"
+	                 ,""
+	                 ,""
+	                 ,"fn_signUpCallback");
+};
+
+this.fn_checkUserIdCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("중복 확인 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	if (this.fvUserIdCnt > 0)
+	{
+		this.alert("이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.");
+		this.idEdit.set_value("");
+		this.idEdit.setFocus();
+		return;
+	}
+
+	this.alert("사용 가능한 아이디입니다.");
+};
+
+this.fn_signUpCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("등록 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+	this.alert("등록되었습니다!");
+	this.close("OK");
+};
+this.checkUserId_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("teal");
+};
+
+this.checkUserId_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightseagreen");
+};
+
+this.Div00_signCheckBox_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("teal");
+};
+
+this.Div00_signCheckBox_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightseagreen");
+};
+
+this.saveImg_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("teal");
+};
+
+this.saveImg_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightseagreen");
+};
+]]></Script>
+    <Objects>
+      <Dataset id="ds_checkId">
+        <ColumnInfo>
+          <Column id="USER_ID" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <Dataset id="ds_signUp">
+        <ColumnInfo>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="PASS" type="STRING" size="256"/>
+          <Column id="USER_NAME" type="STRING" size="256"/>
+          <Column id="EMAIL" type="STRING" size="256"/>
+          <Column id="PROFILE" type="STRING" size="256"/>
+          <Column id="ADDR1" type="STRING" size="256"/>
+          <Column id="TEL_NO" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+      <FileDialog id="FileDialog00" onclose="FileDialog00_onclose"/>
+      <FileUpTransfer id="FileUpTransfer00" onsuccess="FileUpTransfer00_onsuccess"/>
+    </Objects>
+  </Form>
+</FDL>

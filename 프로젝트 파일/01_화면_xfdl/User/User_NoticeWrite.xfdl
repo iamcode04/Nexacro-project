@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_NoticeWrite" width="700" height="600" titletext="New Form">
+    <Layouts>
+      <Layout height="600" width="700">
+        <ImageViewer id="ImageViewer00" taborder="0" left="0" top="0" width="700" height="600" border="0px none" image="url('imagerc::Notice.png')" stretch="fit"/>
+        <Edit id="edtNotice" taborder="1" left="100" top="85" width="550" height="30"/>
+        <TextArea id="edtTextArea" taborder="2" left="100" top="120" width="550" height="370"/>
+        <Button id="btnSave" taborder="3" text="공지사항 저장" left="255" top="520" width="190" height="47" onclick="btnSave_onclick" font="normal bold 15pt/normal &quot;Arial&quot;" color="white" background="lightpink" onmouseenter="btnSave_onmouseenter" onmouseleave="btnSave_onmouseleave"/>
+        <Static id="Static00" taborder="4" text="NOTICE" left="255" top="23" width="190" height="47" textAlign="center" font="normal 700 25pt/normal &quot;Arial&quot;" background="lightpink" color="white"/>
+        <Static id="Static01" taborder="5" text="제목" left="16" top="85" width="84" height="30" textAlign="center" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightpink" color="white"/>
+        <Static id="Static01_00" taborder="6" text="내용" left="16" top="120" width="84" height="30" textAlign="center" font="normal 700 15pt/normal &quot;Arial&quot;" background="lightpink" color="white"/>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[
+this.btnSave_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var title = this.edtNotice.value;
+	var content = this.edtTextArea.value;
+	
+	if(title == "" || title == null){
+		this.alert("제목을 입력해주세요");
+	}
+	if(content == "" || content == null){
+		this.alert("내용을 입력해주세요");
+	}
+	
+	var Oparam = this.getOwnerFrame().param;
+	
+	this.ds_noticeInput.clearData();
+	this.ds_noticeInput.addRow();
+	this.ds_noticeInput.setColumn(0,"USER_ID",Oparam.userId);
+	this.ds_noticeInput.setColumn(0,"TITLE",title);
+	this.ds_noticeInput.setColumn(0,"CONTENT",content);
+	
+	this.transaction("svcInsertNotice"
+					,"SvcUrl::notice/insertNotice.do"
+					,"input=ds_noticeInput"
+					,""
+					,""
+					,"fn_iC");
+};
+
+this.fn_iC = function(svcID, errCode, errMsg)
+{
+	if(errCode<0)
+	{
+		this.alert("등록중 오류가 발생했습니다");
+		return;
+	}
+	this.alert("등록되었습니다");
+	this.close("OK");
+}
+
+this.btnSave_onmouseenter = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("pink");
+};
+
+this.btnSave_onmouseleave = function(obj:nexacro.Button,e:nexacro.MouseEventInfo)
+{
+	obj.set_background("lightpink");
+};
+]]></Script>
+    <Objects>
+      <Dataset id="ds_noticeInput">
+        <ColumnInfo>
+          <Column id="USER_ID" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="CONTENT" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+  </Form>
+</FDL>

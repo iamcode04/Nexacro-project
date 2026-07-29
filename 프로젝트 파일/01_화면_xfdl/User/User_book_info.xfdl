@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="User_book_info" width="500" height="500" titletext="New Form" onload="form_onload ">
+    <Layouts>
+      <Layout height="500" width="500">
+        <ImageViewer id="ImageViewer00" taborder="0" left="0" top="0" width="500" height="500" image="url('imagerc::lib.png')" stretch="fit"/>
+        <ImageViewer id="ImageViewer01" taborder="1" left="22" top="10" width="148" height="210" border="3px solid black"/>
+        <Static id="book" taborder="2" left="22" top="225" width="456" height="265" background="#fff9ef" border="3px solid black"/>
+        <Div id="Div00" taborder="3" text="Div00" left="172" top="10" width="306" height="210" background="#fff9ef" border="3px solid black">
+          <Layouts>
+            <Layout>
+              <Static id="Static00" taborder="0" text="제목 : " left="24" top="23" width="36" height="17" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_00" taborder="1" text="저자 : " left="24" top="52" width="36" height="17" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_00_00" taborder="2" text="출판사 : " left="11" top="80" width="54" height="17" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_00_00_00" taborder="3" text="가격 : " left="24" top="110" width="36" height="17" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_00_00_00_00" taborder="4" text="출판일 : " left="11" top="139" width="54" height="17" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+              <Static id="Static00_00_00_00_00_00" taborder="5" text="ISBN : " left="18" top="168" width="44" height="15" font="normal bold 10pt/normal &quot;Arial&quot;"/>
+              <Static id="Static01" taborder="6" text="내용이 들어갑니다" left="61" top="21" width="230" height="21" font="normal 700 7pt/normal &quot;Arial&quot;"/>
+              <Static id="Static01_00" taborder="7" text="내용이 들어갑니다" left="61" top="50" width="230" height="21" font="normal 700 7pt/normal &quot;Arial&quot;"/>
+              <Static id="Static01_00_00" taborder="8" text="내용이 들어갑니다" left="61" top="79" width="230" height="21" font="normal 700 7pt/normal &quot;Arial&quot;"/>
+              <Static id="Static01_00_00_00" taborder="9" text="내용이 들어갑니다" left="61" top="108" width="230" height="21" font="normal 700 7pt/normal &quot;Arial&quot;"/>
+              <Static id="Static01_00_00_00_00" taborder="10" text="내용이 들어갑니다" left="61" top="137" width="230" height="21" font="normal 700 7pt/normal &quot;Arial&quot;"/>
+              <Static id="Static01_00_00_00_00_00" taborder="11" text="내용이 들어갑니다" left="61" top="166" width="230" height="21" font="normal 700 7pt/normal &quot;Arial&quot;"/>
+            </Layout>
+          </Layouts>
+        </Div>
+        <TextArea id="txtContents" taborder="4" left="30" top="230" width="441" height="254" background="transparent" border="0px none"/>
+      </Layout>
+    </Layouts>
+    <Objects>
+      <Dataset id="ds_bookDetail">
+        <ColumnInfo>
+          <Column id="ISBN" type="STRING" size="256"/>
+          <Column id="TITLE" type="STRING" size="256"/>
+          <Column id="AUTHORS" type="STRING" size="256"/>
+          <Column id="PRICE" type="STRING" size="256"/>
+          <Column id="PUBLISHER" type="STRING" size="256"/>
+          <Column id="THUMBNAIL" type="STRING" size="256"/>
+          <Column id="DATETIME" type="STRING" size="256"/>
+          <Column id="CONTENTS" type="STRING" size="256"/>
+        </ColumnInfo>
+      </Dataset>
+    </Objects>
+    <Script type="xscript5.1"><![CDATA[this.fvIsbn = "";
+
+this.form_onload = function(obj, e)
+{
+	var objParam = this.getOwnerFrame().param;
+	if (objParam)
+	{
+		this.fvIsbn = objParam.isbn;
+	}
+	this.fn_loadBookDetail();
+};
+
+this.fn_loadBookDetail = function()
+{
+	this.transaction("svcGetBookDetail"
+	                 ,"SvcUrl::book/getBookDetail.do"
+	                 ,""
+	                 ,"ds_bookDetail=dsList"
+	                 ,"isbn=" + nexacro.wrapQuote(this.fvIsbn)
+	                 ,"fn_getBookDetailCallback");
+};
+
+this.fn_getBookDetailCallback = function(svcID, errCode, errMsg)
+{
+	if (errCode < 0)
+	{
+		this.alert("도서 상세 조회 중 오류가 발생했습니다: " + errMsg);
+		return;
+	}
+
+	this.ImageViewer01.set_image(this.ds_bookDetail.getColumn(0, "THUMBNAIL"));
+	this.Div00.form.Static01.set_text(this.ds_bookDetail.getColumn(0, "TITLE"));
+	this.Div00.form.Static01_00.set_text(this.ds_bookDetail.getColumn(0, "AUTHORS"));
+	this.Div00.form.Static01_00_00.set_text(this.ds_bookDetail.getColumn(0, "PUBLISHER"));
+	this.Div00.form.Static01_00_00_00.set_text(this.ds_bookDetail.getColumn(0, "PRICE"));
+	this.Div00.form.Static01_00_00_00_00.set_text(this.ds_bookDetail.getColumn(0, "DATETIME"));
+	this.Div00.form.Static01_00_00_00_00_00.set_text(this.ds_bookDetail.getColumn(0, "ISBN"));
+	this.txtContents.set_value(this.ds_bookDetail.getColumn(0, "CONTENTS"));
+};]]></Script>
+  </Form>
+</FDL>

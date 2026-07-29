@@ -14,6 +14,8 @@
 
 이 저장소는 그 과정에서 배운 **개념 · 컴포넌트 사용법 · 예제 코드 · 실습 스크린샷**을 한 페이지에 모아 복습할 수 있게 만든 것입니다. 강의를 들으며 계속 내용을 덧붙여 가는 중입니다.
 
+여기에 더해, 배운 내용으로 직접 만든 **실습 프로젝트의 원본 소스**(화면 · 서버 · 테이블)를 `프로젝트 파일/` 에 함께 올려 두었습니다.
+
 - 빌드 도구 없이 **HTML 파일 하나**로 동작합니다 (프레임워크·번들러 없음)
 - GitHub Pages가 저장소를 그대로 서빙합니다
 - 검색창에 키워드를 넣으면 해당 항목만 필터링되고 본문이 하이라이트됩니다
@@ -35,8 +37,13 @@ Nexacro-project/
 │   ├── xpush-*.png            · X-PUSH 관련 (15장)
 │   └── ...                    (자세한 규칙은 아래 "이미지 이름 규칙" 참고)
 │
-└── 프로젝트 동영상/
-    └── 넥사크로 프로젝트 동영상.mp4   ← 실습 프로젝트 실행 녹화본 (5분 53초 / 약 18MB)
+├── 프로젝트 동영상/
+│   └── 넥사크로 프로젝트 동영상.mp4   ← 실습 프로젝트 실행 녹화본 (5분 53초 / 약 18MB)
+│
+└── 프로젝트 파일/              ← 실습 프로젝트 원본 소스 (아래 "프로젝트 파일" 참고)
+    ├── 01_화면_xfdl/          · 화면 정의 16개 + 프로젝트 설정 4개
+    ├── 02_서버_자바/          · 서버 컨트롤러 1개
+    └── 03_테이블_sql/         · 테이블 DDL 5개
 ```
 
 > `.claude/` 폴더는 로컬 개발 설정이라 `.gitignore`로 제외되어 있습니다.
@@ -102,6 +109,80 @@ Nexacro-project/
 | `deploy-` | 3 | 패킹, 배포 옵션 |
 | `sql1~2` | 2 | SQL(빨강) 아코디언 |
 | 그 외 | | `main-screen`, `work-screen`, `dataset-*`, `combo-*`, `calendar-*`, `dynamic-*`, `event-*`, `file-*`, `frame`, `web*` |
+
+---
+
+## 프로젝트 파일
+
+`프로젝트 파일/` 은 학습 노트 웹페이지와는 별개로, 과정 중에 직접 만든 **넥사크로 실습 프로젝트의 원본 소스**입니다.
+메인 화면 `sdiMain.xfdl` 에서 출발해 팝업·서비스 호출을 4단계까지 따라가며 **실제로 연결된 파일만** 추려 담았습니다.
+
+### 01_화면_xfdl — 화면 정의 (xfdl 16개 + 설정 4개)
+
+`sdiMain.xfdl` → 로그인/회원가입 → 업무화면/라운지 → 게시글·댓글·도서 순으로 이어집니다.
+
+| 폴더 | 파일 | 역할 |
+|---|---|---|
+| `FrameBase/` | `sdiMain.xfdl` | **진입 화면.** AI 채팅창, 회사/고객지원 바로가기, 업무·라운지 이동 |
+| | `sdiOnLogin.xfdl` | 업무·라운지 진입 시 뜨는 로그인 팝업 |
+| | `User_bookSub.xfdl` | 도서 목록 서브 화면 |
+| `User/` | `User_Login.xfdl` | 첫 진입 인트로 팝업 |
+| | `User_SignUp.xfdl` | 회원가입 (아이디 중복확인, 프로필 업로드) |
+| | `User_WorkPage.xfdl` | 업무 화면 (회원 목록, 공지 목록) |
+| | `User_NoticeWrite.xfdl` / `User_seeNotice.xfdl` | 공지 작성 / 상세 |
+| | `User_LoungeNick.xfdl` | 라운지 첫 이용 시 익명 닉네임 설정 |
+| | `User_lounge.xfdl` | 라운지 메인 (게시글 목록) |
+| | `User_LoungePost.xfdl` | 게시글 작성 |
+| | `User_lounge_back.xfdl` | 게시글 상세 · 댓글 · 좋아요 |
+| | `User_launge_mypage.xfdl` | 내가 쓴 글 / 댓글 |
+| | `User_book.xfdl` / `User_book_info.xfdl` | 도서 목록 / 상세 |
+| `Cmm/` | `CmmPaging.xfdl` | 공통 페이징 컴포넌트 |
+
+함께 담은 설정 파일 4개 — `0708.xprj`(프로젝트), `Application_Desktop_SDI.xadl`(진입점, `sdiMain.xfdl` 지정), `typedefinition.xml`(서비스 prefix), `environment.xml`(테마 `theme_edu`)
+
+### 02_서버_자바 — 서버 (자바 1개)
+
+| 파일 | 담당 |
+|---|---|
+| `EduFileController.java` | `uploadFile.do` — 회원가입 프로필 이미지 업로드. 파일시스템만 사용 (DB 미접근) |
+
+> Spring 설정 XML은 DB 접속정보가 들어 있어 제외했습니다.
+
+### 03_테이블_sql — 테이블 (5개)
+
+`sdiMain_tables.sql` — `mysqldump --no-data` 로 뽑은 **구조(DDL)만**, 실제 데이터는 포함하지 않습니다.
+
+| 테이블 | 주요 컬럼 | 쓰이는 화면 |
+|---|---|---|
+| `tb_user` | `USER_ID`(PK), `PASS`, `USER_NAME`, `EMAIL`, `PROFILE`, `SEC_NAME` | 로그인, 회원가입, 닉네임, 업무화면 |
+| `tb_notice` | `NOTICE_ID`(PK), `USER_ID`, `TITLE`, `CONTENT` | 공지 목록/작성/상세 |
+| `tb_lounge_post` | `POST_ID`(PK), `BOARD_TYPE`, `SEC_NAME`, `LIKE_CNT`, `VIEW_CNT` | 라운지 목록/작성/상세 |
+| `tb_lounge_comment` | `COMMENT_ID`(PK), `POST_ID`, `SEC_NAME`, `CONTENT` | 댓글 |
+| `tb_book` | `ISBN`, `TITLE`, `AUTHORS`, `PRICE`, `THUMBNAIL` | 도서 목록/상세 |
+
+`tb_user.SEC_NAME` 은 라운지에서 쓰는 익명 닉네임으로, 값이 없으면 `User_LoungeNick.xfdl` 팝업이 먼저 뜹니다.
+
+### 현재 진행 상태
+
+화면과 DB는 준비됐지만 **가운데 서버 계층이 아직 비어 있습니다.**
+
+```
+화면 (xfdl 16개)  ✅  →  서버 (Controller/Service/Mapper)  ❌  →  테이블 (5개)  ✅
+```
+
+화면에서 호출하는 서비스는 총 22개인데 구현된 것은 `uploadFile.do` 하나뿐입니다.
+
+| 갈래 | 서비스 | 상태 |
+|---|---|---|
+| 파일 | `uploadFile.do` | ✅ 구현 |
+| AI | `ai/chat.do` | ❌ |
+| 회원 | `user/login.do`, `signUp.do`, `checkUserId.do`, `updateSecName.do`, `selectUserList.do`, `updateUserList.do` | ❌ |
+| 공지 | `notice/selectNoticeList.do`, `insertNotice.do`, `selectNoticeDetail.do` | ❌ |
+| 라운지 | `lounge/selectPostList.do`, `insertPost.do`, `selectPostDetail.do`, `selectCommentList.do`, `insertComment.do`, `updateLikeCount.do`, `selectMyPosts.do`, `selectMyComments.do` | ❌ |
+| 도서 | `book/getBookList.do`, `getNewBookList.do`, `getBookDetail.do` | ❌ |
+
+서비스 주소 앞의 `SvcUrl` 은 `typedefinition.xml` 에서 `http://localhost:8088/edupack_egov/` 로 잡혀 있고,
+DB는 `edupackdb` (MySQL/MariaDB, `localhost:3306`) 입니다. 남은 21개는 Controller · Service · Mapper 를 채우면 동작합니다.
 
 ---
 
