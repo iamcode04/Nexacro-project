@@ -114,11 +114,14 @@
   .mm-node {
     display: inline-block;
     white-space: normal;
+    overflow-wrap: break-word;  /* 좁은 화면에서 띄어쓰기 없는 긴 항목이 잘리지 않도록 */
     text-align: left;
     line-height: 1.3;
     transition: transform .2s cubic-bezier(.16,1,.3,1);
   }
   .mm-node:hover { transform: translateX(3px); }
+  /* 말단 항목은 남는 가로 공간을 채우도록 늘린다 (하위 갈래를 가진 노드는 제외) */
+  .mm-child > .mm-node { display: block; }
 
   mark.hl {
     background: #fde047;
@@ -435,6 +438,7 @@
       <nav class="flex items-center gap-8">
         <button data-subtab="mindmap" class="subtab-btn text-sm font-medium pb-3 -mb-px">컴포넌트 정리</button>
         <button data-subtab="usage" class="subtab-btn text-sm font-medium pb-3 -mb-px">자세한 사용법</button>
+        <button data-subtab="video" class="subtab-btn text-sm font-medium pb-3 -mb-px">프로젝트 동영상</button>
       </nav>
     </div>
 
@@ -3440,6 +3444,37 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
 
     <p id="noResult" class="kr hidden mt-8 text-center text-sm text-zinc-400">검색 결과가 없습니다.</p>
     </div>
+
+    <!-- 서브탭 패널 3: 프로젝트 동영상 -->
+    <div id="subpanel-video" class="sub-panel mt-10">
+      <div class="bg-white border border-zinc-300 rounded-2xl overflow-hidden">
+        <div class="flex items-center gap-3 px-6 py-5 border-b border-zinc-200">
+          <span class="w-9 h-9 rounded-xl bg-zinc-900 text-white flex items-center justify-center shrink-0">
+            <iconify-icon icon="solar:videocamera-record-linear"></iconify-icon>
+          </span>
+          <div>
+            <p class="kr font-semibold text-zinc-900">넥사크로 프로젝트 동영상</p>
+            <p class="kr text-xs text-zinc-500 mt-0.5">실습으로 만든 넥사크로 프로젝트의 실행 화면 녹화본</p>
+          </div>
+        </div>
+        <div class="px-6 py-6">
+          <video
+            class="w-full h-auto rounded-xl bg-zinc-900 block"
+            controls
+            preload="metadata"
+            playsinline
+            controlsList="nodownload">
+            <source src="%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%8F%99%EC%98%81%EC%83%81/%EB%84%A5%EC%82%AC%ED%81%AC%EB%A1%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%8F%99%EC%98%81%EC%83%81.mp4" type="video/mp4">
+            <p class="kr text-sm text-zinc-300 p-4">이 브라우저에서는 동영상을 재생할 수 없습니다.
+              <a class="underline" href="%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%8F%99%EC%98%81%EC%83%81/%EB%84%A5%EC%82%AC%ED%81%AC%EB%A1%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%8F%99%EC%98%81%EC%83%81.mp4">파일을 직접 내려받아</a> 확인하세요.
+            </p>
+          </video>
+          <p class="kr mt-4 text-xs text-zinc-400 leading-relaxed">
+            용량이 약 18MB라 재생 시작까지 잠깐 걸릴 수 있습니다. 모바일 데이터 환경에서는 Wi-Fi 연결을 권장합니다.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -3521,11 +3556,19 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
 
   // 서브탭 (컴포넌트 정리 / 자세한 사용법)
   const subtabBtns = document.querySelectorAll('.subtab-btn');
-  const subpanels = { mindmap: document.getElementById('subpanel-mindmap'), usage: document.getElementById('subpanel-usage') };
+  const subpanels = {
+    mindmap: document.getElementById('subpanel-mindmap'),
+    usage: document.getElementById('subpanel-usage'),
+    video: document.getElementById('subpanel-video')
+  };
 
   function setActiveSubtab(name) {
     subtabBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.subtab === name));
     Object.entries(subpanels).forEach(([key, el]) => el.classList.toggle('active', key === name));
+    // 동영상 탭을 벗어나면 소리가 계속 나지 않도록 멈춘다
+    if (name !== 'video') {
+      subpanels.video.querySelectorAll('video').forEach(v => v.pause());
+    }
     scheduleMindmapRedraw();
   }
 
