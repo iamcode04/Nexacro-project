@@ -531,13 +531,10 @@
                         </div>
                         <div class="mm-children-wrap">
                           <div class="mm-children gap-2">
-                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">transaction() & 서버 통신 구조</a></div>
-                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">파라미터 전달과 Dataset 송수신</a></div>
+                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">transaction()과 서버 통신</a></div>
                             <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">서버 측 처리 구조 (Controller·Service·Mapper)</a></div>
-                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">MyBatis 파라미터 바인딩</a></div>
-                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">조회/저장 SQL 패턴</a></div>
-                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">페이징 & 공통코드 설계</a></div>
                             <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">실전 연동 패턴 (업로드·페이징·로그인)</a></div>
+                            <div class="mm-child"><a class="mm-node bg-white border border-zinc-200 text-zinc-700 text-xs font-medium rounded-lg px-3 py-2">MyBatis Mapper와 SQL 작성</a></div>
                           </div>
                         </div>
                       </div>
@@ -2085,14 +2082,14 @@ provider.sendPushMessage(pushMessage);</pre>
         </div>
       </div>
 
-      <!-- 9. transaction() 기본과 서버 통신 구조 (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre uiadapter gfntransaction">
+      <!-- 9. transaction()과 서버 통신 (파라미터·Dataset 송수신) (서버 연결 문서 · 파란색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre uiadapter gfntransaction 파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭 resource service">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:server-2-linear"></iconify-icon>
             </span>
-            <span class="kr font-semibold text-zinc-900">transaction() 기본과 서버 통신 구조</span>
+            <span class="kr font-semibold text-zinc-900">transaction()과 서버 통신 (파라미터·Dataset 송수신)</span>
           </div>
           <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
         </button>
@@ -2109,7 +2106,30 @@ provider.sendPushMessage(pushMessage);</pre>
                 <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed mb-1 font-mono text-xs bg-zinc-100 px-2 py-1.5 rounded inline-block">this.transaction("svcCheckUserId", "SvcUrl::user/checkUserId.do", "", "", "userId=" + nexacro.wrapQuote(userId), "fn_callback")</p>
               </div>
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">Sync/Async와 콜백의 중요성</p>
+                <p class="kr text-sm font-semibold text-zinc-800">⑤ 파라미터 문자열과 공백 문제</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">파라미터는 "key=값" 형태를 공백으로 이어붙여 전달하는데, 값 자체에 공백이 있으면(예: "홍 길동"처럼 띄어쓰기 있는 이름) 그 공백 지점에서 값이 잘려 "홍"까지만 전달되는 문제가 생긴다. 주의: <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nexacro.wrapQuote()</span>로 값을 감싸야 공백이 있어도 안전하게 전달된다.</p>
+                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <p class="kr text-xs text-zinc-500 leading-relaxed font-mono bg-red-50 border border-red-100 px-2 py-1.5 rounded"><span class="text-red-500 font-sans font-semibold">Before</span><br>"empName=" + sEmpName</p>
+                  <p class="kr text-xs text-zinc-500 leading-relaxed font-mono bg-emerald-50 border border-emerald-100 px-2 py-1.5 rounded"><span class="text-emerald-600 font-sans font-semibold">After</span><br>"empName=" + nexacro.wrapQuote(sEmpName)</p>
+                </div>
+                <p class="kr mt-3 text-xs text-zinc-400">실제 조회 함수 예시 — deptCode는 그냥 붙이고, empName은 wrapQuote로 감싼 모습이다.</p>
+                <div class="annot-frame max-w-2xl mt-1.5">
+                  <img src="images/server1.png" alt="fn_search 조회 함수 - transaction() 6개 인자와 wrapQuote 사용 예시">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">③ Dataset 전송 범위: :u vs :a</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">Dataset을 서버로 보낼 때 뒤에 붙이는 :u는 변경된(추가·수정·삭제) 데이터만, :a는 전체 데이터를 보낸다. 전송량을 줄이려면 :u를 주로 쓰며, 여러 Dataset을 동시에 보낼 땐 공백으로 나열한다(예: "in_emp=ds_emp in_aa=ds_dept"). 수정·삭제된 행은 바뀐 값뿐 아니라 수정 전 원래 값도 함께 보내지는데, 서버가 그 원래 값을 기준으로 WHERE절을 만들어야 정확히 그 행을 찾아 처리할 수 있기 때문이다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/server3.png" alt="저장 버튼 transaction() 예시 - in_emp=ds_emp:u 로 변경분만 전송">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">② URL을 별칭으로 관리(TypeDefinition-Services)</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">서버 주소를 코드에 직접 쓰지 않고 "EduUrl" 같은 PrefixID로 등록해두면 "EduUrl::save_emp.jsp"처럼 짧게 쓸 수 있다. 환경(개발/운영)이 바뀌어도 이 등록 값 한 곳만 고치면 돼서 유지보수가 쉬워진다. TypeDefinition-Services에는 두 종류가 있다: 넥사크로가 기본 제공하는 <span class="font-semibold text-zinc-700">Resource Service</span>(theme, imagerc, font 등 리소스 경로)와, 개발자가 직접 추가하는 <span class="font-semibold text-zinc-700">User Service</span>(EduUrl, SvcUrl 같은 서버 API 별칭).</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">⑥ Sync/Async와 콜백의 중요성</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">넥사크로 기본 통신 방식은 비동기(Async)다. transaction() 호출 직후 다음 줄에서 바로 결과를 읽으면 아직 서버 응답이 도착하기 전이라, 방금 조회한 실제 값이 아니라 화면에 미리 넣어둔 샘플 값 등 엉뚱한 값을 보게 된다. 반드시 지정한 콜백 함수 안에서 결과를 처리해야 한다. 아래는 실제 콜백 함수 예시 — errCd가 음수면 실패로 보고 바로 알림 후 종료하고, 정상이면 svcId로 어떤 요청의 응답인지 구분해 분기 처리한다(빨간 박스 = 실패 처리 구간).</p>
                 <div class="annot-frame max-w-xl">
                   <img src="images/server2.png" alt="fn_callback 콜백 함수 예시 - errCd 실패 처리와 svcId 분기">
@@ -2130,49 +2150,7 @@ provider.sendPushMessage(pushMessage);</pre>
         </div>
       </div>
 
-      <!-- 10. 파라미터 전달과 Dataset 송수신 (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭 resource service">
-        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
-          <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
-              <iconify-icon icon="solar:database-linear"></iconify-icon>
-            </span>
-            <span class="kr font-semibold text-zinc-900">파라미터 전달과 Dataset 송수신</span>
-          </div>
-          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
-        </button>
-        <div class="accordion-body">
-          <div>
-            <div class="px-6 pb-6 -mt-1 space-y-4">
-              <div>
-                <p class="kr text-sm font-semibold text-zinc-800">파라미터 문자열과 공백 문제</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">파라미터는 "key=값" 형태를 공백으로 이어붙여 전달하는데, 값 자체에 공백이 있으면(예: "홍 길동"처럼 띄어쓰기 있는 이름) 그 공백 지점에서 값이 잘려 "홍"까지만 전달되는 문제가 생긴다. 주의: <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nexacro.wrapQuote()</span>로 값을 감싸야 공백이 있어도 안전하게 전달된다.</p>
-                <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <p class="kr text-xs text-zinc-500 leading-relaxed font-mono bg-red-50 border border-red-100 px-2 py-1.5 rounded"><span class="text-red-500 font-sans font-semibold">Before</span><br>"empName=" + sEmpName</p>
-                  <p class="kr text-xs text-zinc-500 leading-relaxed font-mono bg-emerald-50 border border-emerald-100 px-2 py-1.5 rounded"><span class="text-emerald-600 font-sans font-semibold">After</span><br>"empName=" + nexacro.wrapQuote(sEmpName)</p>
-                </div>
-                <p class="kr mt-3 text-xs text-zinc-400">실제 조회 함수 예시 — deptCode는 그냥 붙이고, empName은 wrapQuote로 감싼 모습이다.</p>
-                <div class="annot-frame max-w-2xl mt-1.5">
-                  <img src="images/server1.png" alt="fn_search 조회 함수 - transaction() 6개 인자와 wrapQuote 사용 예시">
-                </div>
-              </div>
-              <div>
-                <p class="kr text-sm font-semibold text-zinc-800">Dataset 전송 범위: :u vs :a</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">Dataset을 서버로 보낼 때 뒤에 붙이는 :u는 변경된(추가·수정·삭제) 데이터만, :a는 전체 데이터를 보낸다. 전송량을 줄이려면 :u를 주로 쓰며, 여러 Dataset을 동시에 보낼 땐 공백으로 나열한다(예: "in_emp=ds_emp in_aa=ds_dept"). 수정·삭제된 행은 바뀐 값뿐 아니라 수정 전 원래 값도 함께 보내지는데, 서버가 그 원래 값을 기준으로 WHERE절을 만들어야 정확히 그 행을 찾아 처리할 수 있기 때문이다.</p>
-                <div class="annot-frame max-w-2xl">
-                  <img src="images/server3.png" alt="저장 버튼 transaction() 예시 - in_emp=ds_emp:u 로 변경분만 전송">
-                </div>
-              </div>
-              <div>
-                <p class="kr text-sm font-semibold text-zinc-800">URL을 별칭으로 관리(TypeDefinition-Services)</p>
-                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">서버 주소를 코드에 직접 쓰지 않고 "EduUrl" 같은 PrefixID로 등록해두면 "EduUrl::save_emp.jsp"처럼 짧게 쓸 수 있다. 환경(개발/운영)이 바뀌어도 이 등록 값 한 곳만 고치면 돼서 유지보수가 쉬워진다. TypeDefinition-Services에는 두 종류가 있다: 넥사크로가 기본 제공하는 <span class="font-semibold text-zinc-700">Resource Service</span>(theme, imagerc, font 등 리소스 경로)와, 개발자가 직접 추가하는 <span class="font-semibold text-zinc-700">User Service</span>(EduUrl, SvcUrl 같은 서버 API 별칭).</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 11. 서버 측 처리 구조 (Controller·Service·Mapper) (서버 연결 문서 · 파란색) -->
+      <!-- 10. 서버 측 처리 구조 (Controller·Service·Mapper) (서버 연결 문서 · 파란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="controller service mapper requestmapping paramvariable paramdataset nexacroresult mvc 전자정부 rowtype addvariable adddataset">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2259,7 +2237,7 @@ return rst;</pre>
         </div>
       </div>
 
-      <!-- 12. 실전 연동 패턴 (서버 연결 문서 · 파란색) -->
+      <!-- 11. 실전 연동 패턴 (서버 연결 문서 · 파란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="파일업로드 페이징 로그인 gdsuser gfntransaction 아이디중복체크 multipartrequest fileuptransfer errorcode">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2303,14 +2281,14 @@ return rst;</pre>
         </div>
       </div>
 
-      <!-- 13. MyBatis 파라미터 바인딩 (SQL 문서 · 빨간색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="mybatis 파라미터 vo map _parameter where if 바인딩 sql인젝션 nexaeduvo">
+      <!-- 12. MyBatis Mapper와 SQL 작성 (SQL 문서 · 빨간색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="mybatis 파라미터 vo map _parameter where if 바인딩 sql인젝션 nexaeduvo mapper.xml select insert update delete 중복체크 로그인 sql checkid checkuserid usercount loginuser row_number limit offset 페이징 공통코드 tbl_common_code heidisql getpagedata gettotalcount">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-red-800 text-white flex items-center justify-center shrink-0">
               <iconify-icon icon="solar:code-2-linear"></iconify-icon>
             </span>
-            <span class="kr font-semibold text-zinc-900">MyBatis 파라미터 바인딩</span>
+            <span class="kr font-semibold text-zinc-900">MyBatis Mapper와 SQL 작성</span>
           </div>
           <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
         </button>
@@ -2334,25 +2312,6 @@ return rst;</pre>
 &lt;/select&gt;</pre>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 14. 조회/저장 SQL 패턴 (SQL 문서 · 빨간색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="mapper.xml select insert update delete 중복체크 로그인 sql checkid checkuserid usercount loginuser">
-        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
-          <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-red-800 text-white flex items-center justify-center shrink-0">
-              <iconify-icon icon="solar:database-linear"></iconify-icon>
-            </span>
-            <span class="kr font-semibold text-zinc-900">조회/저장 SQL 패턴</span>
-          </div>
-          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
-        </button>
-        <div class="accordion-body">
-          <div>
-            <div class="px-6 pb-6 -mt-1 space-y-4">
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">Mapper.xml 조회 SQL</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">하나의 Mapper.xml 안에 여러 &lt;select id="..."&gt; 태그를 두고 조건 유무·형태별로 SQL을 나눠 작성한다. 화면 Dataset 컬럼명과 맞추기 위해 AS로 별칭을 붙이는 경우가 많다 — 공통 코드처럼 분류/세부값 구조인 테이블도 같은 방식으로 별칭을 맞춰 조회한다.</p>
@@ -2378,28 +2337,10 @@ SELECT COUNT(*) FROM tb_user WHERE USER_ID = #{userId} AND PASS = #{pass}
 SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
   WHERE USER_ID = #{userId} AND PASS = #{pass}</pre>
                 </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">이 SQL을 화면 쪽에서 어떻게 부르고 결과를 어떻게 판별하는지는 <span class="font-semibold text-zinc-600">실전 연동 패턴</span> 항목의 "아이디 중복 체크"·"로그인과 전역 Dataset" 부분에 이어진다.</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 15. 페이징 & 공통코드 설계 (SQL 문서 · 빨간색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="row_number limit offset 페이징 공통코드 tbl_common_code heidisql getpagedata gettotalcount">
-        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
-          <div class="flex items-center gap-3">
-            <span class="w-9 h-9 rounded-xl bg-red-800 text-white flex items-center justify-center shrink-0">
-              <iconify-icon icon="solar:widget-4-linear"></iconify-icon>
-            </span>
-            <span class="kr font-semibold text-zinc-900">페이징 & 공통코드 설계</span>
-          </div>
-          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
-        </button>
-        <div class="accordion-body">
-          <div>
-            <div class="px-6 pb-6 -mt-1 space-y-4">
               <div>
-                <p class="kr text-sm font-semibold text-zinc-800">ROW_NUMBER()와 LIMIT/OFFSET</p>
+                <p class="kr text-sm font-semibold text-zinc-800">페이징 — ROW_NUMBER()와 LIMIT/OFFSET</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">ROW_NUMBER() OVER(ORDER BY ...)로 순번을 매기고, LIMIT/OFFSET으로 필요한 구간만 잘라온다. 화면에서 넘긴 cnt/offset 값을 그대로 #{cnt}/#{offset}에 바인딩하는 방식으로 페이지마다 다른 구간을 조회하며, 전체 건수는 별도의 COUNT 쿼리로 함께 가져와 페이지 버튼 개수를 계산하는 데 쓴다.</p>
                 <div class="mt-2 font-mono text-xs bg-zinc-100 rounded-lg p-3 leading-relaxed overflow-x-auto text-zinc-700">
 <pre>&lt;select id="getPageData" parameterType="map" resultType="map"&gt;
@@ -2413,6 +2354,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
   SELECT COUNT(*) AS totalcnt FROM tbl_sample
 &lt;/select&gt;</pre>
                 </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">화면에서 cnt·offset을 어떻게 계산해 보내고 콜백에서 그리드·페이지 버튼을 어떻게 갱신하는지는 <span class="font-semibold text-zinc-600">실전 연동 패턴</span> 항목의 "페이징 데이터 조회 흐름"에서 다룬다.</p>
               </div>
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">공통 코드 테이블 설계</p>
@@ -2441,7 +2383,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 16. 모바일 개발 방법론 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 13. 모바일 개발 방법론 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="모바일 mobile native app 네이티브 하이브리드 hybrid 웹앱 apk aab ipa 개발방법론 크로스플랫폼">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2499,7 +2441,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 17. 모바일 UI 기획 — 반응형 vs 적응형 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 14. 모바일 UI 기획 — 반응형 vs 적응형 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="반응형 적응형 responsive adaptive 모바일퍼스트 mobile first 미디어쿼리 픽셀 퍼센트 리사이즈 ui기획">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2544,7 +2486,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 18. 모바일 프로젝트 생성과 MLM (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 15. 모바일 프로젝트 생성과 MLM (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="mlm multi layout manager 레이아웃 멀티스크린 multiscreen 에뮬레이터 emulator phone_screen screenid 퀵뷰 quickview 세로 가로 모드">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2613,7 +2555,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 19. Device API — 카메라 연동 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 16. Device API — 카메라 연동 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="device api 디바이스 카메라 camera takepicture oncapture imagedata imageviewer gettype 사진 캡쳐">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2658,7 +2600,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 20. App Builder와 모바일 앱 패킹 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 17. App Builder와 모바일 앱 패킹 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="app builder 앱빌더 packing 패킹 archive xzip qrcode 빌드 build permission 인증서 base library 인하우스 버전">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2707,7 +2649,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 21. 모바일 리스트 화면 (ListView·Step) (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 18. 모바일 리스트 화면 (ListView·Step) (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="listview 리스트뷰 contents editor edit body append detail step add layout 아코디언 모바일 리스트">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2741,7 +2683,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 22. X-PUSH란? — 폴링의 한계 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 19. X-PUSH란? — 폴링의 한계 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="xpush x-push 푸시 push 폴링 polling 실시간 신뢰성 stand-alone 단독실행 연결지향형 서버확장 분산">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2786,7 +2728,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 23. X-PUSH 작동 방식과 포트 구성 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 20. X-PUSH 작동 방식과 포트 구성 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="xpush 작동방식 subscribe provide push 포트 port 50000 50001 50002 50003 50007 시스템구성 was matching publisher provider service">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2842,7 +2784,7 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 24. TOPIC — 메시지 분류 키 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 21. TOPIC — 메시지 분류 키 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="topic 토픽 topic type topic id field values 4byte 256byte 4000byte 메시지 사이즈 제약 키">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -2884,8 +2826,8 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 25. 실시간 메시지 vs 신뢰성 메시지 (모바일·X-PUSH·배포 문서 · 노란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="실시간 메시지 신뢰성 메시지 reli push subscribe ackn responsemessage message_state t_topic t_message t_user_message 재수신">
+      <!-- 22. 실시간 메시지 vs 신뢰성 메시지 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="실시간 메시지 신뢰성 메시지 reli push subscribe ackn responsemessage message_state t_topic t_message t_user_message 재수신 fn_push_callback 콜백 actiontype messageid sendresponse requestmessage requestmessagecount 미수신">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0">
@@ -2960,13 +2902,38 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
                   </div>
                 </div>
               </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">수신 콜백에서 두 방식을 구분하는 법</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">subscribe에 넘긴 콜백 함수로 메시지가 들어온다. 여섯 번째 인자 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">ActionType</span>이 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">"PUSH"</span>면 실시간, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">"RELI"</span>면 신뢰성 메시지다. <span class="font-semibold text-zinc-700">신뢰성 메시지는 받은 것으로 끝이 아니라 <span class="font-mono text-xs">sendResponse(MessageId)</span>로 수신 확인을 되돌려줘야</span> 서버가 "읽음"으로 처리한다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.fn_push_callback = <span class="text-sky-600">function</span>(Row, ChangeColumn, AllColumns, Type, ActionType, MessageId)
+{
+  <span class="text-sky-600">this</span>.taLog.set_value(<span class="text-emerald-600">"ActionType : "</span> + ActionType + <span class="text-emerald-600">"\n"</span>
+    + <span class="text-emerald-600">"Row : "</span> + Row + <span class="text-emerald-600">"\n"</span>
+    + <span class="text-emerald-600">"MessageId : "</span> + MessageId + <span class="text-emerald-600">"\n\n"</span>
+    + <span class="text-sky-600">this</span>.dsMessage.saveXML());
+
+  <span class="text-amber-600">if</span> (ActionType == <span class="text-emerald-600">"PUSH"</span>)   <span class="text-zinc-400">// 실시간 메시지 — 받고 끝</span>
+  {
+  }
+  <span class="text-amber-600">if</span> (ActionType == <span class="text-emerald-600">"RELI"</span>)   <span class="text-zinc-400">// 신뢰성 메시지</span>
+  {
+    <span class="text-sky-600">this</span>.XPush00.sendResponse(MessageId);  <span class="text-zinc-400">// 수신 확인 메시지 전송</span>
+  }
+};</pre>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-3">
+                  <p class="kr text-sm font-semibold text-zinc-800">오프라인이었다면 — 미수신 메시지 재요청</p>
+                  <p class="kr mt-1 text-sm text-zinc-600 leading-relaxed">신뢰성 메시지는 DB에 남아 있으므로, 다시 접속했을 때 <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">requestMessage(topicType, topicId)</span>로 못 받은 메시지를 끌어올 수 있다. 개수만 확인하는 <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">requestMessageCount()</span>도 있지만 실무에서 쓸 일은 거의 없다.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 26. 모바일 알림 (FCM·APNS) (모바일·X-PUSH·배포 문서 · 노란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="fcm apns notification 알림 디바이스 토큰 registerdevice registertopic t_mobile t_notification 백그라운드 안드로이드 ios">
+      <!-- 23. 모바일 알림 (FCM·APNS) (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="fcm apns notification 알림 디바이스 토큰 registerdevice registertopic t_mobile t_notification 백그라운드 안드로이드 ios system.notificationtoken deviceid btn_rgst -1072 정상오류">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0">
@@ -2991,6 +2958,16 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
                 <div class="annot-frame max-w-2xl">
                   <img src="images/xpush-device-token-flow.png" alt="모바일 디바이스 토큰 등록 흐름 - 1.Connect 2.registerTopic(UserID, Topic) 3.registerDevice로 T_TOPIC insert">
                 </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed mb-2">클라이언트 쪽 코드는 한 줄이다. 디바이스 토큰 자체는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">system.notificationtoken</span>에 들어 있어 로그로 확인할 수 있다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-400">// 모바일에서만 사용하는 기능</span>
+<span class="text-sky-600">this</span>.btn_RGST_onclick = <span class="text-sky-600">function</span>(obj:nexacro.Button, e:nexacro.ClickEventInfo)
+{
+  <span class="text-sky-600">this</span>.taLog.set_value(<span class="text-emerald-600">"deviceID : ["</span> + system.notificationtoken + <span class="text-emerald-600">"]"</span>);
+  <span class="text-sky-600">this</span>.XPush00.registerDevice();
+};</pre>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">등록 결과는 <span class="font-mono">onsuccess</span>의 <span class="font-mono">e.action == 6</span>으로 돌아온다. 이미 등록된 기기를 다시 등록하면 <span class="font-mono">-1072</span>가 뜨는데 이건 <span class="font-semibold">정상 오류</span>라 무시해도 된다.</p>
               </div>
               <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-2">
                 <p class="kr text-sm text-zinc-600 leading-relaxed">클라이언트가 여러 곳(Window)에서 접속되어 있는 경우 모바일 메시지는 전송하지 않는다 — <span class="font-semibold">웹이 기준</span>이며 내부 정책이라 선택할 수 없다.</p>
@@ -3002,8 +2979,8 @@ SELECT USER_ID, USER_NAME, EMAIL, TEL_NO, PROFILE FROM tb_user
         </div>
       </div>
 
-      <!-- 27. Provider API와 X-PUSH Object (모바일·X-PUSH·배포 문서 · 노란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="provider api java connect setactiontype settopictype settopicid adddata setavailableperiod sendpushmessage close message layout xml client adaptor dataset">
+      <!-- 24. Provider API와 X-PUSH Object (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="provider api java connect setactiontype settopictype settopicid adddata setavailableperiod sendpushmessage close message layout xml client adaptor dataset xpush00 push.json xpushurl set_layouturl set_iplist tcp tcps subscribe unsubscribe registertopic unregistertopic requestmessage requestmessagecount onsuccess onerror onkeepalive e.action statuscode 오류코드 dsprovider transaction service_xpush.jsp btnsend wrapquote 실습 스크립트">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0">
@@ -3073,12 +3050,197 @@ pushMessage.addData(<span class="text-emerald-600">"data01"</span>);
 pushMessage.addData(<span class="text-emerald-600">"data02"</span>);</pre>
                 </div>
               </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">실습 준비 — XPush 컴포넌트와 XPushUrl 서비스 등록</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">X-PUSH를 쓰려면 먼저 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nexacro.XPush</span> 컴포넌트가 프로젝트에 설치돼 있어야 한다. nexacrolib 컴포넌트 목록에서 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Push.json</span>을 체크해 추가한다.</p>
+                <div class="annot-frame max-w-xs">
+                  <img src="images/xpush-impl-component-install.png" alt="nexacrolib 컴포넌트 목록에서 Push.json을 체크해 nexacro.XPush 컴포넌트를 추가한 모습">
+                </div>
+                <p class="kr mt-4 text-sm text-zinc-500 leading-relaxed mb-2">그 다음 Message Layout XML을 읽어올 경로를 <span class="font-semibold text-zinc-700">TypeDefinition &gt; Services</span>에 등록한다. XML 소스를 넣을 것이므로 Type은 반드시 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">file</span>로 지정한다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/xpush-impl-service-xpushurl.png" alt="TypeDefinition Services에 PrefixID XPushUrl을 Type file, URL ./XPushUrl/ 로 등록한 행">
+                </div>
+                <p class="kr mt-4 text-sm text-zinc-500 leading-relaxed mb-2">등록한 경로에 실제 Message Layout 파일을 만든다. Topic Type 하나가 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">&lt;message type=""&gt;</span> 하나에 대응하고, 그 안의 field 구성이 Provider가 보내는 값과 1:1로 맞아야 한다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/xpush-impl-message-layout-xml.png" alt="XPush_Message_Layout.xml 실제 소스 - message type 1000, 2000, 9999, CODETYPE, CODEMSG 별로 TOPIC_ID, TOPIC_TYPE, CODE, MSG 필드가 정의된 모습">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Form_onload — 실행 환경에 따라 layouturl 분기</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">클라이언트와 서버가 주고받을 메시지 경로(와 메시지 타입)를 화면 로드 시점에 설정한다. 모바일 Runtime(NRE)과 그 외 환경에서 경로 표기가 다르므로 분기한다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.Form_onload = <span class="text-sky-600">function</span>(obj:nexacro.Form, e:nexacro.LoadEventInfo)
+{
+  <span class="text-zinc-400">// XPush Message 송/수신을 위한 Layout 세팅</span>
+  <span class="text-amber-600">if</span> ((nexacro._OS == <span class="text-emerald-600">"Android"</span> || nexacro._OS == <span class="text-emerald-600">"iOS"</span>)
+      &amp;&amp; (nexacro._Browser == <span class="text-emerald-600">"Runtime"</span>))
+  {
+    <span class="text-sky-600">this</span>.XPush00.set_layouturl(<span class="text-emerald-600">"%USERAPP%XPushUrl/XPush_Message_Layout.xml"</span>);
+  }
+  <span class="text-amber-600">else</span>
+  {
+    <span class="text-sky-600">this</span>.XPush00.set_layouturl(<span class="text-emerald-600">"XPushUrl::XPush_Message_Layout.xml"</span>);
+  }
+};</pre>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-3">
+                  <p class="kr text-sm font-semibold text-zinc-800">프로퍼티를 설정하는 두 가지 방법</p>
+                  <p class="kr mt-1 text-sm text-zinc-600 leading-relaxed"><span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">this.Button00.text = "hello";</span> 처럼 직접 대입하는 방식은 N24에서 쓰고, <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">this.Button00.set_text("hello");</span> 처럼 setter를 부르는 방식은 N21부터 써 온 방식이다. X-PUSH 설정도 마찬가지로 <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">set_projectid()</span>·<span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">set_protocolversion()</span>·<span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">set_iplist()</span> 형태로 건드린다.</p>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">연결·구독 — 클라이언트 스크립트</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">set_iplist()</span>는 <span class="font-mono text-xs">IP:PORT</span>만 쓸 수도 있고 <span class="font-mono text-xs">tcp://</span>·<span class="font-mono text-xs">tcps://</span>·<span class="font-mono text-xs">http://</span>·<span class="font-mono text-xs">https://</span> 프로토콜을 붙일 수도 있으며, 콤마로 여러 서버를 나열할 수 있다. <span class="font-semibold text-zinc-700">connect()의 비밀번호 인자는 의미가 없다</span> — 연결 성공·실패는 리턴값이 아니라 이벤트로 온다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-400">// 연결 / 해제</span>
+<span class="text-sky-600">this</span>.XPush00.set_iplist(<span class="text-sky-600">this</span>.IpPort.value);   <span class="text-zinc-400">// "tcp://172.10.12.24:10081, ..."</span>
+<span class="text-sky-600">this</span>.XPush00.connect(<span class="text-sky-600">this</span>.loginUserID.value, <span class="text-emerald-600">"..."</span>);  <span class="text-zinc-400">// 비번은 의미없음</span>
+<span class="text-sky-600">this</span>.XPush00.disconnect();  <span class="text-zinc-400">// 해당 페이지를 꺼도 연결은 끊어진다</span>
+
+<span class="text-zinc-400">// 구독 / 구독 해제 — 메시지는 비동기라 "append"로 계속 쌓는다</span>
+<span class="text-sky-600">this</span>.XPush00.subscribe(topic_type, topic_id, <span class="text-sky-600">this</span>, <span class="text-sky-600">this</span>.dsMessage, <span class="text-emerald-600">"append"</span>, <span class="text-emerald-600">"fn_push_callback"</span>);
+<span class="text-sky-600">this</span>.XPush00.unsubscribe(topic_type, topic_id, <span class="text-sky-600">this</span>, <span class="text-sky-600">this</span>.dsMessage, <span class="text-emerald-600">"append"</span>, <span class="text-emerald-600">"fn_push_callback"</span>);
+
+<span class="text-zinc-400">// 사용자 등록 — 실시간 메시지와 달리 DB에 저장된다</span>
+<span class="text-sky-600">var</span> ret = <span class="text-sky-600">this</span>.XPush00.registerTopic(topic_type, topic_id);
+<span class="text-sky-600">this</span>.XPush00.unregisterTopic(topic_type, topic_id);
+
+<span class="text-zinc-400">// 미수신 메시지 (신뢰성) 재요청 / 개수 조회</span>
+<span class="text-sky-600">this</span>.XPush00.requestMessage(topic_type, topic_id);
+<span class="text-sky-600">this</span>.XPush00.requestMessageCount(topic_type, topic_id);</pre>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">topic_id 자리에 <span class="font-mono">"ALL"</span>을 넣으면 해당 Topic Type 전체를 대상으로 한다. <span class="font-mono">requestMessageCount()</span>는 실무에서 쓸 일이 거의 없다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">이벤트 처리 — onsuccess / onerror의 e.action</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">모든 요청의 결과는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">XPush00_onsuccess</span>와 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">XPush00_onerror</span>로 돌아온다. 어떤 요청의 결과인지는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.action</span> 값으로 구분한다.</p>
+                <div class="overflow-x-auto mt-2">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">e.action</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">대응 메소드</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">비고</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">0</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">connect()</td><td class="kr px-3 py-2 border-b border-zinc-100">접속 완료 — 보통 여기서 바로 subscribe를 건다</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">1</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">disconnect()</td><td class="kr px-3 py-2 border-b border-zinc-100">접속 해제</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">2</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">subscribe()</td><td class="kr px-3 py-2 border-b border-zinc-100">구독 등록 — 이어서 registerTopic을 호출</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">3</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">unsubscribe()</td><td class="kr px-3 py-2 border-b border-zinc-100">구독 해제</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">4</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">requestMessage()</td><td class="kr px-3 py-2 border-b border-zinc-100">미수신 메시지 요청</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">5</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">sendResponse()</td><td class="kr px-3 py-2 border-b border-zinc-100">신뢰성 메시지 수신 확인 전송</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">6 / 7</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">registerDevice()<br>unregisterDevice()</td><td class="kr px-3 py-2 border-b border-zinc-100">모바일 디바이스 토큰 등록·해제</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">8 / 9</td><td class="font-mono px-3 py-2 border-b border-zinc-100 whitespace-nowrap">registerUser()<br>unregisterUser()</td><td class="kr px-3 py-2 border-b border-zinc-100">유저 Topic 등록·해제</td></tr>
+                      <tr><td class="font-mono px-3 py-2">10</td><td class="font-mono px-3 py-2 whitespace-nowrap">requestMessageCount()</td><td class="kr px-3 py-2"><span class="font-mono text-xs">e.message.returnvalue</span> 배열에 topictype·topicid·count가 담긴다</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed mb-2">이 구조를 이용하면 화면 로드 후 <span class="font-semibold text-zinc-700">연결 → 구독 → 사용자 등록 → 미수신 메시지 수신</span>까지 이벤트 체인으로 자동화할 수 있다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.XPush00_onsuccess = <span class="text-sky-600">function</span>(obj:nexacro.XPush, e:nexacro.XPushEventInfo)
+{
+  <span class="text-amber-600">if</span> (e.action == <span class="text-emerald-600">0</span>) {   <span class="text-zinc-400">// connect 성공 → 구독</span>
+    <span class="text-sky-600">this</span>.XPush00.subscribe(<span class="text-emerald-600">"1000"</span>, <span class="text-emerald-600">"TOBEEDU01"</span>, <span class="text-sky-600">this</span>,
+      nexacro.getApplication().gdsXPushMessage, <span class="text-emerald-600">"append"</span>, <span class="text-emerald-600">"fn_push_callback"</span>);
+  }
+  <span class="text-amber-600">if</span> (e.action == <span class="text-emerald-600">2</span>) {   <span class="text-zinc-400">// subscribe 성공 → 사용자 등록</span>
+    <span class="text-sky-600">this</span>.XPush00.registerTopic(<span class="text-emerald-600">"1000"</span>, <span class="text-emerald-600">"TOBEEDU01"</span>);
+  }
+  <span class="text-amber-600">if</span> (e.action == <span class="text-emerald-600">8</span>) {   <span class="text-zinc-400">// registerUser 성공 → 못 받은 메시지 요청</span>
+    <span class="text-sky-600">this</span>.XPush00.requestMessage(<span class="text-emerald-600">"1000"</span>, <span class="text-emerald-600">"TOBEEDU01"</span>);
+  }
+};
+
+<span class="text-zinc-400">// 서버가 살아있는지 주기적으로 확인되는 이벤트</span>
+<span class="text-sky-600">this</span>.XPush00_onkeepalive = <span class="text-sky-600">function</span>(obj, e) { <span class="text-sky-600">this</span>.taLog.set_value(<span class="text-emerald-600">"KEEP"</span>); };</pre>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">오류 코드 — e.statuscode</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">onerror에서 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.statuscode</span>·<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.errormsg</span>·<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.reason</span>·<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.serverip</span>를 찍어 원인을 잡는다.</p>
+                <div class="overflow-x-auto mt-2">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">코드</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">의미</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-100</td><td class="kr px-3 py-2 border-b border-zinc-100">Push 서버가 "Bye"를 보냈거나 규약에 따라 종료됨 (이때 e.action은 -1)</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-101</td><td class="kr px-3 py-2 border-b border-zinc-100">타임아웃 처리됨</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-200</td><td class="kr px-3 py-2 border-b border-zinc-100">Command Auth Error — 선택된 IP에 대한 인증 오류</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-201</td><td class="kr px-3 py-2 border-b border-zinc-100">iplist에 등록된 Push 서버 접속이 모두 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-202</td><td class="kr px-3 py-2 border-b border-zinc-100">데이터 전송 채널 인증(authentication) 오류</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-300 / -301</td><td class="kr px-3 py-2 border-b border-zinc-100">서버 접속 실패 / 패킷 전송(send·recv) 오류</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-302</td><td class="kr px-3 py-2 border-b border-zinc-100">이미 PUSH 서버에 접속되어 있음</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-401</td><td class="kr px-3 py-2 border-b border-zinc-100">접속 해제(disconnect) 요청 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-501 / -601</td><td class="kr px-3 py-2 border-b border-zinc-100">메시지 수신 중단(suspend) / 재시작(resume) 요청 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-701</td><td class="kr px-3 py-2 border-b border-zinc-100">topic 등록·등록해제 요청 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-801</td><td class="kr px-3 py-2 border-b border-zinc-100">메시지 포맷 버전 정보 불일치</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-901 / -902</td><td class="kr px-3 py-2 border-b border-zinc-100">신뢰성 메시지 수신응답 전송 실패 / 미수신 메시지 요청 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-1001</td><td class="kr px-3 py-2 border-b border-zinc-100">모바일 DeviceToken 등록 요청 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-1002 / -1003</td><td class="kr px-3 py-2 border-b border-zinc-100">유저 topic 등록(registerUser) / 등록해제(unregisterUser) 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">-1004</td><td class="kr px-3 py-2 border-b border-zinc-100">미수신 메시지 정보 요청 실패</td></tr>
+                      <tr><td class="font-mono px-3 py-2">-1072 / -1092</td><td class="kr px-3 py-2"><span class="font-semibold text-zinc-700">정상 오류</span> — registerDevice / registerTopic 기등록(중복) 시 발생</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">메시지 발송 화면 — Provider를 서버로 호출</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">넥사크로 화면에서 메시지를 보낼 때는 X-PUSH에 직접 꽂지 않는다. 선택한 TOPIC들을 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">dsProvider</span>에 담아 <span class="font-semibold text-zinc-700">서버의 Provider JSP를 transaction으로 호출</span>하고, 실제 X-PUSH 공급은 서버가 Provider API로 처리한다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.btnSend_onclick = <span class="text-sky-600">function</span>(obj:nexacro.Button, e:nexacro.ClickEventInfo)
+{
+  <span class="text-amber-600">if</span> (!<span class="text-sky-600">this</span>.confirm(<span class="text-emerald-600">"메시지를 전송하시겠습니까"</span>)) <span class="text-amber-600">return</span>;
+
+  <span class="text-zinc-400">// 입력 검증</span>
+  <span class="text-amber-600">if</span> (<span class="text-sky-600">this</span>.dsTopic.getCaseCount(<span class="text-emerald-600">"Chk == '1'"</span>) == <span class="text-emerald-600">0</span>) {
+    <span class="text-sky-600">this</span>.alert(<span class="text-emerald-600">"대상 TOPIC를 1개 이상 선택해주세요."</span>); <span class="text-amber-600">return</span>;
+  }
+  <span class="text-amber-600">if</span> (<span class="text-sky-600">this</span>.edCode.value == <span class="text-emerald-600">""</span>) { <span class="text-sky-600">this</span>.edCode.setFocus(); <span class="text-amber-600">return</span>; }
+  <span class="text-amber-600">if</span> (<span class="text-sky-600">this</span>.taMSG.text  == <span class="text-emerald-600">""</span>) { <span class="text-sky-600">this</span>.taMSG.setFocus(); <span class="text-amber-600">return</span>; }
+
+  <span class="text-zinc-400">// 체크된 TOPIC만 골라 전송용 Dataset에 담는다</span>
+  <span class="text-sky-600">this</span>.dsProvider.clearData();
+  <span class="text-amber-600">for</span> (<span class="text-sky-600">var</span> i = <span class="text-emerald-600">0</span>; i &lt; <span class="text-sky-600">this</span>.dsTopic.getRowCount(); i++)
+  {
+    <span class="text-amber-600">if</span> (<span class="text-sky-600">this</span>.dsTopic.getColumn(i, <span class="text-emerald-600">"Chk"</span>) != <span class="text-emerald-600">"1"</span>) <span class="text-amber-600">continue</span>;
+
+    <span class="text-sky-600">this</span>.dsProvider.addRow();
+    <span class="text-sky-600">var</span> r = <span class="text-sky-600">this</span>.dsProvider.rowposition;
+    <span class="text-sky-600">this</span>.dsProvider.setColumn(r, <span class="text-emerald-600">"PROJECT_ID"</span>, <span class="text-sky-600">this</span>.edit_setprojectid.value);
+    <span class="text-sky-600">this</span>.dsProvider.setColumn(r, <span class="text-emerald-600">"PUSH_TYPE"</span>,  <span class="text-sky-600">this</span>.cmPushType.value);
+    <span class="text-sky-600">this</span>.dsProvider.setColumn(r, <span class="text-emerald-600">"TOPIC_TYPE"</span>, <span class="text-sky-600">this</span>.cmTopicType.value);
+    <span class="text-sky-600">this</span>.dsProvider.setColumn(r, <span class="text-emerald-600">"TOPIC_ID"</span>,   <span class="text-sky-600">this</span>.dsTopic.getColumn(i, <span class="text-emerald-600">"TOPIC_ID"</span>));
+    <span class="text-sky-600">this</span>.dsProvider.setColumn(r, <span class="text-emerald-600">"CODE"</span>,       <span class="text-sky-600">this</span>.edCode.value);
+    <span class="text-sky-600">this</span>.dsProvider.setColumn(r, <span class="text-emerald-600">"MSG"</span>,        <span class="text-sky-600">this</span>.taMSG.text);
+  }
+
+  <span class="text-zinc-400">// 서버의 Service_XPush.jsp 호출</span>
+  <span class="text-sky-600">this</span>.transaction(<span class="text-emerald-600">"SendMsg"</span>, <span class="text-emerald-600">"SvcURL::Service_XPush.jsp"</span>,
+    <span class="text-emerald-600">"in_Provider=dsProvider:U"</span>, <span class="text-emerald-600">""</span>,
+    <span class="text-emerald-600">"argPUSH_TYPE="</span> + nexacro.wrapQuote(<span class="text-sky-600">this</span>.cmPushType.value)
+      + <span class="text-emerald-600">" argPUSH_MSG="</span> + <span class="text-sky-600">this</span>.taMSG.text,
+    <span class="text-emerald-600">"fn_callback"</span>);
+};
+
+<span class="text-sky-600">this</span>.fn_callback = <span class="text-sky-600">function</span>(svcid, ecd, emsg)
+{
+  <span class="text-amber-600">if</span> (ecd &gt;= <span class="text-emerald-600">0</span>) <span class="text-sky-600">this</span>.alert(<span class="text-emerald-600">"메시지를 정상적으로 발송하였습니다."</span>);
+  <span class="text-amber-600">else</span>          <span class="text-sky-600">this</span>.alert(<span class="text-emerald-600">"메시지 전달실패 : "</span> + emsg);
+};</pre>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">TOPIC ID는 업무에서 알아볼 수 있는 값을 쓴다. 예를 들어 기지국 알림이라면 <span class="font-mono">강남기지국</span> 같은 식이다.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 28. X-PUSH 설치·Config·운영 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <!-- 25. X-PUSH 설치·Config·운영 (모바일·X-PUSH·배포 문서 · 노란색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="xpush 설치 config xpush_config.xml log4j 라이선스 jdbc hazelcast show_status set_start.bat service_xpush 모니터링 로그 jdk">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -3171,8 +3333,8 @@ pushMessage.addData(<span class="text-emerald-600">"data02"</span>);</pre>
         </div>
       </div>
 
-      <!-- 29. 배포 개요와 WRE 배포 (모바일·X-PUSH·배포 문서 · 노란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="배포 deploy packing merge compress 난독화 obfuscation wre nre 런처 엔진 archive update 웹서버">
+      <!-- 26. 배포 개요와 WRE 배포 (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="배포 deploy packing merge compress 난독화 obfuscation wre nre 런처 엔진 archive update 웹서버 generate xfdl.js nexacrolib _web_ 원본소스 제너레이트 cachelevel none dynamic session static 캐시 checkversion version 쿼리스트링 typedefinition services 폴더단위">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0">
@@ -3241,13 +3403,89 @@ pushMessage.addData(<span class="text-emerald-600">"data02"</span>);</pre>
                   <img src="images/deploy-compress-options.png" alt="Deploy Settings의 Compress Options - Compress JS file, Code Obfuscation 체크 상태와 Ignore compress files 목록">
                 </div>
               </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">원본과 소스는 분리된다 — Generate → Packing</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">넥사크로는 <span class="font-semibold text-zinc-700">원본소스와 실행 소스가 분리</span>돼 있다. 개발자가 만지는 것은 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">.xfdl</span> 원본이고, Generate를 돌리면 웹이 읽을 수 있는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">.xfdl.js</span>가 만들어진다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/deploy-generate-source-compare.png" alt="왼쪽은 Application_data_detail.xfdl 등 원본 파일 목록, 오른쪽은 Generate로 만들어진 같은 이름의 .xfdl.js 파일 목록">
+                </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed mb-2">Generate Path는 프로젝트 설정에서 지정한다. <span class="font-semibold text-zinc-700">Generate 경로와 Deploy 경로를 같은 경로나 하위 경로로 잡으면 프로젝트가 정상 동작하지 않을 수 있으니</span> 반드시 분리한다.</p>
+                <div class="annot-frame max-w-lg">
+                  <img src="images/deploy-generate-path.png" alt="Generate Path 설정 입력란과 generate path와 deploy path를 같은 경로로 두지 말라는 경고 문구">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">그런데 Generate만으로는 부족하다 — 패킹이 하는 일</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">Generate된 js를 그대로 올리면 안 되고 Packing을 한 번 더 거쳐야 한다. 패킹하면 <span class="font-semibold text-zinc-700">이름은 같은 js 파일이 다시 만들어지는데, 메모장으로 열어보면 내용이 다르다</span> — 공백을 걷어내고 난독화를 해서 HTML 소스코드가 그대로 보이지 않게 만든 것이다. 요청 수도 줄어들어 속도가 빨라진다. HTML 소스를 일일이 내려받을 필요가 없기 때문이다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-2">패킹 결과는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">_web_</span> 폴더에 떨어진다. <span class="font-semibold text-zinc-700">사용자가 실제로 접속하는 곳이 바로 이 <span class="font-mono text-xs">_web_</span></span>이다.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1">패킹 결과 폴더 구조</p>
+                    <div class="annot-frame">
+                      <img src="images/deploy-web-folder-tree.png" alt="edupack_nexacro24 아래 _resource_ 폴더와 패킹 결과물인 _web_ 폴더 트리">
+                    </div>
+                  </div>
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1">Packing 완료 로그</p>
+                    <div class="annot-frame">
+                      <img src="images/deploy-packing-result-log.png" alt="Packing 창의 완료 로그 - Finish deploying source Success 841 Fail 0, Make bootstrap, Finish deploying WebBrowser">
+                    </div>
+                  </div>
+                </div>
+                <p class="kr mt-3 text-xs text-zinc-400 leading-relaxed">넥사크로 라이브러리(<span class="font-mono">nexacrolib</span>) 안에도 여러 개의 js가 들어 있고, 이것들 역시 Merge·Compress 대상이다. <span class="font-semibold">WRE는 여기까지, 즉 패킹만 하면 끝난다.</span></p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">CacheLevel — 파일을 언제 다시 받게 할 것인가</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">서비스마다 캐시 정책을 정할 수 있다. <span class="font-semibold text-zinc-700">TypeDefinition &gt; Services</span>의 CacheLevel 컬럼에서 지정한다.</p>
+                <div class="overflow-x-auto mt-2">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">종류</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">설명</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="kr font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-100 whitespace-nowrap">None</td><td class="kr px-3 py-2 border-b border-zinc-100">캐시를 쓰지 않고 매번 서버에서 받는다. 주로 Dataset 관련 통신에 쓴다.</td></tr>
+                      <tr><td class="kr font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-100 whitespace-nowrap">Dynamic<br><span class="text-xs font-normal text-zinc-400">[기본값]</span></td><td class="kr px-3 py-2 border-b border-zinc-100">서버 파일이 갱신됐을 때만 받고, 아니면 로컬 캐시를 재사용한다. 초기·불안정한 단계에서 쓴다.</td></tr>
+                      <tr><td class="kr font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-100 whitespace-nowrap">Session</td><td class="kr px-3 py-2 border-b border-zinc-100">엔진을 기동할 때 한 번만 받고, 엔진이 종료될 때까지 로컬 캐시만 쓴다. <span class="font-semibold text-zinc-700">운영에서 안정권에 들어섰을 때</span> 쓰는 값.</td></tr>
+                      <tr><td class="kr font-semibold text-zinc-700 px-3 py-2 whitespace-nowrap">Static</td><td class="kr px-3 py-2">한 번 받은 파일은 엔진을 재실행해도 로컬 캐시만 쓴다(TypeDefinition의 서비스 그룹 버전이 바뀌면 다시 받음). <span class="font-semibold text-zinc-700">NRE에서만 동작하고 WAR로는 안 되며, 국내는 네트워크가 좋아 잘 쓰지 않는다.</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="annot-frame max-w-2xl mt-3">
+                  <img src="images/deploy-typedef-services.png" alt="TypeDefinition Services 창의 Resource Service와 User Service 목록 - PrefixID, Type, URL, CacheLevel, Version 컬럼">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">CheckVersion — 캐시를 새로 받게 만드는 스위치</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">Environment의 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">checkversion</span>은 요청 URL 뒤에 쿼리 스트링(버전 숫자)을 붙일지 말지를 정한다.</p>
+                <div class="space-y-3">
+                  <div class="bg-white border border-zinc-200 rounded-xl p-4">
+                    <p class="kr text-sm font-semibold text-amber-700">false — 숫자가 안 붙는다</p>
+                    <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">한 번 캐시로 받으면 그 뒤로는 더 받지 않는다. 갱신하려면 F12로 캐시를 직접 지워야 한다.</p>
+                  </div>
+                  <div class="bg-white border border-zinc-200 rounded-xl p-4">
+                    <p class="kr text-sm font-semibold text-amber-700">true — 뒤에 숫자가 붙는다</p>
+                    <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">숫자가 바뀌면 캐시를 새로 받는다. <span class="font-semibold text-zinc-700">즉 유저 서비스를 고쳤을 때 버전만 올려주면 배포가 반영된다.</span></p>
+                  </div>
+                </div>
+                <div class="annot-frame max-w-xs mt-3">
+                  <img src="images/deploy-checkversion-prop.png" alt="Environment 속성 창에서 checkversion 값을 false로 지정한 모습">
+                </div>
+                <p class="kr mt-4 text-sm text-zinc-500 leading-relaxed mb-2">WRE 운영 환경에서 버전을 지정하는 위치는 세 군데다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/deploy-checkversion-methods.png" alt="WRE 운영 환경에서 CheckVersion 지정하는 3가지 방법 - Environment version, Module version(nexacrolib ComComp.json), Services version">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">배포는 파일 단위가 아니라 <span class="font-semibold">폴더(서비스) 단위</span>로 진행된다는 점을 함께 기억해 둘 것.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 30. NRE 배포 (외부모듈·CLSID·Launcher) (모바일·X-PUSH·배포 문서 · 노란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="nre 배포 clsid launcher 런처 외부모듈 dll 32bit 64bit navigatorfullname 레지스트리 feature_browser_emulation 고객대응">
+      <!-- 27. NRE 배포 (외부모듈·CLSID·Launcher) (모바일·X-PUSH·배포 문서 · 노란색) -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="nre 배포 clsid launcher 런처 외부모듈 dll 32bit 64bit navigatorfullname 레지스트리 feature_browser_emulation 고객대응 build app 디지털서명 engine setup key 전용브라우저 배포사이트 수동설치 운영 spa history 앞으로가기 뒤로가기 개인화 로컬스토리지 서버db 타임아웃 보안 eval 오브젝트화 lookup apply components objects 암호화 https">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0">
@@ -3261,7 +3499,26 @@ pushMessage.addData(<span class="text-emerald-600">"data02"</span>);</pre>
           <div>
             <div class="px-6 pb-6 -mt-1 space-y-6">
               <div>
-                <p class="kr text-sm text-zinc-500 leading-relaxed">NRE는 사용자 PC에 실행 환경을 설치해야 하므로 WRE보다 챙길 것이 많다. 엔진 모듈, 배포 파일, 개발 소스가 모두 사용자 PC로 내려간다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed">NRE는 사용자 PC에 실행 환경을 설치해야 하므로 WRE보다 챙길 것이 많다. 엔진 모듈, 배포 파일, 개발 소스가 모두 사용자 PC로 내려간다. 다르게 말하면 <span class="font-semibold text-zinc-700">배포라는 작업 자체가 NRE 실행환경일 때 하는 일</span>이다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">배포 순서 — 사용자가 직접 설치하게 만든다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">다운로드 링크 → 배포 사이트 접속 → 런처와 엔진 설치 → 설치가 끝나면 웹 브라우저가 아니라 <span class="font-semibold text-zinc-700">넥사크로 전용 브라우저</span>가 뜨는 흐름이다. 설치는 <span class="font-semibold text-zinc-700">사용자가 선택하도록 만들어야 하고 바로 설치되게 할 수는 없다.</span></p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/deploy-nre-flow.png" alt="NRE 배포 순서도 - connect service page에서 Launcher Service Install 여부와 nexacro engine Install 여부를 확인해 각각 download·install 후 check launcher service run, setproperty를 거쳐 nexacro app launch">
+                </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed mb-2">실제 배포 사이트는 전용브라우저와 html5 중 무엇으로 실행할지 고르게 해 주고, 필요한 프로그램이 깔려 있는지 확인한다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/deploy-nre-install-site.png" alt="NRE 배포 사이트 화면 - 전용브라우저(nexacro) Click과 html5 Click 링크, 프로그램설치확인중 안내 박스">
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Build App — 설치 파일 만들기</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">사용자 PC에 내려갈 것은 ① 클라이언트 파일과 ② 넥사크로 엔진·런처다. 수동설치 파일도 함께 준비해 둔다. <span class="font-semibold text-zinc-700">배포용 exe 파일에는 디지털 서명을 반드시 포함해야 한다.</span></p>
+                <div class="annot-frame max-w-lg">
+                  <img src="images/deploy-build-app-setup.png" alt="Build App 창의 Windows x86 설정 - Setup Filename, Setup Version 24.0.0.1003, Install Location, Engine Setup Key">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">기본 넥사크로 엔진은 변경 없이 그대로 쓰지만, 설치 리소스나 앱 설치 파일을 쓰는 경우에는 <span class="font-mono">Engine Setup Key</span>와 설치 경로를 따로 지정할 수 있다.</p>
               </div>
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">외부 모듈 체크 — 32비트/64비트 분기</p>
@@ -3281,6 +3538,9 @@ pushMessage.addData(<span class="text-emerald-600">"data02"</span>);</pre>
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">Web Browser 버전 설정</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">WebBrowser 컴포넌트가 쓸 브라우저 버전은 Options &gt; Update Browser에서 설정하거나, 레지스트리(<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">extCommon.dll</span>)를 직접 변경한다.</p>
+                <div class="annot-frame max-w-sm mb-3">
+                  <img src="images/deploy-update-browser.png" alt="Build App 설정에서 Update Browser 값을 11로 지정한 모습">
+                </div>
                 <div class="font-mono text-xs bg-zinc-100 rounded-lg p-3 leading-relaxed overflow-x-auto text-zinc-700">
 <pre># 32비트
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\MAIN\
@@ -3303,12 +3563,48 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
                 <p class="kr text-sm font-semibold text-zinc-800">고객 대응</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">NRE는 사용자 PC에 프로그램을 설치하는 방식이라, PC 환경과 권한 설정에 따라 설치 오류가 발생할 수 있다. 대응 CASE를 미리 작성해 사용자가 스스로 처리할 수 있도록 수동설치 파일과 안내 페이지를 준비해 두고, 1차 대응으로 해결되지 않으면 투비소프트 고객지원센터를 통해 지원받는다.</p>
               </div>
+              <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <p class="kr text-sm font-semibold text-zinc-800">그래서 NRE와 WRE 중 무엇을 쓰나</p>
+                <p class="kr mt-1 text-sm text-zinc-600 leading-relaxed">로컬 DB를 쓰는 기능이나 데이터를 대용량으로 가져오는 경우에는 NRE를 쓴다. 그 외에는 <span class="font-semibold">실무에서 WRE를 훨씬 더 많이 쓴다.</span></p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">운영 단계 주의사항</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">배포가 끝났다고 끝이 아니다. <span class="font-semibold text-zinc-700">오픈 시점에 오류가 가장 많이 터진다.</span> 아래는 운영에 들어가기 전에 알고 있어야 할 것들이다.</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">1</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">제너레이트는 되돌릴 수 없다</span> — 넥사크로도 자바처럼 제너레이트된 소스만 있으면 원본 소스 없이 돌아간다. 다만 한 번 제너레이트된 소스를 원본으로 되돌릴 수는 없으므로, 수정은 반드시 <span class="font-semibold text-zinc-700">원본을 고치고 다시 제너레이트</span>하는 순서로 한다.</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">2</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">SPA라서 앞으로/뒤로 가기가 안 된다</span> — 넥사크로는 Single Page Application이고 엔진이 화면 전환에 관여하기 때문에 브라우저의 History가 동작하지 않는다. 일반 사용자에게는 불편할 수 있으므로, <span class="font-semibold text-zinc-700">화면이 바뀔 때마다 URL 주소를 함께 바꿔주면</span> 앞으로/뒤로 가기를 쓸 수 있다.</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">3</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">개인화 저장 위치</span> — 로컬 스토리지에 저장하면 브라우저가 바뀌었을 때 공유되지 않는다. 기기·브라우저를 넘나들어야 하는 설정이라면 서버 DB에 저장해야 한다.</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-semibold text-zinc-700">서버 타임아웃</span> — 일정 시간이 지나면 서버가 기록을 지운다. 인터넷뱅킹 로그인 시간이 만료되는 것과 같은 동작이라, 화면에서도 만료를 전제로 처리해야 한다.</p></div>
+                  <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug">막히면 넥사크로 화면에서 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">F1</span>을 누르면 도움말이 열린다.</p></div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">보안 — eval은 절대 쓰지 않는다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">eval</span>은 보안 코드 점검에서 바로 걸리는 메소드다. 게다가 <span class="font-semibold text-zinc-700">eval이 들어 있는 함수는 패킹 시 난독화도 되지 않는다.</span> 문자열로 객체나 함수를 찾아야 한다면 아래 방법을 쓴다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-400">// 오브젝트화 — 이름(문자열)으로 객체 찾기</span>
+<span class="text-sky-600">var</span> objGrid = <span class="text-sky-600">this</span>.all[sObjectId];         <span class="text-zinc-400">// 전부</span>
+<span class="text-sky-600">var</span> objGrid = <span class="text-sky-600">this</span>.components[sObjectId];  <span class="text-zinc-400">// 화면에 보이는 것 (visible)</span>
+<span class="text-sky-600">var</span> objDs   = <span class="text-sky-600">this</span>.objects[sObjectId];     <span class="text-zinc-400">// 안 보이는 것 (invisible, Dataset 등)</span>
+
+<span class="text-zinc-400">// 이름으로 함수 호출</span>
+<span class="text-sky-600">this</span>[fn_ID].call(<span class="text-sky-600">null</span>, <span class="text-emerald-600">1</span>, <span class="text-emerald-600">2</span>);
+<span class="text-sky-600">this</span>.lookup(fn_ID).apply(<span class="text-sky-600">null</span>, [<span class="text-emerald-600">1</span>, <span class="text-emerald-600">2</span>]);
+
+<span class="text-zinc-400">// 절대 eval을 쓰면 안 된다!</span></pre>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">통신 구간 암호화</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">넥사크로의 데이터 통신 방식은 네 가지가 있는데 <span class="font-semibold text-zinc-700">기본적으로 암호화되어 있지 않다.</span> 통신 암호화 기능은 별도 제품을 구입해야 쓸 수 있다.</p>
+                <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">간단하게는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">http</span>를 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">https</span>로 바꾸면 보안 프로토콜로 전환된다. 다만 서버가 암호화하는 시간이 더 들어 <span class="font-semibold text-zinc-700">속도는 느려지고, https라고 해서 완전히 막아주는 것도 아니다.</span></p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 31. 프로젝트/제품 개요 (기타 문서 · 회색) -->
+      <!-- 28. 프로젝트/제품 개요 (기타 문서 · 회색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="투비소프트 nexacro studio ide 프로젝트 생성 project explorer resource explorer">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -3339,7 +3635,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
         </div>
       </div>
 
-      <!-- 32. 외부 리소스 가져오기 & 참고 도구 (기타 문서 · 회색) -->
+      <!-- 29. 외부 리소스 가져오기 & 참고 도구 (기타 문서 · 회색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="theme 폴더 가져오기 refresh compguide services reference guide mainframe">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -3374,7 +3670,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
         </div>
       </div>
 
-      <!-- 33. 실행 환경과 배포 (기타 문서 · 회색) -->
+      <!-- 30. 실행 환경과 배포 (기타 문서 · 회색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="generate xjs xfdl local web server tomcat webapp quickview 배포">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -3409,7 +3705,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
         </div>
       </div>
 
-      <!-- 34. 프로젝트 설계 참고 (기타 문서 · 회색) -->
+      <!-- 31. 프로젝트 설계 참고 (기타 문서 · 회색) -->
       <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="application frame template 전역 dataset 화면계층 mdi 요약">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
@@ -3472,6 +3768,206 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
           <p class="kr mt-4 text-xs text-zinc-400 leading-relaxed">
             용량이 약 18MB라 재생 시작까지 잠깐 걸릴 수 있습니다. 모바일 데이터 환경에서는 Wi-Fi 연결을 권장합니다.
           </p>
+        </div>
+      </div>
+
+      <!-- 사용 파일 내용 -->
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden mt-6">
+        <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-xl bg-zinc-900 text-white flex items-center justify-center shrink-0">
+              <iconify-icon icon="solar:folder-with-files-linear"></iconify-icon>
+            </span>
+            <div>
+              <span class="kr font-semibold text-zinc-900 block">사용 파일 내용</span>
+              <span class="kr text-xs text-zinc-500">영상에 나온 프로젝트를 이루는 화면·자바 서버·SQL 파일</span>
+            </div>
+          </div>
+          <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
+        </button>
+        <div class="accordion-body">
+          <div>
+            <div class="px-6 pb-6 -mt-1 space-y-8">
+
+              <div>
+                <p class="kr text-sm text-zinc-500 leading-relaxed">이 프로젝트는 <span class="font-semibold text-zinc-700">넥사크로 화면(.xfdl)</span>이 <span class="font-semibold text-zinc-700">자바 서버(Controller·Service·Mapper)</span>를 호출하고, 서버가 <span class="font-semibold text-zinc-700">MyBatis SQL</span>로 DB를 다루는 3단 구조로 되어 있다. 아래는 각 단계에서 실제로 쓴 파일들이다.</p>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="w-6 h-6 rounded-lg bg-emerald-700 text-white text-xs flex items-center justify-center shrink-0">1</span>
+                  <p class="kr text-sm font-semibold text-zinc-800">화면 — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Work_Emp.xfdl</span></p>
+                </div>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">사원 정보를 조회·입력·삭제·저장하는 한 화면이다. Grid 하나에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">ds_emp</span>를 바인딩하고, 부서·직급·기술·취미 코드는 각각 별도 Dataset으로 두어 콤보와 체크박스에 물린다.</p>
+                <div class="overflow-x-auto mt-2 mb-3">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">구성</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">내용</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="kr px-3 py-2 border-b border-zinc-100 whitespace-nowrap">Dataset 6개</td><td class="kr px-3 py-2 border-b border-zinc-100"><span class="font-mono text-xs">ds_emp</span>(사원) · <span class="font-mono text-xs">ds_dept</span>(부서) · <span class="font-mono text-xs">ds_pos</span>(직급) · <span class="font-mono text-xs">ds_skill</span>(기술) · <span class="font-mono text-xs">ds_hobby</span>(취미) · <span class="font-mono text-xs">ds00</span></td></tr>
+                      <tr><td class="kr px-3 py-2 border-b border-zinc-100 whitespace-nowrap">ds_emp 컬럼</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100">EMP_ID, EMP_NAME, DEPT_CODE, POSITION, HIRE_DATE, SALARY, GENDER, MARRIED, SKILL, HOBBY, MEMO</td></tr>
+                      <tr><td class="kr px-3 py-2 border-b border-zinc-100 whitespace-nowrap">Grid 1개</td><td class="kr px-3 py-2 border-b border-zinc-100">사원 목록. 성별은 <span class="font-mono text-xs">fn_gender()</span>로 M/F를 남자/여자로 바꿔 표시</td></tr>
+                      <tr><td class="kr px-3 py-2 whitespace-nowrap">Button 4개</td><td class="kr px-3 py-2">조회 · 입력 · 삭제 · 저장</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="kr text-xs font-semibold text-zinc-600 mb-1">화면 스크립트 전문</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-400">// Grid 성별 표시용 — M/F를 한글로</span>
+<span class="text-sky-600">this</span>.fn_gender = <span class="text-sky-600">function</span>(arg) {
+  <span class="text-amber-600">if</span> (arg == <span class="text-emerald-600">"M"</span>) { <span class="text-amber-600">return</span> <span class="text-emerald-600">"남자"</span>; }
+  <span class="text-amber-600">else</span>            { <span class="text-amber-600">return</span> <span class="text-emerald-600">"여자"</span>; }
+}
+
+<span class="text-zinc-400">// 조회 — 부서코드·사원명을 조건으로 서버에 요청</span>
+<span class="text-sky-600">this</span>.fn_search = <span class="text-sky-600">function</span>(obj:nexacro.Button, e:nexacro.ClickEventInfo)
+{
+  <span class="text-sky-600">var</span> sDeptCode = <span class="text-sky-600">this</span>.div00.form.edt00.value;
+  <span class="text-sky-600">var</span> sEmpName  = <span class="text-sky-600">this</span>.div00.form.edt02.value;
+
+  <span class="text-sky-600">this</span>.transaction(<span class="text-emerald-600">"svcSelectEmp"</span>
+    , <span class="text-emerald-600">"http://demo.nexacro.com/edu/nexacroN24/select_emp.jsp"</span>
+    , <span class="text-emerald-600">""</span>
+    , <span class="text-emerald-600">"ds_emp=out_emp"</span>
+    , <span class="text-emerald-600">"deptCode="</span> + sDeptCode + <span class="text-emerald-600">" empName="</span> + nexacro.wrapQuote(sEmpName)
+    , <span class="text-emerald-600">"fn_callback"</span>);
+};
+
+<span class="text-zinc-400">// 저장 — 변경분(:u)만 보내고, 낱개 변수도 함께 전달</span>
+<span class="text-sky-600">this</span>.fn_save = <span class="text-sky-600">function</span>(obj:nexacro.Button, e:nexacro.ClickEventInfo)
+{
+  <span class="text-sky-600">this</span>.transaction(<span class="text-emerald-600">"svcSaveEmp"</span>
+    , <span class="text-emerald-600">"EduUrl::save_emp.jsp"</span>
+    , <span class="text-emerald-600">"in_emp=ds_emp:u"</span>
+    , <span class="text-emerald-600">""</span>
+    , <span class="text-emerald-600">"in_var1='AA' in_var2=123 in_var3='ABC'"</span>
+    , <span class="text-emerald-600">"fn_callback"</span>);
+};
+
+<span class="text-zinc-400">// 콜백 — errCd가 음수면 실패, 아니면 svcId로 분기</span>
+<span class="text-sky-600">this</span>.fn_callback = <span class="text-sky-600">function</span>(svcId, errCd, errMsg) {
+  <span class="text-amber-600">if</span> (errCd &lt; <span class="text-emerald-600">0</span>) {
+    <span class="text-sky-600">this</span>.alert(<span class="text-emerald-600">"실패"</span> + errMsg);
+    <span class="text-amber-600">return</span>;
+  }
+  <span class="text-amber-600">if</span> (svcId == <span class="text-emerald-600">"svcSelectEmp"</span>) {
+    <span class="text-sky-600">this</span>.alert(<span class="text-sky-600">this</span>.ds_emp.getRowCount() + <span class="text-emerald-600">"건 조회되었습니다."</span>);
+  }
+  <span class="text-amber-600">else if</span> (svcId == <span class="text-emerald-600">"svcSaveEmp"</span>) {
+    <span class="text-sky-600">this</span>.alert(<span class="text-sky-600">this</span>.out_var);
+  }
+};
+
+<span class="text-zinc-400">// 입력 / 삭제 — Dataset 행 조작</span>
+<span class="text-sky-600">this</span>.fn_add = <span class="text-sky-600">function</span>(obj, e) {
+  <span class="text-sky-600">var</span> nRow = <span class="text-sky-600">this</span>.ds_emp.addRow();
+  <span class="text-sky-600">this</span>.ds_emp.setColumn(nRow, <span class="text-emerald-600">"HIRE_DATE"</span>, <span class="text-emerald-600">"20260709"</span>);
+};
+
+<span class="text-sky-600">this</span>.fn_delete = <span class="text-sky-600">function</span>(obj, e) {
+  <span class="text-sky-600">this</span>.ds_emp.deleteRow(<span class="text-sky-600">this</span>.ds_emp.rowposition);
+};</pre>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="w-6 h-6 rounded-lg bg-blue-800 text-white text-xs flex items-center justify-center shrink-0">2</span>
+                  <p class="kr text-sm font-semibold text-zinc-800">자바 서버 — Controller · Service · Mapper</p>
+                </div>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">회원 목록 조회(<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">selectUserList</span>) 하나가 <span class="font-semibold text-zinc-700">같은 이름 그대로</span> 네 개 파일을 타고 내려간다. Controller는 DB에 직접 손대지 않고 Service에, Service는 Mapper에 위임한다.</p>
+                <div class="space-y-3">
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserController.java</span> — 요청을 받아 NexacroResult로 응답</p>
+                    <div class="annot-frame max-w-lg">
+                      <img src="images/server4.png" alt="UserController.selectUserList() - NexacroResult로 dsList 응답 구성">
+                    </div>
+                  </div>
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserService.java</span> — 인터페이스</p>
+                    <div class="annot-frame max-w-lg">
+                      <img src="images/server5.png" alt="UserService 인터페이스 - checkUserId, signUp, login, selectUserList 등 메서드 시그니처">
+                    </div>
+                  </div>
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserServiceImpl.java</span> — 구현체, Mapper로 위임</p>
+                    <div class="annot-frame max-w-md">
+                      <img src="images/server6.png" alt="UserServiceImpl.selectUserList() - userMapper.selectUserList()를 그대로 호출">
+                    </div>
+                  </div>
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserMapper.java</span> — 인터페이스 (SQL은 XML에)</p>
+                    <div class="annot-frame max-w-lg">
+                      <img src="images/server7.png" alt="UserMapper 인터페이스 - Service와 동일한 메서드 시그니처">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="w-6 h-6 rounded-lg bg-red-800 text-white text-xs flex items-center justify-center shrink-0">3</span>
+                  <p class="kr text-sm font-semibold text-zinc-800">SQL — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Mapper.xml</span>과 DB</p>
+                </div>
+                <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserMapper.xml</span> — 실제 SQL</p>
+                <div class="annot-frame max-w-2xl mb-3">
+                  <img src="images/server8.png" alt="Mapper.xml selectUserList SQL - TB_USER에서 PASS 제외하고 조회">
+                </div>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-2">이 프로젝트에서 쓴 대표 SQL은 아래와 같다.</p>
+                <div class="font-mono text-xs bg-zinc-100 rounded-lg p-3 leading-relaxed overflow-x-auto text-zinc-700 mb-3">
+<pre>-- 사원 조회 (조건 있을 때만 WHERE)
+SELECT * FROM tbl_employees
+&lt;where&gt;
+  &lt;if test="deptCode != null and deptCode != ''"&gt;AND DEPT_CODE = #{deptCode}&lt;/if&gt;
+  &lt;if test="empName  != null and empName  != ''"&gt;AND EMP_NAME  = #{empName}&lt;/if&gt;
+&lt;/where&gt;
+
+-- 저장 (RowType 분기로 각각 호출)
+UPDATE tbl_employees SET EMP_NAME = #{EMP_NAME}, ... WHERE EMP_ID = #{EMP_ID}
+DELETE FROM tbl_employees WHERE EMP_ID = #{EMP_ID}
+
+-- 공통 코드 (부서·직급·기술·취미를 한 테이블로)
+SELECT DET_CODE AS CODE, DET_NAME AS NAME FROM tbl_common_code WHERE MST_CODE = 'POSITION'</pre>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1">실습 DB(edupackdb) 테이블 목록</p>
+                    <div class="annot-frame">
+                      <img src="images/sql1.png" alt="HeidiSQL edupackdb 테이블 목록 - tbl_common_code, tbl_employees, tb_user 등">
+                    </div>
+                  </div>
+                  <div>
+                    <p class="kr text-xs font-semibold text-zinc-600 mb-1">tb_user 실제 데이터</p>
+                    <div class="annot-frame">
+                      <img src="images/sql2.png" alt="HeidiSQL tb_user 테이블 데이터 조회 결과">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-5">
+                <div class="flex items-start gap-3">
+                  <span class="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center shrink-0">
+                    <iconify-icon icon="solar:link-round-angle-linear"></iconify-icon>
+                  </span>
+                  <div class="min-w-0">
+                    <p class="kr text-sm font-semibold text-zinc-800">파일은 여기에 있습니다</p>
+                    <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">이 페이지와 위 자료는 아래 GitHub 저장소에서 볼 수 있습니다.</p>
+                    <a href="https://github.com/iamcode04/Nexacro-project" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 mt-2 font-mono text-sm text-blue-700 hover:text-blue-900 underline break-all">
+                      github.com/iamcode04/Nexacro-project
+                      <iconify-icon icon="solar:arrow-right-up-linear" class="shrink-0"></iconify-icon>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

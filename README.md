@@ -12,7 +12,7 @@
 
 넥사크로는 (주)투비소프트가 만든 국산 RIA(Rich Internet Application) 개발 플랫폼으로, 공공기관·금융권·대기업 SI 프로젝트의 화면 개발 표준으로 널리 쓰입니다.
 
-이 저장소는 그 과정에서 배운 **개념 · 컴포넌트 사용법 · 예제 코드 · 실습 스크린샷**을 한 페이지에 모아 복습할 수 있게 만든 것입니다. 강의를 들으며 계속 내용을 덧붙여 가는 중입니다.
+이 저장소는 그 과정에서 배운 **개념 · 컴포넌트 사용법 · 예제 코드 · 실습 스크린샷**을 한 페이지에 모아 복습할 수 있게 만든 것입니다.
 
 여기에 더해, 배운 내용으로 직접 만든 **실습 프로젝트의 원본 소스**(화면 · 서버 · 테이블)를 `프로젝트 파일/` 에 함께 올려 두었습니다.
 
@@ -26,15 +26,15 @@
 
 ```
 Nexacro-project/
-├── index.html                 ← 페이지 전체 (HTML + CSS + JS 한 파일, 약 3,650줄 / 324KB)
+├── index.html                 ← 페이지 전체 (HTML + CSS + JS 한 파일, 약 3,950줄 / 364KB)
 ├── README.md                  ← 이 문서
 ├── .gitignore                 ← .claude/ 제외
 │
-├── images/                    ← 본문에 들어가는 실습 스크린샷 88장 (약 5.7MB)
+├── images/                    ← 본문에 들어가는 실습 스크린샷 102장 (약 6.7MB)
 │   ├── main-screen.png        · 넥사크로 스튜디오 화면
 │   ├── grid-*.png             · Grid 관련
 │   ├── mobile-*.png           · 모바일 개발 관련 (16장)
-│   ├── xpush-*.png            · X-PUSH 관련 (15장)
+│   ├── xpush-*.png            · X-PUSH 관련 (18장)
 │   └── ...                    (자세한 규칙은 아래 "이미지 이름 규칙" 참고)
 │
 ├── 프로젝트 동영상/
@@ -60,7 +60,7 @@ Nexacro-project/
 
 넥사크로 툴 (탭 2)
  ├ 컴포넌트 정리 (서브탭)   → 전체 구조를 한눈에 보는 요약 4개
- ├ 자세한 사용법 (서브탭)   → 주제별 아코디언 43개 + 검색
+ ├ 자세한 사용법 (서브탭)   → 주제별 아코디언 40개 + 검색
  └ 프로젝트 동영상 (서브탭) → 실습 프로젝트 실행 영상
 ```
 
@@ -68,20 +68,20 @@ Nexacro-project/
 
 | 아코디언 | 내용 |
 |---|---|
-| 넥사크로 툴 정리 | 43개 항목을 일곱 갈래로 묶은 **마인드맵** (SVG 곡선은 JS로 그림) |
+| 넥사크로 툴 정리 | 40개 항목을 일곱 갈래로 묶은 **마인드맵** (SVG 곡선은 JS로 그림) |
 | 서버 연동 방식 | 화면 → Controller → Service/Mapper → DB → 화면 응답 흐름도 |
 | SQL 작성 방식 | Service가 Mapper를 호출해 MyBatis가 SQL을 실행하기까지의 흐름도 |
 | X-PUSH 메시지 흐름 | 토픽 등록 → Provider 공급 → 매칭 → 수신 → 수신 확인 흐름도 |
 
-### 자세한 사용법 — 아코디언 43개
+### 자세한 사용법 — 아코디언 40개
 
 아이콘 색으로 갈래를 구분합니다. **DOM 순서 = 아래 표 순서**입니다.
 
 | 색 | 갈래 | 개수 | 다루는 내용 |
 |---|---|---|---|
 | 🟢 초록 | 컴포넌트 · 화면 | 17 | 화면/스크립트 기초, UI 컴포넌트 카탈로그, 포지션, Dataset, Grid, Calendar, Combo, Edit·MaskEdit·TextArea, Theme·XCSS, Property, Div, Popup, Tab, Frame 구조, 기타 고급 기능, File Upload/Download, Web |
-| 🔵 파랑 | 서버 연동 | 4 | transaction() 기본, 파라미터 전달과 Dataset 송수신, 서버 측 처리 구조(Controller·Service·Mapper), 실전 연동 패턴 |
-| 🔴 빨강 | SQL | 3 | MyBatis 파라미터 바인딩, 조회/저장 SQL 패턴, 페이징 & 공통코드 설계 |
+| 🔵 파랑 | 서버 연동 | 3 | transaction()과 서버 통신(파라미터·Dataset 송수신), 서버 측 처리 구조(Controller·Service·Mapper), 실전 연동 패턴 |
+| 🔴 빨강 | SQL | 1 | MyBatis Mapper와 SQL 작성(파라미터 바인딩 · 조회/저장 · 페이징 · 공통코드) |
 | 🟡 노랑 | 모바일 · X-PUSH · 배포 | 15 | 모바일 개발 방법론, 반응형 vs 적응형, MLM, Device API(카메라), App Builder 패킹, ListView·Step, X-PUSH 개요·포트·TOPIC·실시간/신뢰성·FCM/APNS·Provider API·설치와 운영, WRE 배포, NRE 배포 |
 | ⚪ 회색 | 기타 · 프로젝트 | 4 | 프로젝트/제품 개요, 외부 리소스 가져오기, 실행 환경과 배포, 프로젝트 설계 참고 |
 
@@ -99,15 +99,15 @@ Nexacro-project/
 
 | 접두어 | 개수 | 쓰이는 곳 |
 |---|---|---|
+| `xpush-` | 18 | X-PUSH 개요·작동방식·TOPIC·전송·알림·Provider API·클라이언트 실습 |
 | `mobile-` | 16 | 모바일 개발 방법론, MLM, Device API, ListView |
-| `xpush-` | 15 | X-PUSH 개요·작동방식·TOPIC·전송·알림·Provider API |
+| `deploy-` | 14 | 패킹·배포 옵션, Generate/Packing, CacheLevel·CheckVersion, NRE 배포 |
 | `server1~9` | 9 | 서버 연동(파랑) 아코디언 |
 | `grid-` | 7 | Grid |
 | `icon-`, `toolbar-` | 8 | UI 컴포넌트 카탈로그 |
 | `modal-`, `modaless-` | 6 | Popup |
 | `div-`, `position-` | 6 | Div, 포지션 컴포넌트 |
-| `deploy-` | 3 | 패킹, 배포 옵션 |
-| `sql1~2` | 2 | SQL(빨강) 아코디언 |
+| `sql1~2` | 2 | MyBatis Mapper와 SQL 작성(빨강) 아코디언 |
 | 그 외 | | `main-screen`, `work-screen`, `dataset-*`, `combo-*`, `calendar-*`, `dynamic-*`, `event-*`, `file-*`, `frame`, `web*` |
 
 ---
@@ -161,66 +161,3 @@ Nexacro-project/
 | `tb_book` | `ISBN`, `TITLE`, `AUTHORS`, `PRICE`, `THUMBNAIL` | 도서 목록/상세 |
 
 `tb_user.SEC_NAME` 은 라운지에서 쓰는 익명 닉네임으로, 값이 없으면 `User_LoungeNick.xfdl` 팝업이 먼저 뜹니다.
-
-### 현재 진행 상태
-
-화면과 DB는 준비됐지만 **가운데 서버 계층이 아직 비어 있습니다.**
-
-```
-화면 (xfdl 16개)  ✅  →  서버 (Controller/Service/Mapper)  ❌  →  테이블 (5개)  ✅
-```
-
-화면에서 호출하는 서비스는 총 22개인데 구현된 것은 `uploadFile.do` 하나뿐입니다.
-
-| 갈래 | 서비스 | 상태 |
-|---|---|---|
-| 파일 | `uploadFile.do` | ✅ 구현 |
-| AI | `ai/chat.do` | ❌ |
-| 회원 | `user/login.do`, `signUp.do`, `checkUserId.do`, `updateSecName.do`, `selectUserList.do`, `updateUserList.do` | ❌ |
-| 공지 | `notice/selectNoticeList.do`, `insertNotice.do`, `selectNoticeDetail.do` | ❌ |
-| 라운지 | `lounge/selectPostList.do`, `insertPost.do`, `selectPostDetail.do`, `selectCommentList.do`, `insertComment.do`, `updateLikeCount.do`, `selectMyPosts.do`, `selectMyComments.do` | ❌ |
-| 도서 | `book/getBookList.do`, `getNewBookList.do`, `getBookDetail.do` | ❌ |
-
-서비스 주소 앞의 `SvcUrl` 은 `typedefinition.xml` 에서 `http://localhost:8088/edupack_egov/` 로 잡혀 있고,
-DB는 `edupackdb` (MySQL/MariaDB, `localhost:3306`) 입니다. 남은 21개는 Controller · Service · Mapper 를 채우면 동작합니다.
-
----
-
-## 로컬에서 보기
-
-`index.html`을 브라우저로 바로 열어도 되지만, 동영상과 이미지 경로가 확실하게 동작하려면 간단한 로컬 서버를 띄우는 쪽을 권합니다.
-
-```bash
-python -m http.server 4173
-```
-
-그다음 브라우저에서 `http://localhost:4173` 로 접속합니다.
-
----
-
-## 수정하고 배포하기
-
-배포는 GitHub Pages가 `main` 브랜치를 그대로 서빙하는 방식이라, **push하면 곧 반영**됩니다.
-
-```bash
-git add -A && git commit -m "설명" && git push
-```
-
-> 로컬에서만 고치고 push하지 않으면 다른 기기에서는 예전 버전이 보입니다.
-
----
-
-## 의존성과 주의사항
-
-CDN 두 개만 사용하고 나머지는 저장소 안에 전부 들어 있습니다.
-
-- [Tailwind CSS](https://cdn.tailwindcss.com) — 스타일
-- [Iconify](https://code.iconify.design) — 아이콘 (`solar` 아이콘 세트)
-
-이 때문에 **인터넷 연결이 필요합니다.** 오프라인(비행기, 사내 폐쇄망)에서는 스타일이 깨집니다.
-
-그 밖에 알아둘 점:
-
-- 동영상이 약 18MB라 재생 시작까지 잠깐 걸릴 수 있습니다
-- 모바일에서는 마인드맵의 항목 칸이 좁아져 글자가 여러 줄로 나뉩니다 (좁은 화면용 별도 레이아웃은 아직 없음)
-- 마인드맵 연결선은 JS가 실제 노드 위치를 재서 그리므로, 아코디언을 펼칠 때 다시 계산됩니다
