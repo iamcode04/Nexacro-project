@@ -3780,7 +3780,7 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
             </span>
             <div>
               <span class="kr font-semibold text-zinc-900 block">사용 파일 내용</span>
-              <span class="kr text-xs text-zinc-500">영상에 나온 프로젝트를 이루는 화면·자바 서버·SQL 파일</span>
+              <span class="kr text-xs text-zinc-500">영상 속 프로젝트를 이루는 화면 &middot; 자바 서버 &middot; 테이블 파일</span>
             </div>
           </div>
           <iconify-icon icon="solar:alt-arrow-down-linear" class="accordion-chevron text-zinc-400 shrink-0"></iconify-icon>
@@ -3790,163 +3790,109 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\
             <div class="px-6 pb-6 -mt-1 space-y-8">
 
               <div>
-                <p class="kr text-sm text-zinc-500 leading-relaxed">이 프로젝트는 <span class="font-semibold text-zinc-700">넥사크로 화면(.xfdl)</span>이 <span class="font-semibold text-zinc-700">자바 서버(Controller·Service·Mapper)</span>를 호출하고, 서버가 <span class="font-semibold text-zinc-700">MyBatis SQL</span>로 DB를 다루는 3단 구조로 되어 있다. 아래는 각 단계에서 실제로 쓴 파일들이다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed">영상에 나오는 실습 프로젝트의 원본 소스다. 메인 화면 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">sdiMain.xfdl</span>에서 출발해 팝업과 서비스 호출을 따라가며 <span class="font-semibold text-zinc-700">실제로 연결된 파일만</span> 추렸다.</p>
+                <div class="mt-3 font-mono text-xs bg-zinc-100 rounded-lg p-3 leading-relaxed overflow-x-auto text-zinc-700">
+<pre>프로젝트 파일/
+├── 01_화면_xfdl/     · 화면 정의 16개 + 프로젝트 설정 4개
+├── 02_서버_자바/     · 서버 컨트롤러 1개
+└── 03_테이블_sql/    · 테이블 DDL 5개</pre>
+                </div>
               </div>
 
               <div>
                 <div class="flex items-center gap-2 mb-3">
                   <span class="w-6 h-6 rounded-lg bg-emerald-700 text-white text-xs flex items-center justify-center shrink-0">1</span>
-                  <p class="kr text-sm font-semibold text-zinc-800">화면 — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Work_Emp.xfdl</span></p>
+                  <p class="kr text-sm font-semibold text-zinc-800">화면 — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">01_화면_xfdl/</span></p>
                 </div>
-                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">사원 정보를 조회·입력·삭제·저장하는 한 화면이다. Grid 하나에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">ds_emp</span>를 바인딩하고, 부서·직급·기술·취미 코드는 각각 별도 Dataset으로 두어 콤보와 체크박스에 물린다.</p>
-                <div class="overflow-x-auto mt-2 mb-3">
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">진입 화면에서 로그인·회원가입을 거쳐 업무화면과 라운지로 갈라지고, 거기서 다시 게시글·댓글·도서 화면으로 이어진다.</p>
+                <div class="font-mono text-xs bg-zinc-100 rounded-lg p-3 leading-relaxed overflow-x-auto text-zinc-700 mb-3">
+<pre>sdiMain  →  로그인 / 회원가입  →  업무화면 · 라운지  →  게시글 · 댓글 · 도서</pre>
+                </div>
+                <div class="overflow-x-auto mt-2">
                   <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
                     <thead class="bg-zinc-50">
                       <tr>
-                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">구성</th>
-                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">내용</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">폴더</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">파일</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">역할</th>
                       </tr>
                     </thead>
                     <tbody class="text-zinc-500">
-                      <tr><td class="kr px-3 py-2 border-b border-zinc-100 whitespace-nowrap">Dataset 6개</td><td class="kr px-3 py-2 border-b border-zinc-100"><span class="font-mono text-xs">ds_emp</span>(사원) · <span class="font-mono text-xs">ds_dept</span>(부서) · <span class="font-mono text-xs">ds_pos</span>(직급) · <span class="font-mono text-xs">ds_skill</span>(기술) · <span class="font-mono text-xs">ds_hobby</span>(취미) · <span class="font-mono text-xs">ds00</span></td></tr>
-                      <tr><td class="kr px-3 py-2 border-b border-zinc-100 whitespace-nowrap">ds_emp 컬럼</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100">EMP_ID, EMP_NAME, DEPT_CODE, POSITION, HIRE_DATE, SALARY, GENDER, MARRIED, SKILL, HOBBY, MEMO</td></tr>
-                      <tr><td class="kr px-3 py-2 border-b border-zinc-100 whitespace-nowrap">Grid 1개</td><td class="kr px-3 py-2 border-b border-zinc-100">사원 목록. 성별은 <span class="font-mono text-xs">fn_gender()</span>로 M/F를 남자/여자로 바꿔 표시</td></tr>
-                      <tr><td class="kr px-3 py-2 whitespace-nowrap">Button 4개</td><td class="kr px-3 py-2">조회 · 입력 · 삭제 · 저장</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap align-top" rowspan="3">FrameBase/</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">sdiMain.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100"><span class="font-semibold text-zinc-700">진입 화면.</span> AI 채팅창, 회사·고객지원 바로가기, 업무·라운지 이동</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">sdiOnLogin.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">업무·라운지 진입 시 뜨는 로그인 팝업</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_bookSub.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">도서 목록 서브 화면</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap align-top" rowspan="9">User/</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_Login.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">첫 진입 인트로 팝업</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_SignUp.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">회원가입 — 아이디 중복확인, 프로필 이미지 업로드</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_WorkPage.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">업무 화면 — 회원 목록, 공지 목록</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_NoticeWrite.xfdl<br>User_seeNotice.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">공지 작성 / 상세</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_LoungeNick.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">라운지 첫 이용 시 익명 닉네임 설정</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_lounge.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">라운지 메인 — 게시글 목록</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_LoungePost.xfdl<br>User_lounge_back.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">게시글 작성 / 상세 · 댓글 · 좋아요</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_launge_mypage.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">내가 쓴 글 / 댓글</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">User_book.xfdl<br>User_book_info.xfdl</td><td class="kr px-3 py-2 border-b border-zinc-100">도서 목록 / 상세</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 whitespace-nowrap">Cmm/</td><td class="font-mono text-xs px-3 py-2 whitespace-nowrap">CmmPaging.xfdl</td><td class="kr px-3 py-2">공통 페이징 컴포넌트</td></tr>
                     </tbody>
                   </table>
                 </div>
-                <p class="kr text-xs font-semibold text-zinc-600 mb-1">화면 스크립트 전문</p>
-                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
-<pre><span class="text-zinc-400">// Grid 성별 표시용 — M/F를 한글로</span>
-<span class="text-sky-600">this</span>.fn_gender = <span class="text-sky-600">function</span>(arg) {
-  <span class="text-amber-600">if</span> (arg == <span class="text-emerald-600">"M"</span>) { <span class="text-amber-600">return</span> <span class="text-emerald-600">"남자"</span>; }
-  <span class="text-amber-600">else</span>            { <span class="text-amber-600">return</span> <span class="text-emerald-600">"여자"</span>; }
-}
-
-<span class="text-zinc-400">// 조회 — 부서코드·사원명을 조건으로 서버에 요청</span>
-<span class="text-sky-600">this</span>.fn_search = <span class="text-sky-600">function</span>(obj:nexacro.Button, e:nexacro.ClickEventInfo)
-{
-  <span class="text-sky-600">var</span> sDeptCode = <span class="text-sky-600">this</span>.div00.form.edt00.value;
-  <span class="text-sky-600">var</span> sEmpName  = <span class="text-sky-600">this</span>.div00.form.edt02.value;
-
-  <span class="text-sky-600">this</span>.transaction(<span class="text-emerald-600">"svcSelectEmp"</span>
-    , <span class="text-emerald-600">"http://demo.nexacro.com/edu/nexacroN24/select_emp.jsp"</span>
-    , <span class="text-emerald-600">""</span>
-    , <span class="text-emerald-600">"ds_emp=out_emp"</span>
-    , <span class="text-emerald-600">"deptCode="</span> + sDeptCode + <span class="text-emerald-600">" empName="</span> + nexacro.wrapQuote(sEmpName)
-    , <span class="text-emerald-600">"fn_callback"</span>);
-};
-
-<span class="text-zinc-400">// 저장 — 변경분(:u)만 보내고, 낱개 변수도 함께 전달</span>
-<span class="text-sky-600">this</span>.fn_save = <span class="text-sky-600">function</span>(obj:nexacro.Button, e:nexacro.ClickEventInfo)
-{
-  <span class="text-sky-600">this</span>.transaction(<span class="text-emerald-600">"svcSaveEmp"</span>
-    , <span class="text-emerald-600">"EduUrl::save_emp.jsp"</span>
-    , <span class="text-emerald-600">"in_emp=ds_emp:u"</span>
-    , <span class="text-emerald-600">""</span>
-    , <span class="text-emerald-600">"in_var1='AA' in_var2=123 in_var3='ABC'"</span>
-    , <span class="text-emerald-600">"fn_callback"</span>);
-};
-
-<span class="text-zinc-400">// 콜백 — errCd가 음수면 실패, 아니면 svcId로 분기</span>
-<span class="text-sky-600">this</span>.fn_callback = <span class="text-sky-600">function</span>(svcId, errCd, errMsg) {
-  <span class="text-amber-600">if</span> (errCd &lt; <span class="text-emerald-600">0</span>) {
-    <span class="text-sky-600">this</span>.alert(<span class="text-emerald-600">"실패"</span> + errMsg);
-    <span class="text-amber-600">return</span>;
-  }
-  <span class="text-amber-600">if</span> (svcId == <span class="text-emerald-600">"svcSelectEmp"</span>) {
-    <span class="text-sky-600">this</span>.alert(<span class="text-sky-600">this</span>.ds_emp.getRowCount() + <span class="text-emerald-600">"건 조회되었습니다."</span>);
-  }
-  <span class="text-amber-600">else if</span> (svcId == <span class="text-emerald-600">"svcSaveEmp"</span>) {
-    <span class="text-sky-600">this</span>.alert(<span class="text-sky-600">this</span>.out_var);
-  }
-};
-
-<span class="text-zinc-400">// 입력 / 삭제 — Dataset 행 조작</span>
-<span class="text-sky-600">this</span>.fn_add = <span class="text-sky-600">function</span>(obj, e) {
-  <span class="text-sky-600">var</span> nRow = <span class="text-sky-600">this</span>.ds_emp.addRow();
-  <span class="text-sky-600">this</span>.ds_emp.setColumn(nRow, <span class="text-emerald-600">"HIRE_DATE"</span>, <span class="text-emerald-600">"20260709"</span>);
-};
-
-<span class="text-sky-600">this</span>.fn_delete = <span class="text-sky-600">function</span>(obj, e) {
-  <span class="text-sky-600">this</span>.ds_emp.deleteRow(<span class="text-sky-600">this</span>.ds_emp.rowposition);
-};</pre>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed">여기에 프로젝트 설정 파일 4개가 함께 들어 있다 — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">0708.xprj</span>(프로젝트), <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Application_Desktop_SDI.xadl</span>(진입점으로 sdiMain 지정), <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">typedefinition.xml</span>(서비스 prefix), <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">environment.xml</span>(테마 theme_edu).</p>
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-3">
+                  <p class="kr text-sm font-semibold text-zinc-800">화면이 부르는 서비스는 22개</p>
+                  <p class="kr mt-1 text-sm text-zinc-600 leading-relaxed">전부 <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">SvcUrl::</span> 별칭으로 호출한다. 회원 6개(<span class="font-mono text-xs">login</span>·<span class="font-mono text-xs">signUp</span>·<span class="font-mono text-xs">checkUserId</span> 등), 라운지 8개, 공지 3개, 도서 3개, AI 채팅 1개, 파일 업로드 1개다. <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-amber-200">SvcUrl</span>은 <span class="font-mono text-xs">typedefinition.xml</span>에서 실제 서버 주소로 잡혀 있어, 환경이 바뀌면 이 한 곳만 고치면 된다.</p>
                 </div>
               </div>
 
               <div>
                 <div class="flex items-center gap-2 mb-3">
                   <span class="w-6 h-6 rounded-lg bg-blue-800 text-white text-xs flex items-center justify-center shrink-0">2</span>
-                  <p class="kr text-sm font-semibold text-zinc-800">자바 서버 — Controller · Service · Mapper</p>
+                  <p class="kr text-sm font-semibold text-zinc-800">자바 서버 — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">02_서버_자바/</span></p>
                 </div>
-                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">회원 목록 조회(<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">selectUserList</span>) 하나가 <span class="font-semibold text-zinc-700">같은 이름 그대로</span> 네 개 파일을 타고 내려간다. Controller는 DB에 직접 손대지 않고 Service에, Service는 Mapper에 위임한다.</p>
-                <div class="space-y-3">
-                  <div>
-                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserController.java</span> — 요청을 받아 NexacroResult로 응답</p>
-                    <div class="annot-frame max-w-lg">
-                      <img src="images/server4.png" alt="UserController.selectUserList() - NexacroResult로 dsList 응답 구성">
-                    </div>
-                  </div>
-                  <div>
-                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserService.java</span> — 인터페이스</p>
-                    <div class="annot-frame max-w-lg">
-                      <img src="images/server5.png" alt="UserService 인터페이스 - checkUserId, signUp, login, selectUserList 등 메서드 시그니처">
-                    </div>
-                  </div>
-                  <div>
-                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserServiceImpl.java</span> — 구현체, Mapper로 위임</p>
-                    <div class="annot-frame max-w-md">
-                      <img src="images/server6.png" alt="UserServiceImpl.selectUserList() - userMapper.selectUserList()를 그대로 호출">
-                    </div>
-                  </div>
-                  <div>
-                    <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserMapper.java</span> — 인터페이스 (SQL은 XML에)</p>
-                    <div class="annot-frame max-w-lg">
-                      <img src="images/server7.png" alt="UserMapper 인터페이스 - Service와 동일한 메서드 시그니처">
-                    </div>
-                  </div>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">EduFileController.java</span> — 회원가입 프로필 이미지처럼 파일을 다루는 컨트롤러다. 약 530줄이며 <span class="font-semibold text-zinc-700">DB에는 접근하지 않고 파일시스템만</span> 쓴다.</p>
+                <div class="overflow-x-auto mt-2">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">매핑</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">메서드</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">하는 일</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">/uploadFile.do</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">uploadFiles</td><td class="kr px-3 py-2 border-b border-zinc-100">MultipartRequest로 받아 저장하고, 파일 정보를 Dataset으로 응답</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">/selectFiles.do</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">selectFiles</td><td class="kr px-3 py-2 border-b border-zinc-100">저장된 파일 목록 조회</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">/downloadFile.do</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">downloadFile</td><td class="kr px-3 py-2 border-b border-zinc-100">파일 내려받기</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 whitespace-nowrap">/deleteFile.do</td><td class="font-mono text-xs px-3 py-2 whitespace-nowrap">deleteFile</td><td class="kr px-3 py-2">파일 삭제</td></tr>
+                    </tbody>
+                  </table>
                 </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed">Spring 설정 XML은 <span class="font-semibold text-zinc-700">DB 접속정보가 들어 있어 저장소에 올리지 않았다.</span></p>
+                <p class="kr mt-3 text-xs text-zinc-400 leading-relaxed">이 구조가 어떻게 동작하는지는 "자세한 사용법" 탭의 <span class="font-semibold text-zinc-600">서버 측 처리 구조(Controller·Service·Mapper)</span>와 <span class="font-semibold text-zinc-600">실전 연동 패턴</span> 항목에서 다룬다.</p>
               </div>
 
               <div>
                 <div class="flex items-center gap-2 mb-3">
                   <span class="w-6 h-6 rounded-lg bg-red-800 text-white text-xs flex items-center justify-center shrink-0">3</span>
-                  <p class="kr text-sm font-semibold text-zinc-800">SQL — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Mapper.xml</span>과 DB</p>
+                  <p class="kr text-sm font-semibold text-zinc-800">테이블 — <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">03_테이블_sql/</span></p>
                 </div>
-                <p class="kr text-xs font-semibold text-zinc-600 mb-1"><span class="font-mono">UserMapper.xml</span> — 실제 SQL</p>
-                <div class="annot-frame max-w-2xl mb-3">
-                  <img src="images/server8.png" alt="Mapper.xml selectUserList SQL - TB_USER에서 PASS 제외하고 조회">
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">sdiMain_tables.sql</span> — <span class="font-mono text-xs">mysqldump --no-data</span>로 뽑은 <span class="font-semibold text-zinc-700">구조(DDL)만</span> 담았고 실제 데이터는 들어 있지 않다.</p>
+                <div class="overflow-x-auto mt-2">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">테이블</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">주요 컬럼</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">쓰이는 화면</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">tb_user</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100">USER_ID(PK), PASS, USER_NAME, EMAIL, PROFILE, SEC_NAME</td><td class="kr px-3 py-2 border-b border-zinc-100">로그인, 회원가입, 닉네임, 업무화면</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">tb_notice</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100">NOTICE_ID(PK), USER_ID, TITLE, CONTENT</td><td class="kr px-3 py-2 border-b border-zinc-100">공지 목록·작성·상세</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">tb_lounge_post</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100">POST_ID(PK), BOARD_TYPE, SEC_NAME, LIKE_CNT, VIEW_CNT</td><td class="kr px-3 py-2 border-b border-zinc-100">라운지 목록·작성·상세</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100 whitespace-nowrap">tb_lounge_comment</td><td class="font-mono text-xs px-3 py-2 border-b border-zinc-100">COMMENT_ID(PK), POST_ID, SEC_NAME, CONTENT</td><td class="kr px-3 py-2 border-b border-zinc-100">댓글</td></tr>
+                      <tr><td class="font-mono text-xs px-3 py-2 whitespace-nowrap">tb_book</td><td class="font-mono text-xs px-3 py-2">ISBN, TITLE, AUTHORS, PRICE, THUMBNAIL</td><td class="kr px-3 py-2">도서 목록·상세</td></tr>
+                    </tbody>
+                  </table>
                 </div>
-                <p class="kr text-sm text-zinc-500 leading-relaxed mb-2">이 프로젝트에서 쓴 대표 SQL은 아래와 같다.</p>
-                <div class="font-mono text-xs bg-zinc-100 rounded-lg p-3 leading-relaxed overflow-x-auto text-zinc-700 mb-3">
-<pre>-- 사원 조회 (조건 있을 때만 WHERE)
-SELECT * FROM tbl_employees
-&lt;where&gt;
-  &lt;if test="deptCode != null and deptCode != ''"&gt;AND DEPT_CODE = #{deptCode}&lt;/if&gt;
-  &lt;if test="empName  != null and empName  != ''"&gt;AND EMP_NAME  = #{empName}&lt;/if&gt;
-&lt;/where&gt;
-
--- 저장 (RowType 분기로 각각 호출)
-UPDATE tbl_employees SET EMP_NAME = #{EMP_NAME}, ... WHERE EMP_ID = #{EMP_ID}
-DELETE FROM tbl_employees WHERE EMP_ID = #{EMP_ID}
-
--- 공통 코드 (부서·직급·기술·취미를 한 테이블로)
-SELECT DET_CODE AS CODE, DET_NAME AS NAME FROM tbl_common_code WHERE MST_CODE = 'POSITION'</pre>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
-                  <div>
-                    <p class="kr text-xs font-semibold text-zinc-600 mb-1">실습 DB(edupackdb) 테이블 목록</p>
-                    <div class="annot-frame">
-                      <img src="images/sql1.png" alt="HeidiSQL edupackdb 테이블 목록 - tbl_common_code, tbl_employees, tb_user 등">
-                    </div>
-                  </div>
-                  <div>
-                    <p class="kr text-xs font-semibold text-zinc-600 mb-1">tb_user 실제 데이터</p>
-                    <div class="annot-frame">
-                      <img src="images/sql2.png" alt="HeidiSQL tb_user 테이블 데이터 조회 결과">
-                    </div>
-                  </div>
-                </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">tb_user.SEC_NAME</span>은 라운지에서 쓰는 익명 닉네임이라, 값이 비어 있으면 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">User_LoungeNick.xfdl</span> 팝업이 먼저 뜬다.</p>
               </div>
 
               <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-5">
@@ -3956,10 +3902,10 @@ SELECT DET_CODE AS CODE, DET_NAME AS NAME FROM tbl_common_code WHERE MST_CODE = 
                   </span>
                   <div class="min-w-0">
                     <p class="kr text-sm font-semibold text-zinc-800">파일은 여기에 있습니다</p>
-                    <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">이 페이지와 위 자료는 아래 GitHub 저장소에서 볼 수 있습니다.</p>
-                    <a href="https://github.com/iamcode04/Nexacro-project" target="_blank" rel="noopener noreferrer"
+                    <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">위 파일 전부를 GitHub 저장소의 <span class="font-mono text-xs bg-white px-1.5 py-0.5 rounded border border-zinc-200">프로젝트 파일/</span> 폴더에서 바로 열어볼 수 있습니다.</p>
+                    <a href="https://github.com/iamcode04/Nexacro-project/tree/main/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%ED%8C%8C%EC%9D%BC" target="_blank" rel="noopener noreferrer"
                        class="inline-flex items-center gap-1.5 mt-2 font-mono text-sm text-blue-700 hover:text-blue-900 underline break-all">
-                      github.com/iamcode04/Nexacro-project
+                      github.com/iamcode04/Nexacro-project &rarr; 프로젝트 파일/
                       <iconify-icon icon="solar:arrow-right-up-linear" class="shrink-0"></iconify-icon>
                     </a>
                   </div>
