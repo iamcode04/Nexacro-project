@@ -1236,7 +1236,7 @@ provider.sendPushMessage(pushMessage);</pre>
       </div>
 
       <!-- 3. Dataset -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="dataset 데이터셋 바인딩 검색 findrow filter 정렬 addrow setcolumn deleterow crud">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="dataset 데이터셋 바인딩 검색 findrow filter 정렬 addrow setcolumn deleterow crud useclientlayout layout 형변환 columntype tonumber getsum e.reason onrowsetchanged enableevent 성능">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
@@ -1287,13 +1287,49 @@ provider.sendPushMessage(pushMessage);</pre>
                 <p class="kr text-sm font-semibold text-zinc-800">초기화·복사·이벤트</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">reset()은 처음 불러온 상태로 되돌리고, clearData()는 완전히 비운다. copyData/copyRow로 다른 Dataset과 데이터를 주고받을 수 있다. cancolumnchange(변경 직전, false 반환 시 취소 가능)·oncolumnchanged(변경 직후) 이벤트로 값 변경을 감시·검증할 수 있다.</p>
               </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">내가 만든 Layout은 통신하면 사라진다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">가장 많이 당하는 함정이다. 화면에서 컬럼을 예쁘게 잡아둬도, <span class="font-semibold text-zinc-700">서버와 통신하는 순간 내가 디자인한 표가 서버에서 보내준 것으로 통째로 바뀐다.</span> 그래서 서버는 조회 결과가 0건이어도 반드시 Layout은 리턴해 줘야 한다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">useclientlayout</span>을 true로 바꾸면 기존 layout이 유지되지만, <span class="font-semibold text-zinc-700">권장은 false</span>다. Layout은 서버 한 곳에서 기준을 잡아 내려주는 편이 유지보수에 낫고, 스크립트로 Type을 바꾸는 것도 권장하지 않는다.</p>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-1">형변환은 Dataset을 만들 때 끝내야 한다</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed">컬럼 Type은 <span class="font-semibold text-zinc-700">Dataset을 만나는 순간 바꿀 수 없다.</span> 정렬(Sort)도 컬럼 Type을 기준으로 동작하기 때문에, 숫자를 String으로 받아두면 정렬이 문자 순서로 엉킨다. 수식 계산도 마찬가지라 Type이 number가 아니면 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">getSum("SALARY")</span>가 아니라 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">getSum("nexacro.toNumber(SALARY)")</span>처럼 감싸야 한다. 애초에 Dataset을 만들 때 형변환해서 주는 게 편하다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">e.reason이 있는 이벤트는 반드시 분기할 것</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">onload</span>, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">onrowsetchanged</span>, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">onrowposchanged</span>처럼 이벤트 객체에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.reason</span>이 들어 있는 경우, 어떤 이유로 불렸는지 갈라주지 않으면 추가할 때 쓴 코드가 삭제·정렬할 때도 같이 돌아간다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.ds_emp_onrowsetchanged = <span class="text-sky-600">function</span>(obj, e)
+{
+  <span class="text-sky-600">if</span> (e.reason == <span class="text-amber-600">12</span>) {        <span class="text-zinc-400">// append</span>
+  } <span class="text-sky-600">else if</span> (e.reason == <span class="text-amber-600">20</span>) { <span class="text-zinc-400">// delete</span>
+  } <span class="text-sky-600">else if</span> (e.reason == <span class="text-amber-600">30</span>) { <span class="text-zinc-400">// sort</span>
+  }
+};</pre>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">반복문으로 값을 넣을 땐 enableevent를 끈다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">Dataset은 컬럼 값이 바뀔 때마다 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">cancolumnchange</span> → <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">oncolumnchanged</span> 이벤트를 자동으로 발생시킨다. 루프를 1000번 돌면 이벤트도 1000번 찍힌다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">enableevent = false</span>로 이벤트를 잠깐 멈춰두면 그만큼 빨라진다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.Dataset01.enableevent = <span class="text-amber-600">false</span>;   <span class="text-zinc-400">// 이벤트 멈춤</span>
+<span class="text-sky-600">for</span> (<span class="text-sky-600">var</span> i = <span class="text-amber-600">0</span>; i &lt; nCnt; i++) {
+  <span class="text-sky-600">this</span>.Dataset01.setColumn(i, <span class="text-emerald-600">"COL01"</span>, ...);
+}
+<span class="text-sky-600">this</span>.Dataset01.enableevent = <span class="text-amber-600">true</span>;    <span class="text-zinc-400">// 반드시 되돌린다</span></pre>
+                </div>
+                <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed"><span class="font-semibold text-zinc-700">false로 껐으면 무조건 true로 되돌려야 한다.</span> 안 켜두면 그 뒤로 바인딩된 화면이 값 변화를 못 따라간다. 통신 후 콜백에서 Dataset을 재가공할 때도 같은 패턴을 쓴다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">Dataset 중심으로 짤 것</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">업무 화면을 만들 때는 컴포넌트가 아니라 Dataset을 축으로 코딩한다. 가능하면 Dataset 바인딩을 활용하고, 이벤트를 쓸 때도 <span class="font-semibold text-zinc-700">컴포넌트 이벤트보다 Dataset 이벤트를 먼저</span> 고른다. 그래야 화면을 바꿔도 로직이 흔들리지 않는다.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- 4. Grid -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="grid 그리드 cell displaytype edittype tree 트리 그룹핑 병합 페이징 paging 드래그 드롭 바인딩">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="grid 그리드 cell displaytype edittype tree 트리 그룹핑 병합 페이징 paging 드래그 드롭 바인딩 oncellclick onrowposchanged cellmovingtype getcellproperty expr enableredraw fastvscrolltype 성능 유의사항">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
@@ -1398,6 +1434,49 @@ provider.sendPushMessage(pushMessage);</pre>
                   <div class="flex items-start gap-2"><span class="legend-num mt-0.5">4</span><p class="kr text-sm text-zinc-500 leading-snug"><span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">fnSetPage()</span> → <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">fnCreatePage(콜백함수명, 전체건수, 페이지당건수, 현재페이지, 표시할버튼수)</span> — 페이지 번호 버튼들을 자동으로 생성</p></div>
                   <div class="flex items-start gap-2"><span class="legend-num mt-0.5">5</span><p class="kr text-sm text-zinc-500 leading-snug">페이지 번호 클릭 시 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">fnPageCall(nPage, nOffset)</span>이 fvPage·fvOffset을 갱신하고 다시 조회 함수를 호출</p></div>
                 </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">oncellclick의 두 가지 함정</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-semibold text-zinc-700">첫째, 마우스와 키보드가 다르게 동작한다.</span> oncellclick은 마우스·키보드 사용자를 모두 지원하려는 이벤트인데, 특정 컬럼에서 계산을 하면 마우스로 누른 사람은 2번 계산되고 키보드로 이동한 사람은 1번만 계산된다. 값이 두 배가 되는 버그가 여기서 나온다. 그래서 셀 클릭에 반응하는 계산 로직은 oncellclick까지 가지 말고 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">onrowposchanged</span>에서 구현한다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3"><span class="font-semibold text-zinc-700">둘째, index로 컬럼을 판단하면 안 된다.</span> Grid의 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">cellmovingtype</span>을 col로 두면 사용자가 실행 중에 컬럼 순서를 바꿀 수 있고, 그 순간 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.col</span>·<span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.cell</span> 번호가 다른 컬럼을 가리킨다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-zinc-400">// 이렇게 쓰면 컬럼 순서가 바뀌는 순간 깨진다</span>
+<span class="text-sky-600">if</span> (e.col == <span class="text-amber-600">1</span>) { ... }
+
+<span class="text-zinc-400">// 번호가 아니라 바인딩된 컬럼명으로 판단한다</span>
+<span class="text-sky-600">if</span> (obj.getCellProperty(<span class="text-emerald-600">"body"</span>, e.cell, <span class="text-emerald-600">"text"</span>).split(<span class="text-emerald-600">":"</span>)[<span class="text-amber-600">1</span>] == <span class="text-emerald-600">"컬럼명"</span>) { ... }</pre>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">expr은 성능에 가장 크게 영향을 준다</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">그리드 셀에 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">expr</span> 수식을 걸면 데이터가 바뀌거나 스크롤할 때마다 그리드 영역을 다시 계산해서 그린다. <span class="font-semibold text-zinc-700">expr이 하나만 있어도</span> 스크롤·키 이동 등 전반적인 반응 속도에 영향을 미치고, 데이터가 많을수록 심해진다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">해결책은 계산을 그리드가 아니라 <span class="font-semibold text-zinc-700">Dataset으로 옮기는 것</span>이다. 조회 콜백에서 수식 컬럼을 미리 만들어 두고, 그리드는 그 컬럼을 바인딩만 한다.</p>
+                <div class="grid sm:grid-cols-2 gap-3">
+                  <div class="border border-rose-200 bg-rose-50 rounded-xl px-4 py-3">
+                    <p class="kr text-xs font-semibold text-rose-700 mb-1">그리드에서 계산 — 느림</p>
+                    <p class="font-mono text-[13px] text-zinc-700">expr:Count * Price</p>
+                  </div>
+                  <div class="border border-emerald-200 bg-emerald-50 rounded-xl px-4 py-3">
+                    <p class="kr text-xs font-semibold text-emerald-700 mb-1">Dataset 수식 컬럼을 바인딩 — 빠름</p>
+                    <p class="font-mono text-[13px] text-zinc-700">bind:Amt</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">스크립트로 Grid를 조립할 땐 enableredraw를 끈다</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Grid는 변경이 생길 때마다 화면을 자동으로 다시 그린다. 스크립트로 Contents를 동적 생성하면 한 줄 바꿀 때마다 다시 그리느라 눈에 띄게 느려진다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">enableredraw = false</span>로 <span class="font-semibold text-zinc-700">넥사크로 엔진을 잠깐 멈춰두면</span> 속도 차이가 크게 난다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre><span class="text-sky-600">this</span>.Grid01.enableredraw = <span class="text-amber-600">false</span>;
+<span class="text-sky-600">for</span> (<span class="text-sky-600">var</span> i = <span class="text-amber-600">0</span>; i &lt; nCnt; i++) {
+  <span class="text-sky-600">this</span>.Grid01.setProperty(...);
+}
+<span class="text-sky-600">this</span>.Grid01.enableredraw = <span class="text-amber-600">true</span>;   <span class="text-zinc-400">// 반드시 되돌린다</span></pre>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">Dataset의 enableevent와 짝을 이루는 속성이다. 이벤트가 과하게 도는 곳은 Dataset쪽 enableevent를, 다시 그리기가 과한 곳은 Grid쪽 enableredraw를 쓴다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">fastvscrolltype — 세로 스크롤이 버벅일 때</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">Grid는 내부적으로 복잡한 DOM 트리라서 스크롤 자체가 부담이다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">fastvscrolltype</span>은 세로 스크롤 시 화면에 표시되는 데이터 개수를 제한해서, 스크롤할 때 일부만 갱신하도록 만든다. Reflow·Repaint 횟수가 줄어 성능이 개선된다.</p>
               </div>
             </div>
           </div>
@@ -2139,7 +2218,7 @@ provider.sendPushMessage(pushMessage);</pre>
       </div>
 
       <!-- 9. transaction()과 서버 통신 (파라미터·Dataset 송수신) (서버 연결 문서 · 파란색) -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre uiadapter gfntransaction 파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭 resource service">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="transaction 서버통신 was rs ds 변환 sync async 비동기 콜백 cors nre uiadapter gfntransaction 파라미터 wrapquote 공백 dataset 전송 u a typedefinition services url 별칭 resource service httpretry httptimeout 타임아웃 재시도 ndatatype xml ssv binary json 통신포맷 chunked progressload 대용량 백지현상 동기 비동기 성능">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-blue-800 text-white flex items-center justify-center shrink-0">
@@ -2200,6 +2279,123 @@ provider.sendPushMessage(pushMessage);</pre>
                 <p class="kr text-sm font-semibold text-zinc-800">gfnTransaction() — 공통 래퍼 함수</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed">transaction()과 인자 순서가 동일한 프로젝트 공통 함수로, 실무에서는 transaction()을 직접 쓰기보다 이렇게 감싸둔 공통 함수를 더 많이 쓴다.</p>
                 <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed mb-1 font-mono text-xs bg-zinc-100 px-2 py-1.5 rounded inline-block">this.gfnTransaction("svcGetNewBook", "user/getNewBook.do", "", "dsNewBook=dsNewBook", "", "fnCallback")</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">httpretry / httptimeout — 서버가 늦거나 잠깐 죽었을 때</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">둘 다 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Environment</span> 속성으로 지정한다. <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">httpretry</span>는 서비스를 호출했는데 서버에 일시적인 장애가 생겼을 때 한 번 더 호출할지 멈출지를 정한다. 여기서 <span class="font-semibold text-zinc-700">최초 호출은 횟수에 포함되지 않으므로, 재시도를 아예 하지 않으려면 0으로 둬야 한다</span>(권장). <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">httptimeout</span>은 서버 응답을 얼마나 기다릴지로, <span class="font-semibold text-zinc-700">기본값이 60초</span>이고 그 안에 응답이 없으면 타임아웃 오류가 난다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">주의할 건 타임아웃이 넥사크로 혼자 정하는 값이 아니라는 점이다. 요청은 아래 세 구간을 지나므로, <span class="font-semibold text-zinc-700">셋 중 가장 오래 걸리는 구간을 기준으로</span> 잡아야 중간에서 끊기지 않는다.</p>
+                <div class="flow-frame max-w-2xl">
+                  <svg viewBox="0 0 700 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="toTitle toDesc">
+                    <title id="toTitle">Timeout 설정 구간</title>
+                    <desc id="toDesc">요청은 Front End(넥사크로), Application Server(WAS), Back End(DB) 세 구간을 지나며, httptimeout은 이 중 최대 시간을 기준으로 설정해야 한다.</desc>
+                    <defs>
+                      <marker id="toArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,1 L9,5 L0,9 z" fill="#0369a1"></path>
+                      </marker>
+                    </defs>
+                    <g fill="#f0f9ff" stroke="#0284c7" stroke-width="1.6">
+                      <rect x="20" y="34" width="180" height="56" rx="12"></rect>
+                      <rect x="260" y="34" width="180" height="56" rx="12"></rect>
+                      <rect x="500" y="34" width="180" height="56" rx="12"></rect>
+                    </g>
+                    <g fill="none" stroke="#0369a1" stroke-width="1.6" marker-end="url(#toArrow)">
+                      <path d="M200,62 L256,62"></path>
+                      <path d="M440,62 L496,62"></path>
+                    </g>
+                    <g text-anchor="middle" fill="#0c4a6e">
+                      <text x="110" y="56" font-size="13" font-weight="600">Front End</text>
+                      <text x="110" y="75" font-size="11.5" fill="#0369a1">넥사크로</text>
+                      <text x="350" y="56" font-size="13" font-weight="600">Application Server</text>
+                      <text x="350" y="75" font-size="11.5" fill="#0369a1">WAS · X-API</text>
+                      <text x="590" y="56" font-size="13" font-weight="600">Back End</text>
+                      <text x="590" y="75" font-size="11.5" fill="#0369a1">DB · Legacy</text>
+                    </g>
+                    <path d="M20,116 L680,116" stroke="#94a3b8" stroke-width="1.4" stroke-dasharray="5 4" fill="none"></path>
+                    <text x="350" y="136" font-size="11.5" fill="#64748b" text-anchor="middle">이 세 구간 중 &#8220;최대 시간&#8221;을 기준으로 httptimeout을 설정</text>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">통신 포맷 4종 — 무엇을 보낼 것인가</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">transaction()의 뒤쪽 선택 인자 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">nDataType</span>으로 송·수신 데이터 형식을 고른다. 지정하지 않으면 XML이다.</p>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm border border-zinc-200 rounded-lg overflow-hidden">
+                    <thead class="bg-zinc-50">
+                      <tr>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">값</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200 whitespace-nowrap">포맷</th>
+                        <th class="kr text-left font-semibold text-zinc-700 px-3 py-2 border-b border-zinc-200">특징</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-zinc-500">
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">0</td><td class="kr px-3 py-2 border-b border-zinc-100 font-semibold text-zinc-700 whitespace-nowrap">XML</td><td class="kr px-3 py-2 border-b border-zinc-100">기본값. <span class="font-semibold">가장 느리다.</span> 대신 개발자도구에서 눈으로 읽기 쉬워 개발 중에는 편하다</td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">1</td><td class="kr px-3 py-2 border-b border-zinc-100 font-semibold text-zinc-700 whitespace-nowrap">Binary</td><td class="kr px-3 py-2 border-b border-zinc-100">웹은 바이너리를 못 읽어서 다운로드시켜 버린다. 암호화된 것처럼 보이지만 <span class="font-semibold">암호화가 절대 아니다</span></td></tr>
+                      <tr><td class="font-mono px-3 py-2 border-b border-zinc-100">2</td><td class="kr px-3 py-2 border-b border-zinc-100 font-semibold text-emerald-700 whitespace-nowrap">SSV</td><td class="kr px-3 py-2 border-b border-zinc-100"><span class="font-semibold text-emerald-700">가장 추천.</span> 데이터를 구분자로만 나눠서 불필요한 컬럼 태그가 안 붙는다. 파싱도 XML보다 빠르다</td></tr>
+                      <tr><td class="font-mono px-3 py-2">3</td><td class="kr px-3 py-2 font-semibold text-zinc-700 whitespace-nowrap">JSON</td><td class="kr px-3 py-2">키:값 형식. Nexacro N에서 추가됐다</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">클라이언트가 SSV면 서버도 SSV로 맞춘다 — 보내는 쪽은 transaction의 nDataType, 받는 쪽은 서버 X-API의 <span class="font-mono">PlatformResponse</span>에서 지정한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">SSV의 생김새 — 그리고 X-API로 만들면 느려지는 이유</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">SSV는 CSV와 비슷하게 구분자로만 나눈 형식이다. 레코드는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">RS(0x1e)</span>, 필드는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">US(0x1f)</span>로 끊는다.</p>
+                <div class="code-block text-[13px] leading-relaxed bg-white text-zinc-800 border border-zinc-200 rounded-xl p-4 overflow-x-auto">
+<pre>SSV:utf-8<span class="text-rose-500 font-semibold">[RS]</span>
+ErrorCode=0<span class="text-amber-600 font-semibold">[US]</span>ErrorMsg=Succ<span class="text-rose-500 font-semibold">[RS]</span>
+Dataset:output<span class="text-rose-500 font-semibold">[RS]</span>
+_RowType_<span class="text-amber-600 font-semibold">[US]</span>no:String(6)<span class="text-amber-600 font-semibold">[US]</span>empName:String(32)<span class="text-rose-500 font-semibold">[RS]</span>
+N<span class="text-amber-600 font-semibold">[US]</span>0<span class="text-amber-600 font-semibold">[US]</span>Mason<span class="text-rose-500 font-semibold">[RS]</span></pre>
+                </div>
+                <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed">여기서 한 가지 함정이 있다. <span class="font-semibold text-zinc-700">X-API로 SSV를 만들면 내부에서 Dataset을 다시 생성하느라 오히려 시간이 걸린다.</span> SSV로 바꾼 효과를 제대로 보려면 X-API 설정만 바꾸지 말고, 자바 String 연산으로 위 형식을 직접 찍어내야 한다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">동기보다 비동기 — 통신 5개면 차이가 드러난다</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">동기 통신은 요청을 보낸 뒤 메인 스레드를 잠가버린다. 응답이 올 때까지 넥사크로 엔진이 통째로 멈추므로, 화면 로딩 중에 동기로 호출하면 <span class="font-semibold text-zinc-700">백지 현상</span>이 생기고 돌아가는 대기 이미지조차 안 보인다. 심하면 프로그램이 강제 종료된다. 그래서 <span class="font-semibold text-zinc-700">form의 onload에서는 반드시 비동기</span>로 부른다.</p>
+                <div class="flow-frame max-w-2xl">
+                  <svg viewBox="0 0 700 264" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="syTitle syDesc">
+                    <title id="syTitle">동기 통신과 비동기 통신의 소요 시간 비교</title>
+                    <desc id="syDesc">1초짜리 통신 5개를 동기로 부르면 순서대로 실행되어 약 5초가 걸리지만, 비동기로 동시에 요청하면 약 1초 만에 끝난다.</desc>
+                    <g font-size="12" fill="#52525b">
+                      <text x="14" y="26" font-weight="600" fill="#b91c1c">동기 — 하나 끝나야 다음</text>
+                      <text x="14" y="146" font-weight="600" fill="#047857">비동기 — 한꺼번에 요청</text>
+                    </g>
+                    <g fill="#fef2f2" stroke="#dc2626" stroke-width="1.4">
+                      <rect x="60" y="40" width="104" height="26" rx="6"></rect>
+                      <rect x="168" y="40" width="104" height="26" rx="6"></rect>
+                      <rect x="276" y="40" width="104" height="26" rx="6"></rect>
+                      <rect x="384" y="40" width="104" height="26" rx="6"></rect>
+                      <rect x="492" y="40" width="104" height="26" rx="6"></rect>
+                    </g>
+                    <g fill="#ecfdf5" stroke="#059669" stroke-width="1.4">
+                      <rect x="60" y="160" width="104" height="13" rx="4"></rect>
+                      <rect x="60" y="176" width="104" height="13" rx="4"></rect>
+                      <rect x="60" y="192" width="104" height="13" rx="4"></rect>
+                      <rect x="60" y="208" width="104" height="13" rx="4"></rect>
+                      <rect x="60" y="224" width="104" height="13" rx="4"></rect>
+                    </g>
+                    <g font-size="10.5" fill="#71717a" text-anchor="middle">
+                      <text x="112" y="57">1초</text><text x="220" y="57">1초</text><text x="328" y="57">1초</text><text x="436" y="57">1초</text><text x="544" y="57">1초</text>
+                    </g>
+                    <path d="M60,82 L596,82" stroke="#dc2626" stroke-width="1.4" fill="none"></path>
+                    <path d="M60,76 L60,88 M596,76 L596,88" stroke="#dc2626" stroke-width="1.4"></path>
+                    <text x="328" y="101" font-size="12" font-weight="600" fill="#b91c1c" text-anchor="middle">합계 약 5초 — 그동안 화면은 멈춰 있다</text>
+                    <path d="M60,246 L164,246" stroke="#059669" stroke-width="1.4" fill="none"></path>
+                    <path d="M60,240 L60,250 M164,240 L164,250" stroke="#059669" stroke-width="1.4"></path>
+                    <text x="180" y="250" font-size="12" font-weight="600" fill="#047857">합계 약 1초</text>
+                  </svg>
+                </div>
+                <p class="kr mt-2 text-sm text-zinc-500 leading-relaxed">개발할 때는 테스트 데이터가 적어서 동기로 짜도 티가 안 나다가, 운영에 올리는 순간 문제가 된다. 동기와 비동기를 섞어 부르면 비동기 쪽도 동기 응답에 발이 묶이니 주의할 것. 통신 자체를 줄이는 것도 방법인데, <span class="font-semibold text-zinc-700">요청 하나에 Dataset 하나가 아니라 1:N으로</span> 묶어 보내면 호출 수가 준다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800">대용량 데이터 — Chunked로 잘라 받기</p>
+                <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-2">대용량을 한 번에 보내면 메모리 적재 한계에 걸린다. Chunked는 서버가 일정 크기로 <span class="font-semibold text-zinc-700">잘라서 보내주고 화면이 나눠 받는</span> 방식이다. 서버는 FirstRow(Chunked) 방식으로 구현하고, 클라이언트는 Dataset의 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">progressload</span>를 true로 둔다.</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-2">이때 onload 이벤트가 여러 번 발생하므로 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">e.reason</span>으로 갈라야 한다.</p>
+                <div class="grid sm:grid-cols-2 gap-x-6 gap-y-1.5">
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">e.reason == 1</span> : 아직 받는 중(중간 조각)</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">e.reason == 0</span> : 전부 수신 완료</p>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">애초에 대량이 안 오게 만드는 게 먼저다 — 페이징, 분할 전송, 조회 조건 제한을 설계 단계에서 정해 둘 것.</p>
               </div>
             </div>
           </div>
