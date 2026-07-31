@@ -141,6 +141,15 @@
   }
   .annot-frame img { display: block; width: 100%; height: auto; border-radius: 1rem; }
 
+  /* 직접 그린 순서도(SVG) */
+  .flow-frame {
+    border: 1px solid #e4e4e7;
+    border-radius: 1rem;
+    padding: 16px 12px;
+    overflow-x: auto;
+  }
+  .flow-frame svg { display: block; width: 100%; min-width: 560px; height: auto; }
+
   /* 클릭/호버로 여는 작은 포인터 + 말풍선 팝업 */
   .hotspot {
     position: absolute;
@@ -3551,9 +3560,80 @@ pushMessage.addData(<span class="text-emerald-600">"data02"</span>);</pre>
               <div>
                 <p class="kr text-sm font-semibold text-zinc-800">배포 순서 — 사용자가 직접 설치하게 만든다</p>
                 <p class="kr mt-1 text-sm text-zinc-500 leading-relaxed mb-3">다운로드 링크 → 배포 사이트 접속 → 런처와 엔진 설치 → 설치가 끝나면 웹 브라우저가 아니라 <span class="font-semibold text-zinc-700">넥사크로 전용 브라우저</span>가 뜨는 흐름이다. 설치는 <span class="font-semibold text-zinc-700">사용자가 선택하도록 만들어야 하고 바로 설치되게 할 수는 없다.</span></p>
-                <div class="annot-frame max-w-2xl">
-                  <img src="images/deploy-nre-flow.png" alt="NRE 배포 순서도 - connect service page에서 Launcher Service Install 여부와 nexacro engine Install 여부를 확인해 각각 download·install 후 check launcher service run, setproperty를 거쳐 nexacro app launch">
+                <div class="flow-frame max-w-2xl">
+                  <svg viewBox="0 0 720 830" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nreFlowTitle nreFlowDesc">
+                    <title id="nreFlowTitle">NRE 배포 순서도</title>
+                    <desc id="nreFlowDesc">배포 사이트 접속 후 런처 서비스와 넥사크로 엔진의 설치 여부를 각각 확인해, 없으면 다운로드·설치하고 처음부터 다시 확인한다. 더 설치할 것이 없으면 런처 서비스 실행 확인과 setproperty를 거쳐 넥사크로 앱을 실행한다.</desc>
+                    <defs>
+                      <marker id="nreArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,1 L9,5 L0,9 z" fill="#b45309"></path>
+                      </marker>
+                    </defs>
+                    <g fill="none" stroke="#b45309" stroke-width="1.6" marker-end="url(#nreArrow)">
+                      <path d="M360,37 L360,57"></path>
+                      <path d="M360,81 L360,99"></path>
+                      <path d="M360,139 L360,162"></path>
+                      <path d="M255,181 L160,181 L160,232"></path>
+                      <path d="M465,181 L580,181 L580,229"></path>
+                      <path d="M580,269 L580,304"></path>
+                      <path d="M580,344 L580,470 L373,470"></path>
+                      <path d="M160,268 L160,309"></path>
+                      <path d="M160,349 L160,384"></path>
+                      <path d="M160,424 L160,470 L347,470"></path>
+                      <path d="M360,481 L360,522"></path>
+                      <path d="M360,558 L360,589"></path>
+                      <path d="M360,629 L360,659"></path>
+                      <path d="M360,699 L360,729"></path>
+                      <path d="M360,769 L360,788"></path>
+                      <path d="M310,541 L26,541 L26,70 L347,70"></path>
+                    </g>
+                    <path d="M260,251 L295,251 L295,470" fill="none" stroke="#b45309" stroke-width="1.6"></path>
+                    <circle cx="360" cy="28" r="9" fill="#b45309"></circle>
+                    <circle cx="360" cy="800" r="10" fill="none" stroke="#b45309" stroke-width="2"></circle>
+                    <circle cx="360" cy="800" r="5.5" fill="#b45309"></circle>
+                    <g fill="#fef3c7" stroke="#b45309" stroke-width="1.6">
+                      <polygon points="360,59 371,70 360,81 349,70"></polygon>
+                      <polygon points="360,459 371,470 360,481 349,470"></polygon>
+                      <polygon points="255,181 269,164 451,164 465,181 451,198 269,198"></polygon>
+                      <polygon points="60,251 74,234 246,234 260,251 246,268 74,268"></polygon>
+                      <polygon points="310,541 324,524 396,524 410,541 396,558 324,558"></polygon>
+                    </g>
+                    <g fill="#fffbeb" stroke="#d97706" stroke-width="1.6">
+                      <rect x="265" y="101" width="190" height="38" rx="10"></rect>
+                      <rect x="475" y="231" width="210" height="38" rx="10"></rect>
+                      <rect x="480" y="306" width="200" height="38" rx="10"></rect>
+                      <rect x="60" y="311" width="200" height="38" rx="10"></rect>
+                      <rect x="65" y="386" width="190" height="38" rx="10"></rect>
+                      <rect x="252" y="591" width="216" height="38" rx="10"></rect>
+                      <rect x="295" y="661" width="130" height="38" rx="10"></rect>
+                      <rect x="270" y="731" width="180" height="38" rx="10"></rect>
+                    </g>
+                    <g fill="#27272a" font-size="12.5" font-weight="500" text-anchor="middle" dominant-baseline="central">
+                      <text x="360" y="120">connect service page</text>
+                      <text x="580" y="250">download Launcher Service</text>
+                      <text x="580" y="325">install Launcher Service</text>
+                      <text x="160" y="330">download nexacro engine</text>
+                      <text x="160" y="405">install nexacro engine</text>
+                      <text x="360" y="610">check launcher service run</text>
+                      <text x="360" y="680">setproperty</text>
+                      <text x="360" y="750">nexacro app launch</text>
+                    </g>
+                    <g fill="#27272a" font-size="12" text-anchor="middle" dominant-baseline="central">
+                      <text x="360" y="181">Launcher Service Install?</text>
+                      <text x="160" y="251">nexacro engine Install?</text>
+                      <text x="360" y="541">install?</text>
+                    </g>
+                    <g fill="#a16207" font-size="10.5" font-weight="600" dominant-baseline="central">
+                      <text x="205" y="173" text-anchor="middle">yes</text>
+                      <text x="516" y="173" text-anchor="middle">no</text>
+                      <text x="278" y="243" text-anchor="middle">yes</text>
+                      <text x="170" y="289" text-anchor="start">no</text>
+                      <text x="286" y="533" text-anchor="middle">yes</text>
+                      <text x="370" y="576" text-anchor="start">no</text>
+                    </g>
+                  </svg>
                 </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">런처 서비스와 엔진을 각각 확인해서 없는 것만 받아 깐다. 뭔가 설치했으면(install? yes) 왼쪽 선을 타고 <span class="font-semibold">서비스 페이지 접속부터 다시</span> 돌아 확인하고, 더 깔 게 없을 때만 아래로 내려가 앱이 실행된다.</p>
                 <p class="kr mt-3 text-sm text-zinc-500 leading-relaxed mb-2">실제 배포 사이트는 전용브라우저와 html5 중 무엇으로 실행할지 고르게 해 주고, 필요한 프로그램이 깔려 있는지 확인한다.</p>
                 <div class="annot-frame max-w-2xl">
                   <img src="images/deploy-nre-install-site.png" alt="NRE 배포 사이트 화면 - 전용브라우저(nexacro) Click과 html5 Click 링크, 프로그램설치확인중 안내 박스">
