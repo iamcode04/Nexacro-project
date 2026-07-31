@@ -1396,7 +1396,7 @@ provider.sendPushMessage(pushMessage);</pre>
       </div>
 
       <!-- 4.5 캘린더 -->
-      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="calendar 캘린더 dateformat editformat 날짜 형식 yyyy mm dd ddd">
+      <div class="accordion bg-white border border-zinc-300 rounded-2xl overflow-hidden" data-keywords="calendar 캘린더 dateformat editformat 날짜 형식 yyyy mm dd ddd enable datepicker 기간 선택 yearspin 스핀 일요일 토요일 색상">
         <button class="acc-toggle w-full flex items-center justify-between gap-4 px-6 py-5 text-left">
           <div class="flex items-center gap-3">
             <span class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shrink-0">
@@ -1425,6 +1425,53 @@ provider.sendPushMessage(pushMessage);</pre>
                   <p class="kr text-sm text-zinc-500"><span class="font-mono font-semibold text-zinc-700">ddd</span> : 요일</p>
                 </div>
                 <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">예: dateformat을 "yyyy-MM-dd ddd"로 두면 "2026-07-25 토"처럼 요일까지 표시되고, editformat을 "yyyy-MM-dd"로 두면 실제 입력값은 요일 없이 저장된다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">enable로 입력 가능 / 조회 전용 나누기</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Calendar를 쓸 수 있는 상태로 둘지는 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">enable</span>이 정한다. true면 클릭했을 때 DatePicker가 열리고 날짜를 고를 수 있지만, false로 두면 글자·테두리·달력 아이콘이 모두 옅은 회색으로 바뀌고 클릭해도 열리지 않는다. 조회 화면처럼 날짜를 보여주기만 하고 수정은 막아야 할 때 false로 둔다.</p>
+                <div class="annot-frame max-w-md">
+                  <img src="images/calendar-enable-property.png" alt="Properties 패널에서 Calendar의 enable 속성을 true/false로 선택">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">Properties 패널에서 enable을 고르면 true/false 드롭다운이 나온다.</p>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">DatePicker 구조와 기간(시작일~종료일) 선택</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">Calendar를 클릭하면 뜨는 달력이 DatePicker다. 위에서부터 <span class="font-semibold text-zinc-700">head</span>(연·월과 ◀▶ 이동 버튼), <span class="font-semibold text-zinc-700">week</span>(요일 줄), <span class="font-semibold text-zinc-700">body</span>(날짜)로 나뉜다. 기간달력은 Calendar를 직접 두 개 놓는 게 아니라, <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">Div</span>를 하나 만들고 그 <span class="font-mono text-xs bg-zinc-100 px-1.5 py-0.5 rounded">url</span> 속성에 기간달력이 구현된 공통화면을 연결해서 쓴다.</p>
+                <div class="annot-frame max-w-2xl">
+                  <img src="images/calendar-daterange-picker.png" alt="Div의 url에 기간달력 공통화면을 연결해 시작일~종료일을 선택하는 화면">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">왼쪽에서 시작일, 오른쪽에서 종료일을 고르고 확인을 누르면 두 입력칸에 각각 값이 채워진다.</p>
+                <div class="grid sm:grid-cols-2 gap-x-6 gap-y-1.5 mt-3">
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">Cmm::CmmCalFromTo.xfdl</span> : PopupDiv + Calendar 조합</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">Cmm::CmmDateRange.xfdl</span> : PopupDateRangePicker 활용</p>
+                </div>
+                <p class="kr mt-3 text-sm font-semibold text-zinc-800 mb-2">화면에서 쓰는 get / set 함수</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5">
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">fnInit()</span> : 초기화(날짜가 사라짐)</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">fnGetFromDate()</span> / <span class="font-mono text-xs font-semibold text-zinc-700">fnGetToDate()</span> : 시작·종료일 읽기</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">fnSetFromDate(v)</span> / <span class="font-mono text-xs font-semibold text-zinc-700">fnSetToDate(v)</span> : 시작·종료일 쓰기</p>
+                  <p class="kr text-sm text-zinc-500"><span class="font-mono text-xs font-semibold text-zinc-700">fnSetEnable(b)</span> / <span class="font-mono text-xs font-semibold text-zinc-700">fnSetReadonly(b)</span> / <span class="font-mono text-xs font-semibold text-zinc-700">fnSetEssential(b)</span></p>
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">주의: 함수는 대상 Div의 form을 거쳐 호출해야 한다 — <span class="font-mono">var sFromDate = this.Div00.form.fnGetFromDate();</span></p>
+                <p class="kr mt-4 text-sm font-semibold text-zinc-800 mb-2">기본 테마 색상 기준값</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2">
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#08497f"></span>head 배경 <span class="font-mono text-xs text-zinc-400">#08497f</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#e9e9e9"></span>week 배경 <span class="font-mono text-xs text-zinc-400">#e9e9e9</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#c4c4c4"></span>테두리·전달/다음달 <span class="font-mono text-xs text-zinc-400">#c4c4c4</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#3078b4"></span>선택한 날 <span class="font-mono text-xs text-zinc-400">#3078b4</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#c0d6e8"></span>오늘 <span class="font-mono text-xs text-zinc-400">#c0d6e8</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#e9e9e9"></span>마우스오버 <span class="font-mono text-xs text-zinc-400">#e9e9e9</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#e03c0a"></span>일요일 글자 <span class="font-mono text-xs text-zinc-400">#e03c0a</span></p>
+                  <p class="kr text-sm text-zinc-500 flex items-center gap-2"><span class="w-3.5 h-3.5 rounded-sm border border-zinc-300 shrink-0" style="background:#2a689c"></span>토요일 글자 <span class="font-mono text-xs text-zinc-400">#2a689c</span></p>
+                </div>
+              </div>
+              <div>
+                <p class="kr text-sm font-semibold text-zinc-800 mb-2">yearspin으로 연·월 빠르게 이동</p>
+                <p class="kr text-sm text-zinc-500 leading-relaxed mb-3">head의 ◀▶는 한 달씩만 넘어가서 몇 년 전 날짜를 찾을 때 불편하다. yearspin을 쓰면 연도(와 월)에 위·아래 스핀 버튼이 붙어서 값을 직접 한 칸씩 올리고 내릴 수 있다. 생년월일처럼 현재와 멀리 떨어진 날짜를 고를 때 훨씬 빠르다.</p>
+                <div class="annot-frame max-w-[174px]">
+                  <img src="images/calendar-yearspin.png" alt="DatePicker head의 연·월에 붙은 yearspin 스핀 버튼">
+                </div>
+                <p class="kr mt-2 text-xs text-zinc-400 leading-relaxed">가운데 ▲▼ 버튼으로 연도와 월을 각각 증감시킨다.</p>
               </div>
             </div>
           </div>
